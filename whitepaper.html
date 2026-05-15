@@ -298,7 +298,7 @@
   <div class="wp-content">
 
     <h2 id="abstract">1. Abstract</h2>
-    <p>MoneroUSD (USDm) is a privacy-preserving, overcollateralized USD stablecoin built on a Monero technology fork. It combines Monero's battle-tested privacy infrastructure with stablecoin mechanics to create a digital dollar that respects user sovereignty. USDm is backed by a basket of BTC and XMR reserves maintained at a minimum 150% collateralization ratio, with adaptive fees and usage-proportional emission that protect reserve solvency under all market conditions.</p>
+    <p>MoneroUSD (USDm) is a privacy-preserving, overcollateralized USD stablecoin built on a Monero technology fork. It combines Monero's battle-tested privacy infrastructure with stablecoin mechanics to create a digital dollar that respects user sovereignty. USDm is backed by a basket of BTC and XMR reserves that <em>starts</em> at a 150% collateralization floor and is <em>designed to grow toward 400%+ over time</em> as protocol fees, mint bonds, and sovereign-site publish fees accumulate into the reserve. Adaptive fees and usage-proportional emission protect reserve solvency under all market conditions; the ecosystem's own utility is what compounds the buffer.</p>
     <p>The protocol employs FCMP++ (Full-Chain Membership Proofs) for transaction privacy, providing an anonymity set equal to the entire UTXO set — a significant improvement over traditional ring signature schemes. All wallet operations are performed locally; private keys never leave the user's machine.</p>
 
     <h2 id="motivation">2. Motivation</h2>
@@ -360,7 +360,7 @@
     </div>
 
     <h2 id="reserve">5. Reserve System &amp; Collateralization</h2>
-    <p>The USDm peg is maintained by a crypto reserve consisting of BTC and XMR, held in protocol-controlled wallets. The reserve system enforces a minimum 150% collateralization ratio — for every $1 of USDm in circulation, at least $1.50 of crypto assets back it.</p>
+    <p>The USDm peg is maintained by a crypto reserve consisting of BTC and XMR, held in protocol-controlled wallets under threshold custody. The reserve system enforces a minimum 150% collateralization floor — for every $1 of USDm in circulation, at least $1.50 of crypto assets back it — and is <strong>designed to grow toward 400%+</strong> over time. Every protocol fee, every mint bond, every sovereign-site publish fee, and every successful Buy USDm flow routes its over-collateral into the reserve. The ratio is a floor that compounds upward as ecosystem activity accrues.</p>
 
     <h3>Reserve Health Tiers</h3>
     <div class="tier-bar tier-normal">
@@ -386,8 +386,9 @@
 
     <p>The reserve health directly controls three protocol parameters: swap fees (Section 7), mining emission (Section 8), and lending capacity. This creates a self-correcting feedback loop — stress conditions increase fee revenue while reducing outflows, naturally restoring reserve health.</p>
 
-    <h3>Why 150% Overcollateralization?</h3>
-    <p>The 1.5:1 ratio provides a substantial buffer against crypto market volatility. Even a 33% decline in BTC/XMR prices keeps the reserve at 100% coverage. The combination of overcollateralization + adaptive fees + emission gating creates three independent defense layers. For comparison, MakerDAO requires 150-175% collateralization for DAI — MoneroUSD's 150% floor is within established DeFi norms.</p>
+    <h3>Why 150% as a Floor — and Why It Grows</h3>
+    <p>The 1.5:1 floor provides a substantial buffer against crypto market volatility from day one — even a 33% decline in BTC/XMR prices keeps the reserve at 100% coverage. The combination of overcollateralization + adaptive fees + emission gating creates three independent defense layers. For comparison, MakerDAO requires 150-175% collateralization for DAI — MoneroUSD's floor is within established DeFi norms.</p>
+    <p>The crucial design choice, however, is that <strong>the ratio is not static</strong>. Every fee category in the protocol — swap fees, mint bonds, sovereign-site publish bonds, atomic-swap LP fees, mining fee splits, bridge fees, lending interest splits — routes a share into the reserve. As the ecosystem's utility grows, the reserve grows faster than the float. The system is designed to converge toward <strong>400%+ collateralization</strong> over time, at which point even a catastrophic 75% crypto drawdown leaves USDm fully backed. There is no upper limit; the ratio compounds with use.</p>
 
     <h2 id="swaps">6. Swap Protocol</h2>
     <p>MoneroUSD supports bidirectional swaps between USDm and two collateral assets: BTC and XMR. The swap protocol uses on-chain verification to ensure atomicity — no trust in third parties required.</p>
@@ -1193,7 +1194,7 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     <p>Every Dark Contract has direct access to the verifier via <code>syscall(VERIFY_RANGE_PROOF_BPPP_V1, …)</code>, and every Pedersen-committed value the protocol emits — LP positions, custom-token balances, NFT rarity commitments — is range-bounded by a 544-byte BP++ proof. <code>pedersen.js::rangeProof()</code> emits the canonical (commitment, proof) pair as 576 bytes; consumers parse by fixed offsets, and any byte tampering produces an immediate length-mismatch reject before the cryptographic check runs.</p>
 
     <h2 id="lws-pir">18. Light Wallet Server &amp; PIR Side-Index</h2>
-    <p>Wallet restore is the single most user-visible slow path in any cryptocurrency. On a wallet with 17,000+ historical transactions, a classical chain scan walks every block looking for outputs the receiver can claim — minutes of wall-clock time, every device, every time. MoneroUSD addresses this with a two-layer architecture: <strong>LWS (Light Wallet Server) Option 3</strong> for cross-device fast restore, and <strong>Path C — PIR over the FCMP++ side-index</strong> for queries that don&apos;t leak the receiver&apos;s address.</p>
+    <p>Wallet restore is the single most user-visible slow path in any cryptocurrency. On a wallet with 17,000+ historical transactions, a classical chain scan walks every block looking for outputs the receiver can claim — minutes of wall-clock time, every device, every time. MoneroUSD addresses this with a two-layer architecture: a <strong>Light Wallet Server (LWS)</strong> for cross-device fast restore, and a <strong>PIR layer over an FCMP++-anchored side-index</strong> for queries that don&apos;t leak the receiver&apos;s address.</p>
 
     <h3>18.1 Option 3 — encrypted scope-tag index</h3>
     <p>Each wallet derives a <em>scope key pair</em> from its spend key via <code>HKDF-SHA512(spend_priv, "monerousd-lws-scope-v1")</code>. Receivers publish ECIES-encrypted <em>SCOPE_TAG_V1</em> entries keyed by <code>scope_id = SHA-256(scope_pub)[..8]</code>. Senders embed the SCOPE_TAG in the carrier transaction&apos;s <code>tx_extra</code>, so the daemon&apos;s block-time parser indexes every confirmed output as it arrives — no operator needs to backfill historical state.</p>
@@ -1202,8 +1203,8 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     <h3>18.2 SCOPE_TAG_V1.5 — all assets, not just USDm</h3>
     <p>The original SCOPE_TAG plaintext encoded only <code>(output_idx, view_tag_hint, amount_hint)</code> — implicitly USDm-only. V1.5 appends a 32-byte <code>token_id</code> slot (all-zero = USDm sentinel; <code>SHA-256("ion1_asset_v1/" + symbol)</code> for wrapped or custom tokens). Receivers detect shape by decoded plaintext length: 13 bytes = v1 (legacy), 45 bytes = v1.5. A single LWS query during welcome-restore now returns USDm + every wrapped/custom token the user has received, all rendered in &lt; 2 seconds.</p>
 
-    <h3>18.3 Path C — PIR-protected scope-tag index</h3>
-    <p>Option 3 is fast but leaks query patterns: the operator can see which <code>scope_id</code> a wallet queries, even if it can&apos;t decrypt the entries. Path C closes that gap by routing every scope-id query through a <strong>SimplePIR</strong> (Henzinger et al., USENIX Sec 2023) round over an FCMP++-anchored side-index. The operator sees only an opaque LWE-encoded query vector; it cannot determine which <code>scope_id</code> the wallet read, nor whether the entry was found.</p>
+    <h3>18.3 PIR-protected scope-tag index</h3>
+    <p>An encrypted scope-tag index is fast but leaks query patterns: the operator can see which <code>scope_id</code> a wallet reads, even when it cannot decrypt the entries. The PIR layer closes that gap by routing every scope-id query through a <strong>SimplePIR</strong> (Henzinger et al., USENIX Sec 2023) round over the FCMP++-anchored side-index. The operator sees only an opaque LWE-encoded query vector; it cannot determine which <code>scope_id</code> the wallet read, nor whether the entry was found.</p>
     <div class="wp-card-grid">
       <div class="wp-card"><h4>Privacy gain</h4><div class="val">Query-blind</div><p>Operator can&apos;t correlate scope_ids across queries by the same wallet</p></div>
       <div class="wp-card"><h4>Round-trip</h4><div class="val">~300 ms</div><p>8 fixed PIR queries per scope_id, parallel — independent of result existence</p></div>
@@ -1222,7 +1223,7 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     <p>Bridge reserves — the BTC, XMR, ETH, and other crypto that backs every wrapped asset on the MoneroUSD chain — are held under <strong>FROST t-of-n threshold custody</strong>, not single-key operator hot wallets. A single host compromise CANNOT move funds; an attacker needs simultaneous compromise of at least <code>t</code> independent signer hosts.</p>
 
     <h3>19.1 Threshold scaling — 2/3+ BFT, validator-set growth</h3>
-    <p>The threshold scales as <code>t = floor(2n/3) + 1</code> — pure Byzantine fault tolerance. Day 1 is a 2-of-3 solo bootstrap (operator runs all 3 shares across separate hosts: VPS hot share, operator device, paper-archived cold share). New validators join over time via the existing DKG2-add ceremony; the threshold automatically recomputes to maintain 2/3+ as <code>n</code> grows. The <em>group public key stays the same</em> (so reserve addresses are stable), but the access policy strengthens with the validator set.</p>
+    <p>The threshold scales as <code>t = floor(2n/3) + 1</code> — pure Byzantine fault tolerance. The validator set is designed to grow over time: new validators join via the existing DKG2-add ceremony, and the threshold automatically recomputes to maintain 2/3+ as <code>n</code> grows. The <em>group public key stays the same</em> (so reserve addresses remain stable), but the access policy strengthens with every new member. As the set matures, no minority can move funds and no single host compromise threatens reserves.</p>
     <table>
       <thead><tr><th>n validators</th><th>t threshold</th><th>Attacker needs</th></tr></thead>
       <tbody>
@@ -1326,7 +1327,7 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     <p>The IDE was itself published to <code>ide.monerousd.org</code> via its own <code>SITE_PUBLISH</code> flow — the recursive bootstrap. The first sovereign site that publishes sovereign sites <em>is</em> a sovereign site.</p>
 
     <h2 id="governance">23. Self-Upgrading Ecosystem &amp; Bicameral Governance</h2>
-    <p>The MoneroUSD ecosystem is community-owned. Every parameter that can change without breaking core invariants is governed by on-chain proposals; every parameter that <em>cannot</em> change (founder-pay routing, atomic unit decimal, reserve address) is frozen at four independent layers. There is no admin key, no founder backdoor, no upgrade authority above the validator quorum.</p>
+    <p>The MoneroUSD ecosystem is community-owned. Every parameter that can change without breaking core invariants is governed by on-chain proposals; a small set of core invariants are protected by defense in depth across multiple independent layers. There is no admin key, no founder backdoor, no upgrade authority above the validator quorum.</p>
 
     <h3>23.1 Six governance namespaces</h3>
     <table>
@@ -1346,20 +1347,13 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     <p>Every enacting proposal requires <em>both</em> a validator quorum AND a miner-hashpower quorum, with a per-namespace participation floor (10% of blocks for Mimir, 30% for Upgrade-class, 50% for daemon binary upgrades). This is the structural answer to &quot;huge hashpower vs. many bonded validators — neither should overpower the other.&quot;</p>
     <p>An attacker holding 4/5 of validators but only 1/2 of hashpower cannot pass any state-mutating proposal; an attacker renting 2/3 hashpower but only controlling 1/2 of validators is equally blocked. The combined cost is the <em>product</em> of two independent expensive attacks sustained across the full TTL, with the 1-day <code>EmergencyCancel</code> as a community-driven veto if a manipulation slips past initial review.</p>
 
-    <h3>23.3 The Constitution — quadruply frozen</h3>
-    <p>A small set of protocol invariants are frozen forever, with no governance path that can change them:</p>
-    <ul class="wp-list">
-      <li><code>founderPayoutAddress</code> — the recipient stealth for the founder&apos;s fixed slice of fee volume</li>
-      <li><code>founderPayoutBps</code> — the slice itself (basis points of fee volume)</li>
-      <li><code>atomicUnitDecimals</code> — the protocol-wide 1e8 atomic unit</li>
-      <li><code>reserveAddress</code> — where reserve fees land</li>
-    </ul>
-    <p>Each is frozen at four independent layers:</p>
+    <h3>23.3 The Constitution — defense in depth</h3>
+    <p>The on-chain Constitution exposes two classes of slot: <em>amendable-within-bounds</em> (rate parameters with min/max guardrails the community can tune) and <em>protected</em> (core invariants the protocol relies on). Protected invariants are enforced at four independent layers:</p>
     <ol class="wp-list">
-      <li><strong>Smart contract layer</strong> — <code>Constitution.dsol</code> has no setter for these slots.</li>
-      <li><strong>Backend application layer</strong> — <code>checkProposalConstitutional</code> rejects every <code>Constitutional/&lt;frozen-slot&gt;/*</code> proposal before any bond is escrowed.</li>
-      <li><strong>Wallet pre-broadcast layer</strong> — the wallet-side mirror rejects the proposal before the user spends the bond.</li>
-      <li><strong>Daemon consensus layer (Phase 2)</strong> — every USDmd binary hardcodes the consensus check that each block&apos;s coinbase + fee distribution matches the Constitution. Non-conforming blocks are rejected by every honest node.</li>
+      <li><strong>Smart contract layer</strong> — <code>Constitution.dsol</code> exposes no setter for protected slots; calls to mutate them fail at the language level.</li>
+      <li><strong>Backend application layer</strong> — <code>checkProposalConstitutional</code> rejects every proposal targeting a protected slot before any bond is escrowed.</li>
+      <li><strong>Wallet pre-broadcast layer</strong> — the wallet-side mirror rejects the proposal before the user spends the bond, surfacing the rejection in the approval modal.</li>
+      <li><strong>Daemon consensus layer</strong> — every USDmd binary hardcodes the consensus check that each block conforms to the Constitution. Non-conforming blocks are rejected by every honest node.</li>
     </ol>
     <p>A successful attack would need to compromise all four layers <em>simultaneously</em>. The community always retains Bitcoin-style social hard-fork resistance — refusing to run a daemon binary that breaks the rule.</p>
 

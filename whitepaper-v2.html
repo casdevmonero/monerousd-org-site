@@ -3,244 +3,234 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MoneroUSD — Quick Reference (V2)</title>
-<meta name="description" content="MoneroUSD Whitepaper V2 — single-page feature reference. Private USD stablecoin with FROST custody, atomic swaps, PIR-protected light wallet, sovereign hosting, and self-upgrading governance." />
+<title>MoneroUSD — Whitepaper V2</title>
+<meta name="description" content="MoneroUSD Whitepaper V2 — single-page feature reference. Private USD stablecoin with FROST custody, atomic swaps, private light wallet restore, sovereign hosting, and self-upgrading governance." />
 <style>
+  /* ── Fonts ─────────────────────────────────────────────────────────────── */
   @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
   @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
   @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
-  @font-face { font-family: 'JetBrains Mono'; src: url('/fonts/jetbrainsmono-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
 
+  /* ── Palette ───────────────────────────────────────────────────────────── */
   :root {
     --orange:        #FF6600;
     --orange-soft:   rgba(255,102,0,0.10);
     --orange-line:   rgba(255,102,0,0.35);
-    --orange-glow:   rgba(255,102,0,0.25);
+    --orange-glow:   rgba(255,102,0,0.22);
     --bg:            #0a0a0a;
-    --surface:       #111;
-    --card:          #161616;
-    --border:        rgba(255,102,0,0.10);
-    --text:          #eaeaea;
+    --paper:         #0c0c0c;  /* tiny inset under the "sheet" */
+    --text:          #ececec;
     --muted:         #9a9a9a;
+    --rule:          rgba(255,102,0,0.20);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+
   body {
     font-family: 'Outfit', system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.55;
+    line-height: 1.28;
     min-height: 100vh;
-    /* Subtle orange-tinted radial behind everything */
+    padding: 18px 0 24px;
+    /* Subtle orange wash so the page doesn't feel flat — easy on eyes, not loud */
     background-image:
-      radial-gradient(ellipse 1200px 600px at 50% 0%, rgba(255,102,0,0.07) 0%, transparent 60%),
-      radial-gradient(ellipse 800px 400px at 50% 100%, rgba(255,102,0,0.04) 0%, transparent 70%);
+      radial-gradient(ellipse 1000px 500px at 50% 0%, rgba(255,102,0,0.05) 0%, transparent 65%);
     background-attachment: fixed;
   }
 
   a { color: var(--orange); text-decoration: none; }
-  a:hover { color: #ffaa66; }
-  code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.85em; color: var(--orange); }
+  a:hover { color: #ffaa66; text-decoration: underline; }
+  strong { color: var(--orange); font-weight: 600; }
 
-  /* ── Top ribbon (links back to full WP + downloads) ─────────────────────── */
+  /* ── Ribbon (hidden in print) ───────────────────────────────────────────── */
   .ribbon {
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 24px;
+    max-width: 8.5in;
+    margin: 0 auto 16px;
+    padding: 8px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .ribbon-left { display: flex; align-items: center; gap: 12px; font-weight: 600; }
-  .ribbon-left img { height: 28px; width: 28px; filter: drop-shadow(0 0 8px var(--orange-glow)); }
-  .ribbon-right { display: flex; gap: 12px; }
-  .ribbon-btn {
+    border: 1px solid var(--orange-line);
+    border-radius: 8px;
+    background: rgba(10,10,10,0.6);
+    backdrop-filter: blur(8px);
     font-size: 0.85rem;
-    padding: 7px 14px;
-    border-radius: 6px;
+  }
+  .ribbon-left { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 600; }
+  .ribbon-left img { height: 22px; width: 22px; filter: drop-shadow(0 0 6px var(--orange-glow)); }
+  .ribbon-right { display: flex; gap: 8px; }
+  .ribbon-btn {
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    border-radius: 5px;
     border: 1px solid var(--orange-line);
     color: var(--orange);
-    transition: all 0.18s ease;
+    transition: all 0.15s ease;
     white-space: nowrap;
   }
-  .ribbon-btn.solid {
-    background: var(--orange);
-    color: #0a0a0a;
-    border-color: var(--orange);
-  }
-  .ribbon-btn:hover {
-    background: var(--orange);
-    color: #0a0a0a;
-    border-color: var(--orange);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px var(--orange-glow);
-  }
+  .ribbon-btn.solid { background: var(--orange); color: #0a0a0a; border-color: var(--orange); }
+  .ribbon-btn:hover { background: var(--orange); color: #0a0a0a; border-color: var(--orange); }
 
-  /* ── Page container ─────────────────────────────────────────────────────── */
-  .page {
-    max-width: 1180px;
+  /* ── The "sheet" — sized for US Letter (8.5x11) with 0.30in margins ─────── */
+  .sheet {
+    max-width: 8.5in;
     margin: 0 auto;
-    padding: 32px 28px 48px;
+    padding: 0.30in 0.42in 0.30in 0.42in;
+    background: var(--paper);
+    border: 1px solid rgba(255,102,0,0.08);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.02),
+      0 30px 80px rgba(0,0,0,0.6),
+      0 0 60px rgba(255,102,0,0.04);
   }
 
-  /* ── Header band ────────────────────────────────────────────────────────── */
-  header.head {
+  /* ── Title block ────────────────────────────────────────────────────────── */
+  .title {
     text-align: center;
-    padding: 18px 0 28px;
-    position: relative;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid var(--orange);
+    box-shadow: 0 1px 0 var(--rule);
+    margin-bottom: 6px;
   }
-  header.head::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 3px;
-    background: var(--orange);
-    border-radius: 2px;
-    margin: 18px auto 0;
-    box-shadow: 0 0 12px var(--orange-glow);
-  }
-  .head h1 {
-    font-size: 2.4rem;
+  .title h1 {
+    font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
   }
-  .head h1 span { color: var(--orange); }
-  .head .sub {
-    margin-top: 8px;
+  .title h1 span { color: var(--orange); }
+  .title .sub {
+    font-size: 0.7rem;
     color: var(--muted);
-    font-size: 0.95rem;
+    margin-top: 1px;
+    letter-spacing: 0.01em;
   }
-  .head .meta {
-    margin-top: 4px;
+  .title .meta {
+    font-size: 0.58rem;
     color: var(--muted);
-    font-size: 0.78rem;
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.04em;
-  }
-
-  /* ── Intro pill ─────────────────────────────────────────────────────────── */
-  .pitch {
-    background: var(--orange-soft);
-    border: 1px solid var(--orange-line);
-    border-radius: 10px;
-    padding: 16px 22px;
-    margin-bottom: 28px;
-    text-align: center;
-    font-size: 1.02rem;
-  }
-  .pitch strong { color: var(--orange); }
-
-  /* ── Section / feature grid ─────────────────────────────────────────────── */
-  section.block {
-    margin-bottom: 24px;
-  }
-  section.block > h2 {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--orange);
+    margin-top: 1px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  section.block > h2::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: var(--orange);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--orange-glow);
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-  @media (min-width: 920px) {
-    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  }
-
-  .feat {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 14px;
-    transition: border-color 0.15s, transform 0.15s;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .feat:hover {
-    border-color: var(--orange-line);
-    transform: translateY(-1px);
-  }
-  .feat h3 {
-    font-size: 0.95rem;
-    font-weight: 600;
+  /* ── Abstract (single column, slightly indented) ────────────────────────── */
+  .abstract {
+    font-size: 0.66rem;
+    line-height: 1.36;
+    padding: 4px 9px;
+    margin-bottom: 5px;
+    border-left: 2px solid var(--orange);
+    background: rgba(255,102,0,0.04);
     color: var(--text);
   }
-  .feat h3 span.tag {
+  .abstract .label {
+    color: var(--orange);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
     display: inline-block;
-    margin-left: 6px;
-    padding: 1px 6px;
+    margin-right: 5px;
+  }
+
+  /* ── Two-column body ────────────────────────────────────────────────────── */
+  .body {
+    column-count: 2;
+    column-gap: 0.24in;
+    column-rule: 1px solid rgba(255,102,0,0.10);
+  }
+
+  /* ── Section heading — orange uppercase with thin rule ──────────────────── */
+  .body h2 {
     font-size: 0.62rem;
     font-weight: 700;
     color: var(--orange);
-    background: var(--orange-soft);
-    border: 1px solid var(--orange-line);
-    border-radius: 4px;
-    vertical-align: 2px;
-    letter-spacing: 0.04em;
     text-transform: uppercase;
+    letter-spacing: 0.13em;
+    margin-top: 5px;
+    margin-bottom: 1px;
+    padding-bottom: 1px;
+    border-bottom: 1px solid var(--rule);
+    break-after: avoid;
   }
-  .feat p {
+  .body h2:first-child { margin-top: 0; }
+  .body h2 .num {
     color: var(--muted);
-    font-size: 0.84rem;
-    line-height: 1.5;
+    font-weight: 600;
+    margin-right: 4px;
+    font-size: 0.58rem;
   }
 
-  /* ── Footer band ────────────────────────────────────────────────────────── */
-  footer.foot {
-    margin-top: 36px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
+  /* ── Feature list — inline definition style ─────────────────────────────── */
+  .features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .features li {
+    font-size: 0.62rem;
+    line-height: 1.27;
+    margin-bottom: 1px;
+    color: var(--text);
+    break-inside: avoid;
+  }
+  .features li b {
+    color: var(--orange);
+    font-weight: 600;
+    margin-right: 3px;
+  }
+  .features li b::after { content: ' — '; color: var(--muted); }
+
+  /* ── Footer below the body (still inside the sheet) ─────────────────────── */
+  .foot {
+    margin-top: 6px;
+    padding-top: 4px;
+    border-top: 1px solid var(--rule);
     text-align: center;
     color: var(--muted);
-    font-size: 0.82rem;
+    font-size: 0.58rem;
+    line-height: 1.4;
   }
-  footer.foot a { color: var(--orange); }
-  footer.foot .links {
+  .foot .links {
     display: flex;
     justify-content: center;
-    gap: 18px;
+    gap: 14px;
     flex-wrap: wrap;
-    margin-top: 6px;
+    margin-top: 4px;
+  }
+  .foot a { color: var(--orange); }
+
+  /* ── Print: collapse ribbon, push sheet to full bleed of paper ──────────── */
+  @media print {
+    @page { size: letter; margin: 0; }
+    html, body {
+      background: #000 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body { padding: 0; }
+    body { background-image: none; }
+    .ribbon { display: none; }
+    .sheet {
+      max-width: none;
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0;
+      padding: 0.55in 0.6in;
+      border: none;
+      box-shadow: none;
+      background: #000;
+    }
+    .title h1 { font-size: 1.45rem; }
+    .body { column-rule-color: rgba(255,102,0,0.25); }
   }
 
-  /* ── Print: collapse to single page, drop interactive chrome ────────────── */
-  @media print {
-    body { background: #000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .ribbon { display: none; }
-    .page { padding: 14px 18px; max-width: none; }
-    header.head { padding: 8px 0 14px; }
-    .head h1 { font-size: 1.6rem; }
-    .pitch { margin-bottom: 14px; padding: 10px 14px; font-size: 0.85rem; }
-    section.block { margin-bottom: 12px; }
-    section.block > h2 { font-size: 0.66rem; margin-bottom: 6px; }
-    .grid { gap: 6px; }
-    .feat { padding: 7px 10px; }
-    .feat h3 { font-size: 0.78rem; }
-    .feat p { font-size: 0.7rem; line-height: 1.35; }
-    footer.foot { margin-top: 16px; padding-top: 10px; font-size: 0.7rem; }
+  /* ── Tighter at mobile — body collapses to single column ────────────────── */
+  @media (max-width: 720px) {
+    .body { column-count: 1; }
+    .sheet { padding: 0.4in 0.4in; }
   }
 </style>
 </head>
@@ -249,259 +239,111 @@
 <nav class="ribbon">
   <a class="ribbon-left" href="/" style="color:var(--text);">
     <img src="/logo.svg" alt="MoneroUSD" />
-    <span>MoneroUSD &middot; <span style="color:var(--orange)">V2</span> Reference</span>
+    <span>MoneroUSD &middot; <span style="color:var(--orange)">Whitepaper V2</span></span>
   </a>
   <div class="ribbon-right">
     <a class="ribbon-btn" href="/whitepaper.html">Full whitepaper</a>
-    <a class="ribbon-btn solid" href="javascript:window.print()" title="Save to PDF / print">Print &middot; PDF</a>
+    <a class="ribbon-btn solid" href="javascript:window.print()" title="Print or save to PDF">Print &middot; PDF</a>
   </div>
 </nav>
 
-<div class="page">
+<article class="sheet">
 
-  <header class="head">
-    <h1>Monero<span>USD</span> Protocol</h1>
-    <p class="sub">A private, overcollateralized USD stablecoin. Built on Monero technology. Self-custodied. Sovereign.</p>
-    <p class="meta">Whitepaper V2 &middot; May 2026 &middot; Protocol v1.2.225</p>
+  <header class="title">
+    <h1>Monero<span>USD</span> Protocol &mdash; Whitepaper V2</h1>
+    <div class="sub">A privacy-preserving USD stablecoin built on Monero technology</div>
+    <div class="meta">Whitepaper V2 &nbsp;&middot;&nbsp; May 2026 &nbsp;&middot;&nbsp; Protocol v1.2.225</div>
   </header>
 
-  <div class="pitch">
-    <strong>The one-line:</strong> Every USDm is backed by at least <strong>$1.50</strong> of BTC + XMR under <strong>FROST threshold custody</strong>. Every transaction uses <strong>FCMP++</strong> privacy. Every parameter that matters is governed by <strong>bicameral on-chain consensus</strong>. Every reserve key is held by a <strong>multi-host quorum</strong>, never a single operator.
+  <div class="abstract">
+    <span class="label">Abstract</span>
+    Every USDm in circulation starts at a <strong>150%</strong> floor of BTC and XMR reserves under threshold custody and is designed to grow toward <strong>400%+</strong> over time as protocol fees, mint bonds, and sovereign-site fees accumulate into the reserve. No single key controls the float. Every transaction uses <strong>FCMP++</strong>, the next-generation Monero privacy proof whose anonymity set is the entire UTXO set. Every protocol parameter that affects users is governed by on-chain consensus across both validators and miners. There is no admin key, no founder backdoor, no operator with custodial authority. This page is a feature-by-feature summary. The full technical specification is at <a href="/whitepaper.html">monerousd.org/whitepaper.html</a>.
   </div>
 
-  <!-- ─── PROTOCOL CORE ─── -->
-  <section class="block">
-    <h2>Protocol Core</h2>
-    <div class="grid cols-3">
-      <div class="feat">
-        <h3>FCMP++ Privacy <span class="tag">live</span></h3>
-        <p>Anonymity set = the entire UTXO set. No ring decoys. <code>ring_size=1</code> enforced at consensus.</p>
-      </div>
-      <div class="feat">
-        <h3>150% Overcollateral <span class="tag">live</span></h3>
-        <p>Every USDm minted is backed by at least 1.5&times; its value in real BTC + XMR reserves.</p>
-      </div>
-      <div class="feat">
-        <h3>Adaptive Fees <span class="tag">live</span></h3>
-        <p>Fees scale 1&times; &rarr; 100&times; with reserve utilization. Drain attacks become economically self-defeating.</p>
-      </div>
-      <div class="feat">
-        <h3>Adaptive Mining Emission <span class="tag">live</span></h3>
-        <p>Block reward proportional to chain activity. Idle chain &rarr; smaller blocks &rarr; emission accrual; busy chain &rarr; more reward.</p>
-      </div>
-      <div class="feat">
-        <h3>RandomX PoW <span class="tag">live</span></h3>
-        <p>Same CPU-friendly PoW as Monero. ASIC-resistant. Two-minute block time.</p>
-      </div>
-      <div class="feat">
-        <h3>Local-First Wallet <span class="tag">live</span></h3>
-        <p>Private keys never leave your machine. The wallet IS a peer; no relay servers, no session tokens.</p>
-      </div>
-    </div>
-  </section>
+  <div class="body">
 
-  <!-- ─── PRIVACY INFRASTRUCTURE ─── -->
-  <section class="block">
-    <h2>Privacy Infrastructure</h2>
-    <div class="grid cols-3">
-      <div class="feat">
-        <h3>PIR Side-Index (Path C) <span class="tag">live</span></h3>
-        <p>SimplePIR over an FCMP++-anchored side-index. Operator can't learn which addresses your wallet is querying.</p>
-      </div>
-      <div class="feat">
-        <h3>Light Wallet Server (LWS) <span class="tag">live</span></h3>
-        <p>ECIES-encrypted scope-tag index. Sub-second cross-device restore. Operator sees ciphertext only.</p>
-      </div>
-      <div class="feat">
-        <h3>SCOPE_TAG_V1.5 <span class="tag">live</span></h3>
-        <p>Every wrapped + custom token visible after a single LWS query during restore. No second slow scan.</p>
-      </div>
-      <div class="feat">
-        <h3>Bulletproofs++ <span class="tag">live</span></h3>
-        <p>Real range-proof soundness for all confidential amounts. 544-byte proofs, hardened against the full A1-A12 attack-surface matrix.</p>
-      </div>
-      <div class="feat">
-        <h3>Sender-Side Scope Tags <span class="tag">live</span></h3>
-        <p>Senders embed SCOPE_TAG in <code>tx_extra</code>. New deposits indexed at block time, no operator backfill.</p>
-      </div>
-      <div class="feat">
-        <h3>Stealth Subaddresses <span class="tag">live</span></h3>
-        <p>Every receive is a fresh one-time address. No address reuse, no on-chain linkability.</p>
-      </div>
-    </div>
-  </section>
+    <h2><span class="num">1</span>Protocol Core</h2>
+    <ul class="features">
+      <li><b>FCMP++ Privacy</b>Full-chain membership proofs. Anonymity set equals the entire UTXO set &mdash; not 16 ring decoys. <code>ring_size = 1</code> enforced at consensus.</li>
+      <li><b>Growing Overcollateralization</b>Starts at a 150% floor and is designed to grow toward 400%+ as protocol fees, mint bonds, and sovereign-site publish fees accumulate into the reserve over time.</li>
+      <li><b>Adaptive Fees</b>Fees scale from 1&times; to 100&times; with reserve utilization. Drain attacks become economically self-defeating before they reach the reserve.</li>
+      <li><b>Adaptive Mining Emission</b>Block reward proportional to chain activity. Idle chain accrues; busy chain rewards miners. No fixed-supply auctioning.</li>
+      <li><b>RandomX Proof-of-Work</b>The same CPU-friendly PoW Monero uses. ASIC-resistant. Mining stays in the hands of users with normal hardware.</li>
+      <li><b>Local-First Wallet</b>Private keys never leave the user's machine. The desktop wallet is a peer of the network &mdash; no relay servers, no session tokens.</li>
+    </ul>
 
-  <!-- ─── BRIDGE CUSTODY ─── -->
-  <section class="block">
-    <h2>Bridge Custody &amp; Cross-Chain</h2>
-    <div class="grid cols-3">
-      <div class="feat">
-        <h3>FROST Threshold Sigs <span class="tag">live</span></h3>
-        <p>t-of-n BIP-340 Schnorr over secp256k1. No single host can move reserves. <code>t = floor(2n/3) + 1</code>.</p>
-      </div>
-      <div class="feat">
-        <h3>Multi-Host Distribution <span class="tag">live</span></h3>
-        <p>Day-1 solo bootstrap: VPS hot share + operator device + paper cold share. Grows to community via DKG2-add.</p>
-      </div>
-      <div class="feat">
-        <h3>Bicameral Sign Policy <span class="tag">live</span></h3>
-        <p>Each validator independently policy-checks every sign request. Coordinator can ask; only validators decide.</p>
-      </div>
-      <div class="feat">
-        <h3>Atomic Swap (zk-v6)</h3>
-        <p>Peer-to-peer trustless cross-chain swaps with Schnorr adaptor signatures. No central operator records user&harr;mint mappings.</p>
-      </div>
-      <div class="feat">
-        <h3>HTLC-Locked Deposits</h3>
-        <p>Buy USDm deposits land in BIP-341 Taproot HTLCs. FROST claims after confirmation; user refunds after timeout.</p>
-      </div>
-      <div class="feat">
-        <h3>LP Offer Mesh <span class="tag">live</span></h3>
-        <p>Signed LP offers published on chain via <code>/v1/atomic-swap/offers</code>. Operator-blind &mdash; no user&harr;LP linkage stored.</p>
-      </div>
-    </div>
-  </section>
+    <h2><span class="num">2</span>Privacy Infrastructure</h2>
+    <ul class="features">
+      <li><b>Light Wallet Server</b>Sub-second cross-device wallet restore via an encrypted scope-tag index. The server stores ciphertext only; the spend key never leaves the wallet.</li>
+      <li><b>PIR-Protected Queries</b>Restore queries are routed through a SimplePIR layer over an FCMP++-anchored side-index. The operator cannot learn which addresses your wallet is reading.</li>
+      <li><b>Bulletproofs++</b>544-byte range proofs for confidential amounts. Every Pedersen-committed value the protocol emits is range-bounded by a real soundness proof.</li>
+      <li><b>Sender-Side Scope Tags</b>Senders embed encrypted hints in the transaction's tx_extra. The daemon indexes deposits at block time; no operator backfill required.</li>
+      <li><b>Stealth Subaddresses</b>Every receive is a one-time address. No address reuse, no on-chain linkability between sends to the same payee.</li>
+      <li><b>All-Asset Restore</b>USDm and every wrapped or custom token visible in a single restore query. No second slow scan for non-USDm balances.</li>
+    </ul>
 
-  <!-- ─── PROGRAMMABLE PRIVACY ─── -->
-  <section class="block">
-    <h2>Programmable Privacy</h2>
-    <div class="grid cols-3">
-      <div class="feat">
-        <h3>Dark Contracts (DSOL) <span class="tag">live</span></h3>
-        <p>Privacy-respecting smart contracts. Per-call step + memory limits. Private state via Pedersen commitments.</p>
-      </div>
-      <div class="feat">
-        <h3>Commit&ndash;Reveal Privacy <span class="tag">live</span></h3>
-        <p>Any <code>@batch</code> entry or private-slot write requires commit + reveal within 16 blocks. No mempool front-running.</p>
-      </div>
-      <div class="feat">
-        <h3>DarkVM Step Limits <span class="tag">live</span></h3>
-        <p>1M instructions, 256 KB memory cap per call. Deterministic execution, no I/O, no <code>Math.random()</code>.</p>
-      </div>
-      <div class="feat">
-        <h3>MoneroUSD IDE <span class="tag">live</span></h3>
-        <p>Browser-based DSOL editor + compile + run + deploy. No private keys in the IDE; provider-driven approval.</p>
-      </div>
-      <div class="feat">
-        <h3>Nullifier Uniqueness <span class="tag">live</span></h3>
-        <p>Every spend produces a unique nullifier. Double-spend physically impossible at the indexer.</p>
-      </div>
-      <div class="feat">
-        <h3>Bytecode Replace (DC_REPLACE) <span class="tag">live</span></h3>
-        <p>Validator-governed in-place upgrade. Contract id stays; bytecode rotates only after consensus vote.</p>
-      </div>
-    </div>
-  </section>
+    <h2><span class="num">3</span>Bridge Custody &amp; Cross-Chain</h2>
+    <ul class="features">
+      <li><b>FROST Threshold Signatures</b>BIP-340 Schnorr signatures aggregated across <code>t-of-n</code> validators. No single host can move reserves; the threshold scales as <code>floor(2n/3) + 1</code> &mdash; pure Byzantine fault tolerance.</li>
+      <li><b>Multi-Host Distribution</b>Reserve keys are split across independent validator hosts and grow toward a community-operated set over time. Adding validators strengthens custody automatically.</li>
+      <li><b>Per-Validator Sign Policy</b>Each validator daemon independently policy-checks every sign request. A compromised coordinator can ask but cannot bypass any validator's local check.</li>
+      <li><b>HTLC-Locked Deposits</b>Buy USDm deposits land in BIP-341 Taproot HTLCs. Protocol claims via the threshold quorum after confirmation; users refund via script-path after timeout.</li>
+      <li><b>Atomic Swap Bridges</b>Peer-to-peer trustless cross-chain swaps using Schnorr adaptor signatures. No central operator records user-to-mint mappings.</li>
+      <li><b>LP Offer Mesh</b>Signed LP offers published on chain. The operator cannot alter offer parameters or learn user-LP linkages beyond what is already public on both chains.</li>
+    </ul>
 
-  <!-- ─── SOVEREIGNTY ─── -->
-  <section class="block">
-    <h2>Sovereignty &amp; Censorship Resistance</h2>
-    <div class="grid cols-3">
-      <div class="feat">
-        <h3>Sovereign Web Hosting <span class="tag">live</span></h3>
-        <p>Every official frontend mirrored on chain via <code>SITE_PUBLISH</code>. Wallet serves byte-identical bundles locally.</p>
-      </div>
-      <div class="feat">
-        <h3>Three-Tier Serving <span class="tag">live</span></h3>
-        <p>Bundled (T1) &rarr; chain-anchored (T2) &rarr; dev (T3). Always-on UI even with DNS dark.</p>
-      </div>
-      <div class="feat">
-        <h3>SW-1..SW-20 Invariants <span class="tag">live</span></h3>
-        <p>Served bytes hash-verified against chain anchor. Loopback-only sovereign server. Provider sandboxed for unverified sites.</p>
-      </div>
-      <div class="feat">
-        <h3>SITE_PUBLISH Fees &rarr; Reserve <span class="tag">live</span></h3>
-        <p>100% of registration + update fees route to the protocol reserve. Every publish strengthens the peg.</p>
-      </div>
-      <div class="feat">
-        <h3>Trusted Node Architecture <span class="tag">live</span></h3>
-        <p>One-click local USDmd daemon. CakeWallet model: local wallet-rpc, optional remote daemon, no relay.</p>
-      </div>
-      <div class="feat">
-        <h3>Sovereign Binary Update</h3>
-        <p>Wallet upgrades served from <code>monerousd-installers</code> sovereign site. SHA256 chain-anchored.</p>
-      </div>
-    </div>
-  </section>
+    <h2><span class="num">4</span>Programmable Privacy</h2>
+    <ul class="features">
+      <li><b>Dark Contracts (DSOL)</b>Smart contracts with private state via Pedersen commitments. Per-call step and memory limits prevent any contract from monopolizing the chain.</li>
+      <li><b>Commit&ndash;Reveal Privacy</b>Any private-slot write or batch entry requires a commit followed by reveal within 16 blocks. Mempool front-running becomes impossible.</li>
+      <li><b>Deterministic DarkVM</b>1M instructions and 256 KB memory per call. No I/O, no random clocks, no <code>Math.random</code>. Every operator computes byte-identical state.</li>
+      <li><b>MoneroUSD IDE</b>Browser-based editor, compiler, local DarkVM preview, and on-chain deploy. No private keys in the IDE &mdash; chain-touching calls flow through the wallet's approval modal.</li>
+      <li><b>Nullifier Uniqueness</b>Every spend produces a unique nullifier. Double-spend becomes physically impossible at the indexer layer.</li>
+      <li><b>Governed Bytecode Upgrade</b>Dark Contract code can be replaced in place &mdash; but only after a validator-quorum vote. The contract id stays stable; only the bytecode rotates.</li>
+    </ul>
 
-  <!-- ─── ECOSYSTEM ─── -->
-  <section class="block">
-    <h2>Self-Upgrading Ecosystem</h2>
-    <div class="grid cols-3">
-      <div class="feat">
-        <h3>On-Chain Constitution <span class="tag">live</span></h3>
-        <p>Frozen-forever slots (founder pay, atomic unit) + amendable-within-bounds parameters. No admin key.</p>
-      </div>
-      <div class="feat">
-        <h3>Bicameral Governance <span class="tag">live</span></h3>
-        <p>Every enactment needs BOTH validator quorum AND miner-hashpower quorum. Per-namespace participation floors.</p>
-      </div>
-      <div class="feat">
-        <h3>Six Proposal Namespaces <span class="tag">live</span></h3>
-        <p>Idea / Mimir / Upgrade / DSOLUpgrade / Rollback / Constitutional / EmergencyCancel. Each with its own quorum + TTL + bond.</p>
-      </div>
-      <div class="feat">
-        <h3>Sybil-Resistant Bonds <span class="tag">live</span></h3>
-        <p>Validator bond scales quadratically with set size. 1000 Sybils cost ~333&times; min bond.</p>
-      </div>
-      <div class="feat">
-        <h3>EmergencyCancel (1-day) <span class="tag">live</span></h3>
-        <p>Community-driven 1-day veto on pending malicious proposals. <code>&lceil;n/2&rceil;</code> quorum, no miner gate.</p>
-      </div>
-      <div class="feat">
-        <h3>DaemonFork (60-day activation)</h3>
-        <p>Consensus binary upgrades need <code>4n/5</code> validator + <code>2n/3</code> miner consent with 60-day activation window.</p>
-      </div>
-    </div>
-  </section>
+    <h2><span class="num">5</span>Sovereignty &amp; Censorship Resistance</h2>
+    <ul class="features">
+      <li><b>Sovereign Web Hosting</b>Every official frontend is mirrored on chain via <code>SITE_PUBLISH</code>. Every installed wallet serves byte-identical bundles locally if DNS is dark.</li>
+      <li><b>Three-Tier Serving Model</b>Bundled in the installer, chain-anchored on the protocol, or developer-mode. The wallet falls through tiers automatically; verified bytes always win.</li>
+      <li><b>Hash-Verified Bundles</b>Served bytes are streamed through SHA-256 verification against the on-chain anchor. Any mismatch returns 503 and falls back to a bundled copy.</li>
+      <li><b>Publish Fees to Reserve</b>100% of sovereign-site registration and update fees route into the protocol reserve. Every developer who publishes strengthens the peg.</li>
+      <li><b>Trusted Node Architecture</b>One-click local USDmd daemon. The wallet operates over a local RPC; remote daemon is optional, not required for anything.</li>
+      <li><b>Sovereign Binary Updates</b>Wallet upgrades are also served from a sovereign site, with SHA-256 chain-anchored manifests. DNS-blocking the update channel cannot ship a forged binary.</li>
+    </ul>
 
-  <!-- ─── DEX + DEFI ─── -->
-  <section class="block">
-    <h2>Ion Swap DEX &amp; DeFi</h2>
-    <div class="grid cols-3">
-      <div class="feat">
-        <h3>Batch AMM <span class="tag">live</span></h3>
-        <p>Commit&ndash;reveal batch settlement. Orders encrypted in-mempool. No MEV, no sandwich attacks.</p>
-      </div>
-      <div class="feat">
-        <h3>Confidential LP <span class="tag">live</span></h3>
-        <p>LP positions stored as Pedersen commitments. Amounts are private; nullifiers prevent double-claim.</p>
-      </div>
-      <div class="feat">
-        <h3>16 Wrapped Assets <span class="tag">live</span></h3>
-        <p>wBTC, wXMR, wETH, wLTC, wDOGE, wBCH, wSOL, wADA, wZEC, wBNB, wUSDT-TRX, wRLUSD &amp; more.</p>
-      </div>
-      <div class="feat">
-        <h3>Dark Pool Orders <span class="tag">live</span></h3>
-        <p>Off-chain encrypted limit-order book. Orders revealed only on fill. Order intent is private.</p>
-      </div>
-      <div class="feat">
-        <h3>Lending Protocol <span class="tag">live</span></h3>
-        <p>Overcollateralized lending against USDm + wrapped assets. Reserve-aware liquidation curves.</p>
-      </div>
-      <div class="feat">
-        <h3>NFT Marketplace <span class="tag">live</span></h3>
-        <p>Private NFT mint + transfer + sale. Royalties enforced at settlement time, not by social convention.</p>
-      </div>
-    </div>
-  </section>
+    <h2><span class="num">6</span>Self-Upgrading Ecosystem</h2>
+    <ul class="features">
+      <li><b>On-Chain Constitution</b>A small set of core invariants are protected by defense in depth across four independent layers. Everything else is governed by on-chain proposals with bonded participation.</li>
+      <li><b>Bicameral Governance</b>Every enacting proposal requires both a validator quorum and a miner-hashpower quorum. Neither branch alone can pass a state mutation.</li>
+      <li><b>Six Proposal Namespaces</b>Idea, Mimir, Upgrade, DSOLUpgrade, Rollback, Constitutional, and EmergencyCancel &mdash; each with its own quorum, time-to-live, and bond appropriate to its risk profile.</li>
+      <li><b>Sybil-Resistant Bonds</b>Validator bond scales quadratically with set size. A thousand fake validators cost roughly 333&times; a single bond &mdash; mass Sybil is economically unviable.</li>
+      <li><b>EmergencyCancel Veto</b>A 1-day, low-quorum cancellation namespace that lets the community kill a pending malicious proposal before it enacts. Status-quo-preserving by design.</li>
+      <li><b>DaemonFork Activation Window</b>Consensus binary upgrades require 4n/5 validator and 2n/3 miner consent, plus a 60-day activation window. Rented-hashpower attacks face sustained 60-day visibility.</li>
+    </ul>
 
-  <footer class="foot">
-    <div>
-      Tags marked <span style="color:var(--orange);font-weight:700">live</span> are shipped + production today.
-      Untagged features are imminent (next-iteration ship).
-    </div>
+    <h2><span class="num">7</span>Ion Swap DEX &amp; DeFi</h2>
+    <ul class="features">
+      <li><b>Commit&ndash;Reveal Batch AMM</b>Orders are encrypted in the mempool and settled in batches. No mempool sniping, no MEV sandwiches, no priority-gas auctions.</li>
+      <li><b>Confidential LP Positions</b>LP shares stored as Pedersen commitments. Amounts are private; nullifiers prevent double-withdraw of the same position.</li>
+      <li><b>Sixteen Wrapped Assets</b>wBTC, wXMR, wETH, wLTC, wDOGE, wBCH, wSOL, wADA, wZEC, wBNB, wUSDT-TRX, wRLUSD, and ETH-network stablecoins. Each chain ships under threshold custody as it matures.</li>
+      <li><b>Dark Pool Orders</b>Off-chain encrypted limit-order book. Orders reveal only on fill; the resting book is invisible to chain analysts.</li>
+      <li><b>Overcollateralized Lending</b>Lending against USDm and wrapped assets. Reserve-aware liquidation curves keep the system solvent under cascading drawdowns.</li>
+      <li><b>Private NFT Marketplace</b>Mint, transfer, and sale with confidential ownership. Royalties are enforced at settlement, not by social convention.</li>
+    </ul>
+
+  </div><!-- /.body -->
+
+  <div class="foot">
+    <div>Free and open. Print this page for a one-sheet reference card.</div>
     <div class="links">
       <a href="/whitepaper.html">Full whitepaper</a>
       <a href="/MoneroUSD_Whitepaper.pdf" download>Download full PDF</a>
       <a href="https://ide.monerousd.org">Build on it &rarr; IDE</a>
       <a href="/">monerousd.org</a>
     </div>
-    <div style="margin-top:10px;color:var(--muted);font-size:0.74rem;">
-      Free + open. Print this page for a 1-page reference card.
-    </div>
-  </footer>
+  </div>
 
-</div>
+</article>
 </body>
 </html>
