@@ -278,6 +278,7 @@
       <li><a href="#lending">Lending Protocol</a></li>
       <li><a href="#staking">Staking &amp; Yield</a></li>
       <li><a href="#wallet">Wallet Architecture</a></li>
+      <li><a href="#node-privacy">Node &amp; Validator Privacy</a></li>
       <li><a href="#comparison">Comparison with Existing Stablecoins</a></li>
       <li><a href="#security">Security Considerations</a></li>
       <li><a href="#dex">Ion Swap — Private DEX</a></li>
@@ -589,7 +590,28 @@
         <a href="https://ion.monerousd.org" target="_blank" rel="noopener noreferrer">Ion Swap</a>
         <a href="/developers.html">Developers</a>
 
-    <h2 id="comparison">13. Comparison with Existing Stablecoins</h2>
+    <h2 id="node-privacy">13. Node &amp; Validator Privacy</h2>
+    <p>Privacy in MoneroUSD does not stop at the user&apos;s transaction layer. The network operators &mdash; the people running daemons and the validators securing bridge custody &mdash; are designed to be <em>pseudonymous + un-correlatable by default</em>. A network whose users are private but whose operators must publish their hosting addresses, IPs, and identities is not actually private; it is just a surveillance graph one degree deeper. MoneroUSD treats infrastructure privacy as a first-class concern.</p>
+
+    <h3>13.1 Onion-routed daemon RPC</h3>
+    <p>USDmd inherits the standard CryptoNote SOCKS-proxy and hidden-service primitives (<code>--tx-proxy</code>, <code>--p2p-bind-port-tor</code>, <code>--anonymous-inbound</code>). Operators can run a daemon as a Tor hidden service; wallets connect to the .onion address through the bundled Tor supervisor without ever revealing their IP to the daemon host. Both the wallet&apos;s "Local Node" toggle and the operator-curated public node list accept .onion endpoints natively. A user who never wants to reveal their IP can run a fully sovereign stack &mdash; local wallet + local Tor + .onion-only remote daemon as fallback &mdash; with one click in Settings.</p>
+
+    <h3>13.2 Loopback-only sensitive surfaces</h3>
+    <p>Every component of the desktop wallet that handles sensitive state binds <code>127.0.0.1</code> only: wallet-RPC on :27750, the dApp-browser authentication proxy on :27751, the sovereign-server on :27752, the bundled Tor SOCKS5 listener on :19150. The bindings are enforced at the OS socket level, not at application-CSP level &mdash; a misconfigured firewall, a NAT misadventure, or a malicious local app cannot accidentally expose any of these to the public internet. The wallet&apos;s attack surface for a remote adversary is exactly the network calls it makes <em>outbound</em>, never an inbound port.</p>
+
+    <h3>13.3 Mining without identity</h3>
+    <p>Mining produces blocks &mdash; the settlement layer for every protocol primitive &mdash; and mining payouts are stealth-addressed by the same FCMP++ machinery that protects ordinary transactions. The pool stratum supports incoming connections via Tor SOCKS5, so a miner&apos;s IP is unlinked from both the pool operator and from the on-chain emission payouts. There is no KYC at any layer; a miner&apos;s only protocol-visible artifact is the payout subaddress they nominate, which carries no link to off-chain identity.</p>
+
+    <h3>13.4 Pseudonymous validators</h3>
+    <p>Becoming a bridge validator requires exactly two things: a USDm bond and a libp2p PeerID. There is no KYC, no jurisdiction binding, no real-name disclosure. The validator&apos;s bond ed25519 pubkey appears on chain (necessary for FROST signature aggregation), but the validator&apos;s IP address, hosting provider, geographic location, and real identity remain entirely off-chain and off-platform. A validator who participates from a censored jurisdiction is operationally indistinguishable from one in a permissive jurisdiction; the protocol simply does not encode where its operators live.</p>
+
+    <h3>13.5 libp2p Noise-encrypted FROST mesh</h3>
+    <p>FROST sign rounds and DKG ceremonies operate over a libp2p peer-to-peer mesh secured with Noise-XX handshakes. Validators identify each other by 32-byte derived peer IDs, not by hostname, registry entry, or contact list. The mesh has no central coordinator with a master list of validator endpoints &mdash; there is no single registry to be compelled, subpoenaed, or correlated. Each validator&apos;s host learns its peers&apos; PeerIDs through gossip, and PeerIDs by themselves cannot be linked to real-world infrastructure unless an operator chooses to publish that linkage.</p>
+
+    <h3>13.6 Transport-agnostic signer daemons</h3>
+    <p>Validator signer daemons inherit libp2p&apos;s transport-agnostic design. A signer can serve over Tor, I2P, plain TCP, or any future libp2p transport with no protocol change. A validator operating from a censored jurisdiction can run an onion-only signer; their participation in FROST sign rounds is cryptographically indistinguishable from a validator on a residential IP. This is the property that lets the validator set grow into <em>any</em> jurisdiction without exposing earlier participants to the new arrival&apos;s threat model.</p>
+
+    <h2 id="comparison">14. Comparison with Existing Stablecoins</h2>
     <p>The following table compares MoneroUSD against major stablecoin designs across dimensions that matter most to users who value privacy and sovereignty.</p>
 
     <table>
@@ -613,7 +635,7 @@
       <strong>No company or foundation mints or redeems USDm.</strong> Mint and redeem are protocol operations executed by consensus rules. No entity can freeze, blacklist, or confiscate USDm. This is fundamentally different from USDT/USDC, where the issuer maintains a centralized blacklist.
     </div>
 
-    <h2 id="security">14. Security Considerations</h2>
+    <h2 id="security">15. Security Considerations</h2>
 
     <h3>Reserve Solvency</h3>
     <p>The three-layer defense system (150% overcollateralization + adaptive fees + emission gating) provides defense-in-depth against reserve depletion. Unlike algorithmic stablecoins that rely on market confidence, MoneroUSD's reserves are real crypto assets held in protocol wallets.</p>
@@ -628,11 +650,11 @@
     <p>FCMP++ provides unconditional privacy — all transactions use full-chain membership proofs regardless of transaction type. There is no "transparent mode" or privacy opt-out. The protocol treats privacy as a fundamental right, not a feature toggle.</p>
 
 
-    <h2 id="dex">15. Ion Swap — Private Decentralized Exchange</h2>
+    <h2 id="dex">16. Ion Swap — Private Decentralized Exchange</h2>
 
     <p>Ion Swap is MoneroUSD's native decentralized exchange (DEX), operating at <a href="https://ion.monerousd.org" target="_blank" rel="noopener noreferrer">ion.monerousd.org</a>. It provides private automated market-making (AMM), dark-pool limit orders, a PoW mining pool, and multi-asset bridging — all inheriting FCMP++ privacy at the consensus layer. Every swap, every liquidity position, and every limit order is private by default. There is no transparent mode.</p>
 
-    <h3>15.1 Private Batch AMM</h3>
+    <h3>16.1 Private Batch AMM</h3>
     <p>Ion Swap uses a sealed-bid batch AMM based on the Uniswap v2 constant-product formula (x &times; y = k). Unlike conventional DEXs where trades execute immediately and are visible in the mempool, every Ion Swap trade goes through a mandatory commit-reveal cycle that makes front-running and MEV extraction cryptographically impossible.</p>
 
     <!-- Commit-Reveal Lifecycle Diagram (SVG) -->
@@ -693,7 +715,7 @@
       <strong>No transparent swap path exists in the codebase.</strong> The only swap ingress is the commit-reveal batch endpoint. During the commit phase, the trader submits a hash commitment that reveals nothing about trade direction or size. All reveals in a block clear at a uniform price computed over net order flow.
     </div>
 
-    <h3>15.2 Dark-Pool Limit Orders</h3>
+    <h3>16.2 Dark-Pool Limit Orders</h3>
     <p>Large trades can be placed as encrypted limit orders on Ion Swap's dark-pool book. Orders are encrypted with the committee's public key. The committee decrypts and matches orders internally, publishing only per-block net flow — individual order details remain hidden from all observers.</p>
 
     <!-- Dark Pool Flow Diagram (SVG) -->
@@ -727,7 +749,7 @@
       <div class="caption">Dark-pool order lifecycle — individual orders never revealed publicly</div>
     </div>
 
-    <h3>15.3 Protocol Fee Split</h3>
+    <h3>16.3 Protocol Fee Split</h3>
     <p>Every fee collected anywhere in Ion Swap routes through a non-configurable split, enforced at the settlement layer. The split is frozen at release time and cannot be adjusted at runtime — it is a protocol constant, not an operator parameter.</p>
 
     <table>
@@ -747,7 +769,7 @@
       </tbody>
     </table>
 
-    <h3>15.4 Reserve Accretion Model</h3>
+    <h3>16.4 Reserve Accretion Model</h3>
     <p>Every feature in Ion Swap is designed to be reserve-accretive or reserve-neutral. No feature can drain MoneroUSD reserves. LP rewards never come from minted USDm — only from accumulated fee revenue, hard-capped by the reserves slice collected each block.</p>
 
     <div class="wp-formula">
@@ -815,7 +837,7 @@
       <div class="caption">Three-lane fee split with POL compound accretion loop — reserves grow every block</div>
     </div>
 
-    <h3>15.5 Dual-Rail Mint/Burn</h3>
+    <h3>16.5 Dual-Rail Mint/Burn</h3>
     <p>USDm issuance operates on two rails, selected automatically based on the source asset's class. Users see a unified interface; the protocol dispatches internally.</p>
 
     <!-- Dual Rail Diagram (SVG) -->
@@ -865,7 +887,7 @@
       <div class="caption">Asset classification is immutable per launch list — no runtime reclassification. User sees a unified interface.</div>
     </div>
 
-    <h3>15.6 Multi-Asset Support &amp; Zero-Deposit Bridging</h3>
+    <h3>16.6 Multi-Asset Support &amp; Zero-Deposit Bridging</h3>
     <p>Ion Swap supports bridging from 12+ home chains. Every bridge operation follows a zero-deposit model — the user's wallet only needs the asset being bridged, never a separate gas token. Bridge relayers pay all source-chain gas via chain-appropriate fee-delegation mechanisms.</p>
 
     <div class="wp-card-grid">
@@ -879,7 +901,7 @@
       <strong>Bridge reserves are strictly segregated from USDm reserves.</strong> Each wrapped asset has its own reserve wallet on its home chain. A 50% BTC crash cannot impair USDm's collateralization ratio. Per-block invariant: home_chain_reserve &ge; circulating_wrapped_supply.
     </div>
 
-    <h3>15.7 Token Addresses (ion1_)</h3>
+    <h3>16.7 Token Addresses (ion1_)</h3>
     <p>Every asset on the MoneroUSD network is identified by a unique <code>ion1_</code> token address &mdash; a 69-character identifier derived from a BLAKE2b-256 cryptographic hash. Token addresses provide a universal, privacy-preserving identification scheme for both protocol-native verified assets and user-created custom tokens.</p>
 
     <div class="wp-formula">
@@ -900,7 +922,7 @@
       <strong>Why BLAKE2b?</strong> BLAKE2b is the hash function used natively throughout CryptoNote and Monero for key derivation, transaction hashing, and PoW. Using it for token addresses maintains cryptographic consistency across the entire protocol stack. The <code>ion1_</code> prefix (version 1) enables future address format upgrades without ambiguity.
     </div>
 
-    <h3>15.8 Privacy Features</h3>
+    <h3>16.8 Privacy Features</h3>
     <p>Ion Swap includes several privacy-first features that are impossible on transparent blockchains. Each generates protocol revenue and strengthens reserves.</p>
 
     <!-- Privacy Features Grid (SVG icons) -->
@@ -937,7 +959,7 @@
       </div>
     </div>
 
-    <h3>15.9 PoW Mining Pool</h3>
+    <h3>16.9 PoW Mining Pool</h3>
     <p>Ion Swap operates a Stratum V2 + RandomX mining pool for USDm hashrate. PPLNS payout with per-miner variable difficulty. Username is a USDm wallet address — no account creation required. A Tor (.onion) stratum endpoint provides IP privacy for miners.</p>
 
     <div class="wp-card-grid">
@@ -946,7 +968,7 @@
       <div class="wp-card"><h4>Difficulty</h4><div class="val">Vardiff</div><p>Per-miner adaptive adjustment</p></div>
     </div>
 
-    <h3>15.10 Circuit Breaker Recovery</h3>
+    <h3>16.10 Circuit Breaker Recovery</h3>
     <p>The protocol includes automated reserve-recovery mechanisms that activate during market stress. Critically, no feature is ever halted or disabled — the Monero ethos requires recovery through increased fees, not restrictions.</p>
 
     <!-- Circuit Breaker Tiers -->
@@ -959,7 +981,7 @@
       <strong>Recovery, never restriction.</strong> Every feature stays fully operational at every tier. The system rebuilds reserves by extracting more revenue from usage during high-volatility periods — when volume is typically highest and reserves need it most. Circuit breaker tiers operate backend-only; no reserve status is exposed to any frontend.
     </div>
 
-    <h3>15.11 Protocol-Owned Settlement</h3>
+    <h3>16.11 Protocol-Owned Settlement</h3>
     <p>Ion Swap is non-custodial. The operator does not hold user funds &mdash; every reserve wallet, pool wallet, and swap-signing key is bound to the protocol itself and governed by the settlement rules encoded on the USDm chain. The backend publishes a Merkle root of all pool state (reserves, positions, balances) to the USDm chain each block. Every swap is signed by the protocol's settlement key under rules the operator cannot modify, pause, or freeze at runtime. A discrepancy between the signed receipt and on-chain settlement constitutes a cryptographic fraud proof.</p>
 
     <!-- Trust Model Diagram (SVG) -->
@@ -988,7 +1010,7 @@
         <text x="350" y="110" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">Non-custodial. Protocol-owned settlement keys. Non-pausable by the operator — every swap is on-chain verifiable.</text>
       </svg>
     </div>
-    <h2 id="dark-contracts">16. Dark Contracts — Programmable Privacy</h2>
+    <h2 id="dark-contracts">17. Dark Contracts — Programmable Privacy</h2>
 
     <p>The MoneroUSD base layer defines a fixed set of protocol operations — token create, LP mint/burn, bridge wrap/unwrap, NFT mint, limit order, DCA, savings — each dispatched through a hardcoded opcode inside the attestation monitor. This scales cleanly through v1, but every new protocol feature requires a coordinated change across the backend monitor, the wallet's approval-modal renderer, and the indexer's state-derivation logic. Past that point, most of the interesting things developers want to build on Monero-style economics do not belong in the core backend — they belong in user-deployed contracts.</p>
 
@@ -1003,12 +1025,12 @@
       <li><strong>No state-inspection attacks</strong> — contract storage is Merkle-committed to the chain for replay determinism, but never publicly readable. View access requires the contract's or caller's viewkey.</li>
     </ul>
 
-    <h3>16.1 The DarkVM</h3>
+    <h3>17.1 The DarkVM</h3>
     <p>The DarkVM is a pure-JavaScript stack machine with approximately 60 opcodes. It uses <code>BigInt</code> throughout — no <code>Number</code>, no <code>Date</code>, no <code>Math.random</code> — so every indexer operator running the same bytecode converges on byte-identical state. The interpreter is auditable end-to-end in roughly a week of review. A WASM backend is planned for Phase 3 performance work; the bytecode semantics do not change.</p>
 
     <p>Resource discipline is intentionally flat, not market-priced. Every call pays a fixed 0.1 USDm fee and is capped at 1,000,000 instructions and 256 KB of combined stack + heap memory. The limits are constants, not parameters, so no two indexers can ever disagree on whether a given call halted successfully or ran out of budget. This trades the flexibility of per-opcode gas for a stronger consensus guarantee — in line with the broader Monero ethos of avoiding fee auctions wherever possible.</p>
 
-    <h3>16.2 DarkSolidity (DSOL)</h3>
+    <h3>17.2 DarkSolidity (DSOL)</h3>
     <p>DSOL is a Solidity-dialect source language. The compiler lowers DSOL source through an abstract syntax tree, a typed intermediate representation, and a code generator that produces the <code>.dc</code> bytecode artifact plus a companion <code>abi.json</code> descriptor. Source is advisory; bytecode is the consensus artifact. The compiler ships inside the desktop wallet so every user can compile and sign a contract deployment locally, without uploading source anywhere.</p>
 
     <p>A production-ready private ERC-20 analogue in DSOL:</p>
@@ -1051,7 +1073,7 @@
 
     <p>Phase 3 of the language adds Solidity-familiar constructs: <code>is</code> inheritance with C3 linearization, <code>modifier</code> declarations inlined per-entrypoint, and <code>EXT_CALL_TAIL</code> — an inter-contract call restricted to tail position. Tail-only calling eliminates reentrancy by construction, because there is no caller frame to return into. Upgrades are expressed through a nullifier-gated proxy pattern rather than mutable bytecode, preserving invariant DC-13.</p>
 
-    <h3>16.3 Life of a call</h3>
+    <h3>17.3 Life of a call</h3>
     <div class="wp-diagram">
       <div class="flow">
         <div class="node">dsolc compile</div>
@@ -1071,7 +1093,7 @@
 
     <p>Scheduled logic is handled through a permissionless keeper model. Contracts expose a public <code>tick()</code> entrypoint that anyone can call for a per-call bounty; there is no per-block "run every contract" loop that would force every indexer to do work the operator may not care about. Contracts the operator is not interested in can be replayed lazily on demand — the <code>/v1/contracts/:id</code> endpoint surfaces a <code>lastComputedBlock</code> so clients can tell whether they are looking at up-to-date state.</p>
 
-    <h3>16.4 Invariants</h3>
+    <h3>17.4 Invariants</h3>
     <p>Dark Contracts layer fifteen invariants on top of the existing base-layer rules. Each one has a single enforcement point so the audit surface stays small.</p>
 
     <table>
@@ -1095,12 +1117,12 @@
       </tbody>
     </table>
 
-    <h3>16.5 Composition with the base layer</h3>
+    <h3>17.5 Composition with the base layer</h3>
     <p>Dark Contracts are strictly additive. The hardcoded fast path for TOKEN_TRANSFER, LP_MINT, BRIDGE_WRAP, and the other v1 opcodes remains unchanged — any asset the base layer already tracks keeps its fast-path guarantees. New DSOL contracts that need those primitives reach them through the syscall interface (<code>syscall(TOKEN_TRANSFER_EMIT, {...})</code>), which forwards into the exact same backend handler that processes the hardcoded path. The on-chain <code>token_transfer</code>, <code>bridge_mint</code>, and <code>bridge_burn</code> events are byte-identical whether a base-layer op or a Dark Contract produced them, so indexers require no special-casing.</p>
 
     <p>Inter-contract calls are restricted to tail position through the <code>EXT_CALL_TAIL</code> opcode. This removes the entire class of reentrancy vulnerabilities that have driven most historical smart-contract exploits on transparent chains — there is no caller frame to return into, so there is no window in which a callee can re-enter a mid-execution caller. Arbitrary call graphs are intentionally deferred; they will return only alongside a formal reentrancy discipline.</p>
 
-    <h3>16.6 Production-readiness security model (v1.2.182)</h3>
+    <h3>17.6 Production-readiness security model (v1.2.182)</h3>
     <p>Two security rules are now binding on every DSOL contract that lands in the wallet bundle:</p>
     <ul class="wp-list">
       <li><strong>Caller-authorization on every state-mutating entrypoint.</strong> Nobody other than the owner, the scoped stealth address, or the explicit <code>operatorStealth</code> set at deploy may call any function that mutates state attributed to a specific actor, acts as a privileged operator, or modifies another actor&apos;s resource. Comments-as-authorization (e.g. <code>// operator-only</code> without the matching <code>require()</code>) are forbidden — that bug class produced two critical findings in the v1.2.182 audit.</li>
@@ -1108,12 +1130,12 @@
     </ul>
     <div class="wp-note"><strong>Layered defense.</strong> For mints, supply changes, and bridge unwraps, the on-chain DSOL <code>require()</code> chain is one layer; the backend canonical-handler check (e.g. <code>tokens/mint.js::mintSupply</code> validating <code>creator_stealth === ctx.callerStealth</code>) is another. Both must hold for the operation to land. A DSOL bug that bypasses one layer is caught by the other.</div>
 
-    <h2 id="bulletproofs-pp">17. Bulletproofs++ — Real Range-Proof Soundness</h2>
+    <h2 id="bulletproofs-pp">18. Bulletproofs++ — Real Range-Proof Soundness</h2>
     <p>Pedersen commitments hide values, but a commitment alone cannot prove the value is in a sensible range. Without a range proof, a malicious party could commit to a negative balance, an absurdly large overdraft, or any other field-element value the verifier cannot directly inspect. <strong>Bulletproofs++</strong> closes that gap: it lets a prover demonstrate that a committed value lies in <code>[0, 2<sup>64</sup>)</code> without revealing the value itself, in <strong>544 bytes</strong> per proof, with no trusted setup.</p>
 
     <p>The MoneroUSD verifier is a clean-room implementation in approximately 2,660 lines of pure-JavaScript <code>BigInt</code> arithmetic — auditable end-to-end, deterministic across every indexer operator, and live across the protocol since v1.2.182. Soundness defenses were validated against the twelve-item attack-surface review in <code>BPP-AUDIT.md</code>, with 250 adversarial tests covering torsion-point rejection, non-canonical scalar refusal, transcript-replay resistance, and prover/verifier fold-round consistency.</p>
 
-    <h3>17.1 Why Bulletproofs++, not Bulletproofs+</h3>
+    <h3>18.1 Why Bulletproofs++, not Bulletproofs+</h3>
     <p>Bulletproofs+ (BP+, single-plus) is the proof system shipping today inside Monero&apos;s base layer. Bulletproofs++ (BP++, double-plus) is the next-generation construction by Eagen, Kanjalkar, Ruffing, and Nick (IACR ePrint 2022/510, EUROCRYPT 2024) that swaps BP+&apos;s inner-product argument for the <strong>weighted norm linear argument (WNLA)</strong> built on top of a <strong>reciprocal set-membership argument</strong>. Practical wins:</p>
 
     <div class="wp-card-grid">
@@ -1123,7 +1145,7 @@
       <div class="wp-card"><h4>Aggregation</h4><div class="val">Native</div><p>WNLA composes for batch range proofs</p></div>
     </div>
 
-    <h3>17.2 Construction in three layers</h3>
+    <h3>18.2 Construction in three layers</h3>
     <p>The Bulletproofs++ verifier is implemented as a stack of four well-defined pieces, each independently testable. The combined module is approximately 2,660 lines of JavaScript, audited end-to-end (see <code>BPP-AUDIT.md</code>) against twelve attack-surface items.</p>
 
     <div class="wp-diagram">
@@ -1146,7 +1168,7 @@
       <li><strong>Fiat-Shamir transcript.</strong> SHA-512 over a domain-prefixed (<code>BPPP-V1-</code>) sequence of length-prefixed appends. Every challenge is non-zero-checked. The same transcript shape is replayed by the verifier — any prover/verifier divergence on a single byte produces a different challenge and the proof is rejected.</li>
     </ul>
 
-    <h3>17.3 Wire format (canonical 64-bit range)</h3>
+    <h3>18.3 Wire format (canonical 64-bit range)</h3>
     <p>The serialized proof is fixed-length for given <code>(N<sub>d</sub>, N<sub>p</sub>) = (16, 16)</code>:</p>
     <div class="wp-formula">
 <span class="label">Wire layout — 544 bytes total</span>offset  size  field
@@ -1161,7 +1183,7 @@
    480    64  WNLA final N vector (2 × 32 B)</div>
     <p>The byte layout has no internal length prefixes — the deserializer parses by offset. Two byte sequences of the SAME length cannot decode to the same proof because every field is bijective at its offset, so malleable-serialization attacks (A4 in the audit) are foreclosed by construction.</p>
 
-    <h3>17.4 The DSOL syscall</h3>
+    <h3>18.4 The DSOL syscall</h3>
     <p>Dark Contracts call the verifier through a single syscall:</p>
     <div class="wp-formula">
 <span class="label">DSOL — verify a range proof</span>// argv: { commitmentHex, proofHex, Nd?, Np? }
@@ -1171,7 +1193,7 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
 
     <p>The syscall charges <strong>100,000 instruction steps</strong> (10% of the per-call 1,000,000 budget) — heavy enough to deter contracts that loop on verification, cheap enough that ~10 verifications per call are economically reasonable. Step-cost is consensus-relevant: every indexer running the same bytecode on the same input consumes the same budget.</p>
 
-    <h3>17.5 Soundness audit</h3>
+    <h3>18.5 Soundness audit</h3>
     <p>Twelve attack-surface items (A1–A12) were enumerated in the original spec and covered by adversarial tests before activation. Highlights:</p>
 
     <table>
@@ -1190,20 +1212,20 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
 
     <p>The complete defense matrix lives in <code>BPP-AUDIT.md</code>. Total tests: 250 (229 in <code>bulletproofs-plus-plus.test.js</code> + 14 in <code>bppp-integration.test.js</code> + 7 in <code>pedersen.test.js</code>).</p>
 
-    <h3>17.6 What contracts get</h3>
+    <h3>18.6 What contracts get</h3>
     <p>Every Dark Contract has direct access to the verifier via <code>syscall(VERIFY_RANGE_PROOF_BPPP_V1, …)</code>, and every Pedersen-committed value the protocol emits — LP positions, custom-token balances, NFT rarity commitments — is range-bounded by a 544-byte BP++ proof. <code>pedersen.js::rangeProof()</code> emits the canonical (commitment, proof) pair as 576 bytes; consumers parse by fixed offsets, and any byte tampering produces an immediate length-mismatch reject before the cryptographic check runs.</p>
 
-    <h2 id="lws-pir">18. Light Wallet Server &amp; PIR Side-Index</h2>
+    <h2 id="lws-pir">19. Light Wallet Server &amp; PIR Side-Index</h2>
     <p>Wallet restore is the single most user-visible slow path in any cryptocurrency. On a wallet with 17,000+ historical transactions, a classical chain scan walks every block looking for outputs the receiver can claim — minutes of wall-clock time, every device, every time. MoneroUSD addresses this with a two-layer architecture: a <strong>Light Wallet Server (LWS)</strong> for cross-device fast restore, and a <strong>PIR layer over an FCMP++-anchored side-index</strong> for queries that don&apos;t leak the receiver&apos;s address.</p>
 
-    <h3>18.1 Option 3 — encrypted scope-tag index</h3>
+    <h3>19.1 Option 3 — encrypted scope-tag index</h3>
     <p>Each wallet derives a <em>scope key pair</em> from its spend key via <code>HKDF-SHA512(spend_priv, "monerousd-lws-scope-v1")</code>. Receivers publish ECIES-encrypted <em>SCOPE_TAG_V1</em> entries keyed by <code>scope_id = SHA-256(scope_pub)[..8]</code>. Senders embed the SCOPE_TAG in the carrier transaction&apos;s <code>tx_extra</code>, so the daemon&apos;s block-time parser indexes every confirmed output as it arrives — no operator needs to backfill historical state.</p>
     <p>The LWS index is operator-run but operator-blind: it stores ECIES ciphertext keyed by 8-byte scope_id. The operator can see <em>that</em> a given scope_id has N entries but cannot learn the receiver&apos;s address, the amount, the sender, or any correlation across different scope_ids. Forging entries is impossible (ECIES AEAD catches that), and the wallet&apos;s <code>spend_priv</code> never leaves its process.</p>
 
-    <h3>18.2 SCOPE_TAG_V1.5 — all assets, not just USDm</h3>
+    <h3>19.2 SCOPE_TAG_V1.5 — all assets, not just USDm</h3>
     <p>The original SCOPE_TAG plaintext encoded only <code>(output_idx, view_tag_hint, amount_hint)</code> — implicitly USDm-only. V1.5 appends a 32-byte <code>token_id</code> slot (all-zero = USDm sentinel; <code>SHA-256("ion1_asset_v1/" + symbol)</code> for wrapped or custom tokens). Receivers detect shape by decoded plaintext length: 13 bytes = v1 (legacy), 45 bytes = v1.5. A single LWS query during welcome-restore now returns USDm + every wrapped/custom token the user has received, all rendered in &lt; 2 seconds.</p>
 
-    <h3>18.3 PIR-protected scope-tag index</h3>
+    <h3>19.3 PIR-protected scope-tag index</h3>
     <p>An encrypted scope-tag index is fast but leaks query patterns: the operator can see which <code>scope_id</code> a wallet reads, even when it cannot decrypt the entries. The PIR layer closes that gap by routing every scope-id query through a <strong>SimplePIR</strong> (Henzinger et al., USENIX Sec 2023) round over the FCMP++-anchored side-index. The operator sees only an opaque LWE-encoded query vector; it cannot determine which <code>scope_id</code> the wallet read, nor whether the entry was found.</p>
     <div class="wp-card-grid">
       <div class="wp-card"><h4>Privacy gain</h4><div class="val">Query-blind</div><p>Operator can&apos;t correlate scope_ids across queries by the same wallet</p></div>
@@ -1212,17 +1234,17 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
       <div class="wp-card"><h4>Soundness</h4><div class="val">2<sup>-128</sup></div><p>SimplePIR over secp256k1-equivalent — DLOG-hard</p></div>
     </div>
 
-    <h3>18.4 The side-index — chain-anchored, LMDB-backed</h3>
+    <h3>19.4 The side-index — chain-anchored, LMDB-backed</h3>
     <p>The USDmd daemon maintains a <code>side_index</code> LMDB table mapping <code>scope_id</code> → ECIES ciphertext entries. Every block&apos;s parser walks new transactions&apos; <code>tx_extra</code> for SCOPE_TAG_V1 tags and appends matching entries; rollbacks atomically undo the same way the main UTXO state does. A Merkle root over the side-index is committed in each block header, so a third-party verifier replaying the chain produces a byte-identical index — operator integrity is enforced at the consensus layer, not by trust.</p>
     <p>Daemon-side EC validation rejects malformed entries at block time (BIP-340-style point-on-curve check via <code>rct::toPointCheckOrder</code>). The PIR retrieval uses a collision-immune row layout with linear probing (<code>MAX_PROBES = 8</code>, fixed regardless of whether the entry exists) so the operator can&apos;t learn found-vs-not by query timing or response shape. A real Rust <code>libfcmp_pir.a</code> handles the LWE math; the wallet&apos;s JS reference impl is byte-for-byte parity-tested against it (250+ assertions across 18 distinct gates, all green).</p>
 
-    <h3>18.5 What this means for users</h3>
+    <h3>19.5 What this means for users</h3>
     <p>First restore on a fresh device: sub-second balance + full asset rendering, no chain scan, no operator visibility into which addresses you&apos;re asking about. Subsequent restores on the same device: the cache survives across launches and never re-queries the LWS. A user who runs their own daemon gets identical results from the side-index they themselves committed to — no operator trust required at any layer.</p>
 
-    <h2 id="frost-custody">19. FROST Bridge Custody</h2>
+    <h2 id="frost-custody">20. FROST Bridge Custody</h2>
     <p>Bridge reserves — the BTC, XMR, ETH, and other crypto that backs every wrapped asset on the MoneroUSD chain — are held under <strong>FROST t-of-n threshold custody</strong>, not single-key operator hot wallets. A single host compromise CANNOT move funds; an attacker needs simultaneous compromise of at least <code>t</code> independent signer hosts.</p>
 
-    <h3>19.1 Threshold scaling — 2/3+ BFT, validator-set growth</h3>
+    <h3>20.1 Threshold scaling — 2/3+ BFT, validator-set growth</h3>
     <p>The threshold scales as <code>t = floor(2n/3) + 1</code> — pure Byzantine fault tolerance. The validator set is designed to grow over time: new validators join via the existing DKG2-add ceremony, and the threshold automatically recomputes to maintain 2/3+ as <code>n</code> grows. The <em>group public key stays the same</em> (so reserve addresses remain stable), but the access policy strengthens with every new member. As the set matures, no minority can move funds and no single host compromise threatens reserves.</p>
     <table>
       <thead><tr><th>n validators</th><th>t threshold</th><th>Attacker needs</th></tr></thead>
@@ -1234,7 +1256,7 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
       </tbody>
     </table>
 
-    <h3>19.2 How everyday automation works</h3>
+    <h3>20.2 How everyday automation works</h3>
     <p>FROST does NOT require manual sign-off per claim. Each validator runs a <em>signer daemon</em> — a long-running process holding that validator&apos;s share, listening on a libp2p mesh for sign-round requests. When the chain monitor sees a confirmed deposit:</p>
     <ol class="wp-list">
       <li>A coordinator (no secret share of its own) broadcasts &quot;sign this claim digest&quot; to the mesh.</li>
@@ -1244,11 +1266,11 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     </ol>
     <p>The whole flow is sub-second wall-clock when validators are healthy. A compromised coordinator can <em>ask</em> for a signature but cannot bypass any validator&apos;s policy. To drain reserves an attacker must compromise <code>t</code> independent hosts, each independently rejecting the malicious request based on its own indexer view.</p>
 
-    <h3>19.3 Cryptographic surface</h3>
+    <h3>20.3 Cryptographic surface</h3>
     <p>The BTC FROST implementation uses <strong>FROST(secp256k1, SHA-256, TR)</strong> — BIP-340 Schnorr signatures over secp256k1, compatible with Taproot key-path spends. The XMR side uses Monero&apos;s native <em>N-of-M wallet-multisig</em> via <code>monerod-wallet-rpc</code>. Each chain&apos;s FROST infrastructure is independently DKG&apos;d (no shared secret material across chains) so a compromise of one chain&apos;s quorum doesn&apos;t cascade.</p>
     <p>For Taproot outputs with script trees (e.g. the user-refundable HTLCs in the Buy USDm flow), the signer applies the BIP-341 tap-tweak to its key share before signing: <code>d' = d + t_tap (mod n)</code> where <code>t_tap = tagged_hash(&quot;TapTweak&quot;, internal_xonly || merkle_root)</code>. The resulting signature verifies against the tweaked output key on chain — no validator ever sees the user&apos;s actual destination, only its tap-leaf hash.</p>
 
-    <h3>19.4 Buy USDm via BTC — script-locked deposit, FROST-quorum claim</h3>
+    <h3>20.4 Buy USDm via BTC — script-locked deposit, FROST-quorum claim</h3>
     <p>The 150% PSM mint flow (deposit BTC, receive USDm) is the central reserve-growing flow. The deposit address is no longer a single-key operator hot wallet — it&apos;s a per-intent BIP-341 Taproot output:</p>
     <ul class="wp-list">
       <li><strong>Internal key</strong> = FROST group x-only pubkey (the same quorum that protects the cold reserve)</li>
@@ -1258,10 +1280,10 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     </ul>
     <p>The same architectural pattern extends to wXMR (Monero atomic-swap with multi-sig) and the wETH/wSOL/wADA/wRLUSD wrappers (each chain&apos;s native multi-sig primitive). The protocol-level intent — &quot;script-lock the deposit window, FROST-quorum the claim&quot; — is identical regardless of the chain.</p>
 
-    <h2 id="atomic-swap-v6">20. Atomic Swap Bridges (zk-v6)</h2>
+    <h2 id="atomic-swap-v6">21. Atomic Swap Bridges (zk-v6)</h2>
     <p>Layered on top of FROST custody is a second, complementary bridge architecture: <strong>peer-to-peer atomic swaps</strong>, where bridging happens directly between a user and a liquidity provider with no central operator in the loop. Subpoena-resistant by construction — there is no protocol operator that can be compelled to reveal user-to-mint mappings, because there is no such mapping recorded anywhere.</p>
 
-    <h3>20.1 The 4-phase protocol</h3>
+    <h3>21.1 The 4-phase protocol</h3>
     <p>A user wanting wBTC (or wanting to redeem wBTC for BTC) finds an LP via the off-chain offer mesh, agrees on a price, and executes a four-phase swap:</p>
     <ol class="wp-list">
       <li><strong>Offer</strong> — LP publishes a signed offer: &quot;I&apos;ll release X wBTC at price P, adaptor point T = t·G.&quot;</li>
@@ -1270,11 +1292,11 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
       <li><strong>Settle</strong> — LP observes <code>t_user</code> in the published USDm sig, uses it to claim the BTC HTLC. Swap complete.</li>
     </ol>
 
-    <h3>20.2 The cryptographic linkage</h3>
+    <h3>21.2 The cryptographic linkage</h3>
     <p>Adaptor signatures (Aumayr-Maffei-Moreno-Sanchez-Riahi, Asiacrypt 2021) make the two-chain settlement <em>atomic</em>: completing one chain&apos;s signature is mathematically equivalent to revealing the secret that completes the other. Neither party can unilaterally claim without releasing the value the counter-party needs.</p>
     <p>From the chain analyst&apos;s perspective: the BTC chain shows &quot;X BTC moved from user-address to LP-address.&quot; The USDm chain shows &quot;X wBTC moved from LP-stealth to user-stealth.&quot; The linkage between the two — the same adaptor secret <code>t</code> on both — exists only in the signature bytes; recovering it requires the discrete log problem.</p>
 
-    <h3>20.3 What MoneroUSD ships for v6</h3>
+    <h3>21.3 What MoneroUSD ships for v6</h3>
     <ul class="wp-list">
       <li><strong>AtomicSwapEscrow.dsol</strong> — the USDm-side escrow contract (deployed; <code>codeHash d1017d4242a3cc8b…</code>). Three entrypoints: <code>lock()</code>, <code>claim()</code>, <code>refund()</code>.</li>
       <li><strong>Schnorr-adaptor primitive</strong> — ed25519 variant (for USDm side) shipped; secp256k1 BIP-340 variant for Taproot HTLCs in progress.</li>
@@ -1285,17 +1307,17 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
 
     <p>v6 atomic swaps and the FROST-quorum PSM mint coexist: PSM mint is the high-throughput, predictable-price path for everyday Buy USDm; atomic swap is the operator-less, peer-to-peer path for users who prefer market-rate value-for-value trades. Same wrappers, same chain, different trust models.</p>
 
-    <h2 id="sovereign-hosting">21. Sovereign Web Hosting</h2>
+    <h2 id="sovereign-hosting">22. Sovereign Web Hosting</h2>
     <p>Every protocol whose UI lives on a single DNS hostname is one registrar takedown, one TLS revocation, one edge outage away from invisibility. MoneroUSD addresses this by mirroring every official front-end — <code>monerousd.org</code>, <code>ionswap.monerousd.org</code>, <code>explorer.monerousd.org</code>, <code>ide.monerousd.org</code>, <code>installers.monerousd.org</code> — <em>on chain</em>, with the desktop wallet serving byte-identical copies from a local HTTP server.</p>
 
-    <h3>21.1 Three-tier serving model</h3>
+    <h3>22.1 Three-tier serving model</h3>
     <div class="wp-card-grid">
       <div class="wp-card"><h4>Tier 1 (T1)</h4><div class="val">Bundled</div><p>Every desktop wallet ships every official site in its installer. Zero network round-trips. SHA-256 verified against the chain anchor before serving.</p></div>
       <div class="wp-card"><h4>Tier 2 (T2)</h4><div class="val">Chain-anchored</div><p>Per-site <code>SITE_PUBLISH</code> attestation records the bundle&apos;s root hash + size + content-type on the USDm chain. <code>site-updater.js</code> background-polls indexer operators for newer versions, verifies hash, atomically swaps.</p></div>
       <div class="wp-card"><h4>Tier 3 (T3)</h4><div class="val">Developer</div><p>Wallet can be pointed at a local dev directory for active site development. Marked &quot;⚠ Dev mode&quot; in the UI; never confused with verified content.</p></div>
     </div>
 
-    <h3>21.2 Twenty invariants (SW-1..SW-20)</h3>
+    <h3>22.2 Twenty invariants (SW-1..SW-20)</h3>
     <p>Sovereign hosting is governed by twenty cryptographic + architectural invariants enforced in code:</p>
     <ul class="wp-list">
       <li><strong>SW-1</strong> — Served bytes match the chain-anchored hash. Every response streams through SHA-256 tee; mismatch ⇒ 503 + log + automatic T1 fallback.</li>
@@ -1307,13 +1329,13 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
       <li><strong>SW-20</strong> — Self-status surfaces query the CANONICAL anchor: a self-hosted fork of the IDE on <code>localhost:8080</code> shows the same on-chain anchor as <code>ide.monerousd.org</code>, because the bytes match by design.</li>
     </ul>
 
-    <h3>21.3 Why this matters</h3>
+    <h3>22.3 Why this matters</h3>
     <p>If <code>monerousd.org</code> goes dark — registrar pressure, TLS revocation, CDN kill — every installed wallet keeps serving the full UI surface locally. New installs can pull the bundle from any indexer operator, BitTorrent fallback, or another user&apos;s wallet over a libp2p mesh. The fees that fund this layer route entirely to the reserve, so the protocol grows stronger as developers publish more dapps.</p>
 
-    <h2 id="ide">22. MoneroUSD IDE</h2>
+    <h2 id="ide">23. MoneroUSD IDE</h2>
     <p>The MoneroUSD IDE (<code>ide.monerousd.org</code>) is a browser-based development environment for the DSOL Dark Contract language: editor, compiler, browser-side DarkVM preview, on-chain <code>DC_DEPLOY</code> + <code>DC_CALL_*</code>, and <code>SITE_PUBLISH</code> for sovereign sites — all without leaving the wallet&apos;s approval flow.</p>
 
-    <h3>22.1 Architecture</h3>
+    <h3>23.1 Architecture</h3>
     <ul class="wp-list">
       <li><strong>Single web bundle</strong> reachable three ways — clearnet (<code>ide.monerousd.org</code>), wallet launchpad <code>&lt;webview&gt;</code>, and sovereign mirror (<code>localhost:27752/ide.monerousd.org/</code>). All three serve byte-identical bytes by design.</li>
       <li><strong>Vendored Monaco editor</strong> with a custom DSOL Monarch tokenizer + hover + completion + diagnostics. No CDN dependencies at runtime; everything ships in the bundle.</li>
@@ -1322,14 +1344,14 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
       <li><strong>Deploy + Call</strong> via <code>window.monerousd.deployContract</code> / <code>window.monerousd.callContract</code>. Every chain-touching action goes through the wallet&apos;s standard approval modal — no new approval surface in the IDE.</li>
     </ul>
 
-    <h3>22.2 What you can build</h3>
+    <h3>23.2 What you can build</h3>
     <p>The IDE ships with six DSOL templates (counter, token-transfer, erc-private, NFT collection, voting, escrow) and four site templates (blank, single-page bio, blog, dApp shell). The full DSOL language reference, the <code>PROTOCOL-DC-V1</code> ABI, and the sovereign-site <code>PROTOCOL-SITES-V1</code> ABI are bundled in the Reference panel for offline access.</p>
     <p>The IDE was itself published to <code>ide.monerousd.org</code> via its own <code>SITE_PUBLISH</code> flow — the recursive bootstrap. The first sovereign site that publishes sovereign sites <em>is</em> a sovereign site.</p>
 
-    <h2 id="governance">23. Self-Upgrading Ecosystem &amp; Bicameral Governance</h2>
+    <h2 id="governance">24. Self-Upgrading Ecosystem &amp; Bicameral Governance</h2>
     <p>The MoneroUSD ecosystem is community-owned. Every parameter that can change without breaking core invariants is governed by on-chain proposals; a small set of core invariants are protected by defense in depth across multiple independent layers. There is no admin key, no founder backdoor, no upgrade authority above the validator quorum.</p>
 
-    <h3>23.1 Six governance namespaces</h3>
+    <h3>24.1 Six governance namespaces</h3>
     <table>
       <thead><tr><th>Namespace</th><th>What it changes</th><th>Validator quorum</th><th>Miner quorum</th><th>TTL</th><th>Bond</th></tr></thead>
       <tbody>
@@ -1343,11 +1365,11 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
       </tbody>
     </table>
 
-    <h3>23.2 Bicameral consensus — validators AND miners</h3>
+    <h3>24.2 Bicameral consensus — validators AND miners</h3>
     <p>Every enacting proposal requires <em>both</em> a validator quorum AND a miner-hashpower quorum, with a per-namespace participation floor (10% of blocks for Mimir, 30% for Upgrade-class, 50% for daemon binary upgrades). This is the structural answer to &quot;huge hashpower vs. many bonded validators — neither should overpower the other.&quot;</p>
     <p>An attacker holding 4/5 of validators but only 1/2 of hashpower cannot pass any state-mutating proposal; an attacker renting 2/3 hashpower but only controlling 1/2 of validators is equally blocked. The combined cost is the <em>product</em> of two independent expensive attacks sustained across the full TTL, with the 1-day <code>EmergencyCancel</code> as a community-driven veto if a manipulation slips past initial review.</p>
 
-    <h3>23.3 The Constitution — defense in depth</h3>
+    <h3>24.3 The Constitution — defense in depth</h3>
     <p>The on-chain Constitution exposes two classes of slot: <em>amendable-within-bounds</em> (rate parameters with min/max guardrails the community can tune) and <em>protected</em> (core invariants the protocol relies on). Protected invariants are enforced at four independent layers:</p>
     <ol class="wp-list">
       <li><strong>Smart contract layer</strong> — <code>Constitution.dsol</code> exposes no setter for protected slots; calls to mutate them fail at the language level.</li>
@@ -1357,7 +1379,7 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     </ol>
     <p>A successful attack would need to compromise all four layers <em>simultaneously</em>. The community always retains Bitcoin-style social hard-fork resistance — refusing to run a daemon binary that breaks the rule.</p>
 
-    <h3>23.4 Sybil-resistant validator entry</h3>
+    <h3>24.4 Sybil-resistant validator entry</h3>
     <p>Validators bond USDm to apply, and the bond scales superlinearly with validator count: <code>bond_N = MIN_BOND × (1 + N²/10000)</code>. Cumulative attacker cost to deploy K Sybil validators:</p>
     <table>
       <thead><tr><th>K Sybils</th><th>Cumulative bond cost (× MIN_BOND)</th></tr></thead>
@@ -1370,10 +1392,10 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
     </table>
     <p>Combined with bicameral consensus, even a successful Sybil on validators cannot pass enacting proposals without ALSO controlling 2/3 of hashpower. The two defenses multiply: the cost to manipulate the protocol is the product of validator-Sybil and hashpower-rental costs, sustained across the full TTL.</p>
 
-    <h3>23.5 What the community can change</h3>
+    <h3>24.5 What the community can change</h3>
     <p>Within Constitution bounds, the community can vote to: adjust fee splits (subject to <code>MIMIR_BOUNDS</code>), upgrade Dark Contracts, change miner-emission curves, add new wrapped assets, rotate the amendment driver&apos;s FROST quorum, transfer sovereign-site domain ownership, and roll back any prior DSOL change. Every enactment is chain-anchored, every proposal is publicly auditable, and every bond contributes to the reserve.</p>
 
-    <h2 id="future">24. Future Work</h2>
+    <h2 id="future">25. Future Work</h2>
     <p>Several areas are under active development or consideration for future protocol upgrades:</p>
     <ul class="wp-list">
       <li><strong>Multi-node infrastructure:</strong> The one-click desktop node and terminal installer now make it easy for anyone to run a node. The next step is deploying geographically distributed seed nodes to eliminate single-VPS dependency, improve sync latency, and strengthen network resilience through community-operated infrastructure.</li>
@@ -1383,7 +1405,7 @@ require(result.valid, "RANGE_PROOF_INVALID");</div>
       <li><strong>Governance exploration:</strong> On-chain governance for protocol parameter updates (fee schedule, collateral ratios) that preserves the deterministic nature of the current design while allowing community input. This is approached cautiously — governance capture is a real risk.</li>
     </ul>
 
-    <h2 id="conclusion">25. Conclusion</h2>
+    <h2 id="conclusion">26. Conclusion</h2>
     <p>MoneroUSD proves privacy and stability are not a tradeoff. Built on Monero&apos;s battle-tested privacy stack and extended with FCMP++, overcollateralized BTC + XMR reserves, adaptive fees, and usage-proportional emission, USDm delivers a digital dollar that respects user sovereignty without compromising on the privacy guarantees Monero users expect.</p>
     <p>Ion Swap, Dark Contracts, and the cross-chain bridge turn that foundation into a complete private DeFi ecosystem — sealed-bid AMM, programmable smart contracts in DarkSolidity, custom <code>ion1_</code> tokens, hidden-ownership NFTs, multi-chain wrapped assets, and CPU-friendly RandomX mining. Every contract inherits privacy by construction: Pedersen commitments backed by Bulletproofs++ range proofs, commit-reveal that defeats front-running, AES-GCM-encrypted events sealed to the caller&apos;s viewkey, and tail-only inter-contract calls that make reentrancy impossible.</p>
     <p>The protocol is non-custodial, deterministic, and open-source from the daemon to the contract layer. Settlement keys are bound to the chain, not to any operator. Fee revenue routes through a frozen three-lane split (reserves, protocol-owned liquidity, bounty) that monotonically strengthens the peg with every trade and every bridge. Tradeoffs are acknowledged honestly: standalone privacy chain (no Ethereum DeFi composition), ~20-second sealed-bid batch latency (MEV is cryptographically impossible), flat per-call resource ceilings (deterministic over auction-priced).</p>
