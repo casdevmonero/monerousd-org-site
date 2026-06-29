@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MoneroUSD Whitepaper — Privacy-Preserving USD Stablecoin Protocol</title>
-  <meta name="description" content="Technical whitepaper for MoneroUSD (USDm): a privacy-preserving, overcollateralized USD stablecoin built on Monero technology with FCMP++ enhanced privacy." />
+  <title>MoneroUSD Whitepaper v3 — Post-Quantum Private Dollar &amp; Ecosystem</title>
+  <meta name="description" content="MoneroUSD (USDm) whitepaper v3: a post-quantum, fully private USD stablecoin and ecosystem — PQ-FCMP++ privacy, zero-knowledge confidential amounts, a block-DAG with constant-size verification, the Ion Swap post-quantum DEX, usernames, and USDm Pay." />
   <style>
     @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
@@ -218,6 +218,10 @@
       a, a:visited { color: #c14400 !important; text-decoration: none !important; }
       a[href^="http"]::after { content: ""; }
     }
+
+    /* v3 SVG diagrams — self-contained dark panels, render on screen and print */
+    .wp-svg { display: block; width: 100%; height: auto; margin: 16px 0 24px; border-radius: 12px; }
+    @media print { .wp-svg { page-break-inside: avoid; break-inside: avoid; max-width: 100%; } }
   </style>
 </head>
 <body>
@@ -250,14 +254,14 @@
   <div class="wp-hero">
     <img src="/logo.svg" alt="MoneroUSD" class="wp-logo" />
     <h1 class="wp-title">Monero<span>USD</span> Protocol</h1>
-    <p class="wp-version">Whitepaper v1.3 — Protocol v1.2.225 · Adds PIR Side-Index, FROST Bridge Custody, Atomic Swaps (zk-v6), Sovereign Web Hosting, IDE &amp; Self-Upgrading Governance</p>
-    <p class="wp-date">May 2026</p>
+    <p class="wp-version">Whitepaper v3 — The Post-Quantum Private Dollar &amp; Ecosystem · Post-Quantum ZK · Block-DAG · Constant-Size Verification · Ion Swap PQ-DEX · Usernames · USDm&nbsp;Pay</p>
+    <p class="wp-date">Launch Edition — 2026</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px">
       <a href="/MoneroUSD_Whitepaper.pdf" download="MoneroUSD_Whitepaper.pdf" class="download-pdf-btn" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:#FF6600;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.95rem;transition:background 0.2s;">
         &#x1f4c4; Download Full PDF
       </a>
-      <a href="/whitepaper-v2.html" class="download-pdf-btn" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:transparent;color:#FF6600;border:1.5px solid #FF6600;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.95rem;transition:all 0.2s;">
-        &#x2696;&#xfe0f; V2 Quick Reference (1 page)
+      <a href="/whitepaper-quickref.html" class="download-pdf-btn" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:transparent;color:#FF6600;border:1.5px solid #FF6600;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.95rem;transition:all 0.2s;">
+        &#x26a1; V3 Quick Reference (1 page)
       </a>
     </div>
   </div>
@@ -267,30 +271,31 @@
     <h2>Contents</h2>
     <ol>
       <li><a href="#abstract">Abstract</a></li>
-      <li><a href="#motivation">Motivation</a></li>
-      <li><a href="#architecture">Protocol Architecture</a></li>
-      <li><a href="#privacy">Privacy Model: FCMP++</a></li>
-      <li><a href="#reserve">Reserve System &amp; Collateralization</a></li>
-      <li><a href="#swaps">Swap Protocol</a></li>
-      <li><a href="#fees">Adaptive Fee System</a></li>
-      <li><a href="#emission">Adaptive Mining Emission</a></li>
-      <li><a href="#oracle">Price Oracle Architecture</a></li>
-      <li><a href="#lending">Lending Protocol</a></li>
-      <li><a href="#staking">Staking &amp; Yield</a></li>
-      <li><a href="#wallet">Wallet Architecture</a></li>
-      <li><a href="#node-privacy">Node &amp; Validator Privacy</a></li>
-      <li><a href="#comparison">Comparison with Existing Stablecoins</a></li>
-      <li><a href="#security">Security Considerations</a></li>
-      <li><a href="#dex">Ion Swap — Private DEX</a></li>
-      <li><a href="#dark-contracts">Dark Contracts — Programmable Privacy</a></li>
-      <li><a href="#bulletproofs-pp">Bulletproofs++ — Real Range-Proof Soundness</a></li>
-      <li><a href="#lws-pir">Light Wallet Server &amp; PIR Side-Index</a></li>
-      <li><a href="#frost-custody">FROST Bridge Custody</a></li>
-      <li><a href="#atomic-swap-v6">Atomic Swap Bridges (zk-v6)</a></li>
-      <li><a href="#sovereign-hosting">Sovereign Web Hosting</a></li>
+      <li><a href="#pillars">Design Principles — The Pillars</a></li>
+      <li><a href="#architecture">Architecture Overview</a></li>
+      <li><a href="#privacy">Privacy: PQ-FCMP++, Stealth &amp; Nullifiers</a></li>
+      <li><a href="#pq">Post-Quantum Cryptography</a></li>
+      <li><a href="#dag">The Block-DAG (GHOSTDAG)</a></li>
+      <li><a href="#verify">Constant-Size Verification &amp; Instant Sync</a></li>
+      <li><a href="#confidential">Confidential Amounts, Fees &amp; Soundness</a></li>
+      <li><a href="#finality">Finality Gadget</a></li>
+      <li><a href="#l2">L2 Settlement</a></li>
+      <li><a href="#transport">Onion-Only Transport</a></li>
+      <li><a href="#nodes">Nodes &amp; Economics</a></li>
+      <li><a href="#issuance">Decentralized Issuance &amp; The Peg</a></li>
+      <li><a href="#wallets">Wallets</a></li>
+      <li><a href="#usernames">Usernames — Human-Readable Addresses</a></li>
+      <li><a href="#pay">USDm Pay</a></li>
+      <li><a href="#ionswap">Ion Swap — Post-Quantum DEX</a></li>
+      <li><a href="#tokens">Custom Tokens &amp; Programmable Privacy</a></li>
+      <li><a href="#bridges">Cross-Chain Bridges</a></li>
+      <li><a href="#explorer">Privacy-Preserving Explorer</a></li>
+      <li><a href="#sovereign">Sovereign Web Hosting</a></li>
       <li><a href="#ide">MoneroUSD IDE</a></li>
-      <li><a href="#governance">Self-Upgrading Ecosystem &amp; Bicameral Governance</a></li>
-      <li><a href="#future">Future Work</a></li>
+      <li><a href="#governance">Bicameral Governance</a></li>
+      <li><a href="#security">Security &amp; Soundness</a></li>
+      <li><a href="#comparison">Comparison</a></li>
+      <li><a href="#launch">Launch Readiness</a></li>
       <li><a href="#conclusion">Conclusion</a></li>
     </ol>
   </div>
@@ -299,1121 +304,324 @@
   <div class="wp-content">
 
     <h2 id="abstract">1. Abstract</h2>
-    <p>MoneroUSD (USDm) is a privacy-preserving, overcollateralized USD stablecoin built on a Monero technology fork. It combines Monero's battle-tested privacy infrastructure with stablecoin mechanics to create a digital dollar that respects user sovereignty. USDm is backed by a basket of BTC and XMR reserves that <em>starts</em> at a 150% collateralization floor and is <em>designed to grow toward 400%+ over time</em> as protocol fees, mint bonds, and sovereign-site publish fees accumulate into the reserve. Adaptive fees and usage-proportional emission protect reserve solvency under all market conditions; the ecosystem's own utility is what compounds the buffer.</p>
-    <p>The protocol employs FCMP++ (Full-Chain Membership Proofs) for transaction privacy, providing an anonymity set equal to the entire UTXO set — a significant improvement over traditional ring signature schemes. All wallet operations are performed locally; private keys never leave the user's machine.</p>
+    <p>MoneroUSD (USDm) is a <strong>post-quantum, fully private digital dollar</strong> and the application ecosystem built around it. It pairs a confidential USD-pegged unit of account with a base layer that is private, post-quantum, sound, and fast <em>by construction</em> — every transaction hides its sender, receiver, and amount; every cryptographic primitive resists quantum adversaries; and every node verifies the entire chain from a single constant-size proof rather than replaying history.</p>
+    <p>Privacy comes from post-quantum Full-Chain Membership Proofs (PQ-FCMP++), stealth addressing, and nullifiers, combined with zero-knowledge confidential amounts — never ring signatures, never a transparent ledger. Scale comes from a block-DAG that produces blocks in parallel and a recursive proof system that compresses the whole chain into a proof small enough to verify on a phone. Around this core sits a complete, post-quantum ecosystem: the <strong>Ion Swap private DEX</strong>, human-readable <strong>usernames</strong>, <strong>USDm Pay</strong> for everyday payments, cross-chain bridges, a desktop and browser wallet, a privacy-preserving explorer, sovereign web hosting, and an on-chain IDE — all governed by a bicameral, threshold-controlled process with no single point of control.</p>
+    <div class="wp-note"><strong>What this document describes.</strong> This is the launch specification: every capability below is part of the MoneroUSD ecosystem at 100% completion. It is the picture of what you can do on day one.</div>
 
-    <h2 id="motivation">2. Motivation</h2>
-    <p>The cryptocurrency ecosystem lacks a stablecoin that genuinely respects user privacy. Existing stablecoins (USDT, USDC, DAI) operate on transparent blockchains where every transaction is publicly traceable. This creates a surveillance infrastructure incompatible with financial privacy.</p>
-    <p>Monero has proven that privacy-preserving cryptocurrency is viable at scale. However, Monero's price volatility limits its utility for everyday transactions, savings, and commerce. A merchant accepting XMR faces exchange rate risk; a user holding XMR for rent money faces the same.</p>
-    <p>MoneroUSD bridges this gap: the stability of a dollar-pegged asset with the privacy guarantees Monero users expect. It is not a replacement for XMR — it is a complement to it. Where XMR serves as private digital cash, USDm serves as a private digital dollar.</p>
-
-    <h3>Design Principles</h3>
-    <ul class="wp-list">
-      <li><strong>Privacy by default</strong> — FCMP++ on all transactions, no opt-in required</li>
-      <li><strong>Overcollateralization</strong> — every USDm backed by more than $1 of real crypto assets</li>
-      <li><strong>Transparency of protocol, not of users</strong> — protocol rules are public and verifiable; user transactions are private</li>
-      <li><strong>Sustainable economics</strong> — no unsustainable yield promises, no inflationary token dumps</li>
-      <li><strong>Local-first</strong> — wallet keys stay on your machine, always</li>
-    </ul>
-
-    <h2 id="architecture">3. Protocol Architecture</h2>
-    <p>MoneroUSD is a standalone blockchain forked from Haven Protocol (itself a Monero fork), extended with FCMP++ privacy proofs and a stablecoin reserve system. It runs its own network, consensus, and mining — separate from Monero mainnet.</p>
-
+    <h2 id="pillars">2. Design Principles — The Pillars</h2>
+    <p>Every layer of MoneroUSD — protocol and apps alike — is held to the same non-negotiable principles. A feature that cannot satisfy all of them is redesigned, never shipped weakened.</p>
     <div class="wp-card-grid">
-      <div class="wp-card"><h4>Consensus</h4><div class="val">RandomX</div><p>CPU-friendly PoW, same as Monero</p></div>
-      <div class="wp-card"><h4>Block Time</h4><div class="val">~120s</div><p>Matching Monero's 2-minute target</p></div>
-      <div class="wp-card"><h4>Address Prefix</h4><div class="val">M</div><p>Mainnet addresses start with M</p></div>
-      <div class="wp-card"><h4>Privacy</h4><div class="val">FCMP++</div><p>Full-chain membership proofs</p></div>
+      <div class="wp-card"><h4>Private</h4><div class="val">By default</div><p>No sender, receiver, amount, or metadata leak at any layer. Witnesses are bound by commitments; proofs run in a hiding (zero-knowledge) configuration.</p></div>
+      <div class="wp-card"><h4>Post-Quantum</h4><div class="val">Base layer</div><p>Membership, stealth, nullifiers, signatures, and recursive verification all use post-quantum primitives. No classical-only crypto in the core.</p></div>
+      <div class="wp-card"><h4>Sound</h4><div class="val">No inflation</div><p>Balance and no-inflation gates are enforced in-circuit. Every mechanism ships with an adversarial test that must reject tampering.</p></div>
+      <div class="wp-card"><h4>Fast &amp; Scalable</h4><div class="val">&le; 1.8 MB</div><p>One constant-size proof verifies the chain. Phone-class memory at any DAG width. Scale by adding nodes, never heavier nodes.</p></div>
     </div>
+    <p>Two further principles are co-equal: <strong>decentralization at every layer</strong> — every authority is permissionless or a t-of-n threshold, never a single operator (not even the founder) — and <strong>liveness by construction</strong> — the chain cannot halt. The block-DAG produces blocks unconditionally; finality is an overlay that can delay confirmation but never stops block flow. Validation gates fail closed on a bad item only, never on the network's progress.</p>
 
-    <h3>System Components</h3>
-    <div class="wp-diagram">
-      <div class="flow">
-        <div class="node">User Wallet</div>
-        <div class="arrow">&#x2192;</div>
-        <div class="node orange">Local wallet-rpc</div>
-        <div class="arrow">&#x2192;</div>
-        <div class="node">USDm Daemon</div>
-        <div class="arrow">&#x2192;</div>
-        <div class="node orange">Blockchain</div>
-      </div>
-      <div class="caption">Desktop wallet architecture — keys never leave the local machine</div>
-    </div>
+    <h2 id="architecture">3. Architecture Overview</h2>
+    <p>MoneroUSD is a stack. The base layer settles confidential value; the proof layer compresses it to a constant size; the app layer turns it into a usable, private financial system.</p>
+    <svg class="wp-svg" viewBox="0 0 820 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MoneroUSD architecture stack">
+      <rect width="820" height="430" rx="14" fill="#141414" stroke="#262626"/>
+      <text x="410" y="34" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">MONEROUSD STACK</text>
+      <!-- App layer -->
+      <rect x="40" y="56" width="740" height="92" rx="10" fill="#1b1b1b" stroke="#333"/>
+      <text x="58" y="80" fill="#FF6600" font-family="Outfit, sans-serif" font-size="14" font-weight="700">APPLICATIONS</text>
+      <g font-family="Outfit, sans-serif" font-size="12.5" fill="#eaeaea">
+        <rect x="58" y="92" width="118" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="117" y="119" text-anchor="middle">Ion Swap DEX</text>
+        <rect x="186" y="92" width="110" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="241" y="119" text-anchor="middle">USDm Pay</text>
+        <rect x="306" y="92" width="110" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="361" y="119" text-anchor="middle">Usernames</text>
+        <rect x="426" y="92" width="110" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="481" y="119" text-anchor="middle">Bridges</text>
+        <rect x="546" y="92" width="100" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="596" y="119" text-anchor="middle">Wallets</text>
+        <rect x="656" y="92" width="106" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="709" y="113" text-anchor="middle">Explorer ·</text><text x="709" y="129" text-anchor="middle">IDE · Hosting</text>
+      </g>
+      <!-- Proof layer -->
+      <rect x="40" y="160" width="740" height="78" rx="10" fill="#1b1b1b" stroke="#333"/>
+      <text x="58" y="184" fill="#FF6600" font-family="Outfit, sans-serif" font-size="14" font-weight="700">PROOF LAYER — verify once, discard</text>
+      <g font-family="Outfit, sans-serif" font-size="12.5" fill="#eaeaea">
+        <rect x="58" y="196" width="220" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="168" y="216" text-anchor="middle">IVC fold (per-block O(1))</text>
+        <rect x="288" y="196" width="240" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="408" y="216" text-anchor="middle">Decider &rarr; &le;1.8 MB proof</text>
+        <rect x="538" y="196" width="224" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="650" y="216" text-anchor="middle">Recursive STARK verify</text>
+      </g>
+      <!-- Consensus layer -->
+      <rect x="40" y="250" width="740" height="78" rx="10" fill="#1b1b1b" stroke="#333"/>
+      <text x="58" y="274" fill="#FF6600" font-family="Outfit, sans-serif" font-size="14" font-weight="700">CONSENSUS — confidential &amp; post-quantum</text>
+      <g font-family="Outfit, sans-serif" font-size="12.5" fill="#eaeaea">
+        <rect x="58" y="286" width="210" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="163" y="306" text-anchor="middle">GHOSTDAG (width 32)</text>
+        <rect x="278" y="286" width="236" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="396" y="306" text-anchor="middle">PQ-FCMP++ / stealth / nullifier</text>
+        <rect x="524" y="286" width="238" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="643" y="306" text-anchor="middle">ZK confidential amounts</text>
+      </g>
+      <!-- Transport layer -->
+      <rect x="40" y="340" width="740" height="66" rx="10" fill="#1b1b1b" stroke="#333"/>
+      <text x="58" y="364" fill="#FF6600" font-family="Outfit, sans-serif" font-size="14" font-weight="700">TRANSPORT</text>
+      <g font-family="Outfit, sans-serif" font-size="12.5" fill="#eaeaea">
+        <rect x="58" y="374" width="704" height="24" rx="8" fill="#0f0f0f" stroke="#444"/><text x="410" y="390" text-anchor="middle">libp2p PQ-gossipsub over Tor v3 onion — onion-only, no clearnet, no raw IP</text>
+      </g>
+    </svg>
 
-    <p>The desktop wallet operates in a CakeWallet-style model: a local wallet-RPC process handles all cryptographic operations on the user's machine, communicating with a remote daemon for blockchain synchronization only. No relay servers, no session tokens, no cookies. The wallet is a direct peer of the network.</p>
+    <h2 id="privacy">4. Privacy: PQ-FCMP++, Stealth &amp; Nullifiers</h2>
+    <p>MoneroUSD does not use a transparent ledger and does not use ring signatures. Privacy is built on <strong>PQ-FCMP++</strong> — a post-quantum evolution of Full-Chain Membership Proofs — together with stealth addressing and nullifiers. Every unit of value lives as a hidden <em>note</em> committed to the chain. To spend a note, the owner proves three things in zero knowledge, without revealing which note they hold:</p>
+    <ul class="wp-list">
+      <li><strong>Membership (PQ-FCMP++)</strong> — the note exists in the global commitment tree, proven by a post-quantum Full-Chain Membership Proof. The anonymity set is <em>every note ever created</em> — the entire chain, not a small ring.</li>
+      <li><strong>Ownership &amp; stealth</strong> — the spender controls the note's one-time stealth key, derived so that no two payments to the same recipient are linkable on-chain.</li>
+      <li><strong>Nullifier</strong> — a unique, unlinkable tag that marks the note spent exactly once, preventing double-spends without revealing the note.</li>
+    </ul>
+    <p>Amounts are hidden as commitments and proven in range, so balances are confidential end-to-end. All of this is bound together by Poseidon digests and proven in a hiding (zero-knowledge) configuration: the witness — your keys, your note, your amount — never appears in the public proof.</p>
+    <svg class="wp-svg" viewBox="0 0 820 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Confidential spend flow">
+      <rect width="820" height="250" rx="14" fill="#141414" stroke="#262626"/>
+      <text x="410" y="32" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">CONFIDENTIAL SPEND</text>
+      <g font-family="Outfit, sans-serif" font-size="12.5">
+        <rect x="40" y="60" width="150" height="120" rx="10" fill="#0f0f0f" stroke="#444"/>
+        <text x="115" y="88" text-anchor="middle" fill="#eaeaea" font-weight="700">Your note</text>
+        <text x="115" y="112" text-anchor="middle" fill="#888" font-size="11">value (hidden)</text>
+        <text x="115" y="130" text-anchor="middle" fill="#888" font-size="11">stealth key</text>
+        <text x="115" y="148" text-anchor="middle" fill="#888" font-size="11">randomness</text>
+        <rect x="250" y="48" width="230" height="144" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
+        <text x="365" y="74" text-anchor="middle" fill="#FF6600" font-weight="700">ZK proof (hiding)</text>
+        <text x="365" y="100" text-anchor="middle" fill="#eaeaea" font-size="11.5">&#10003; membership in tree</text>
+        <text x="365" y="122" text-anchor="middle" fill="#eaeaea" font-size="11.5">&#10003; ownership / stealth</text>
+        <text x="365" y="144" text-anchor="middle" fill="#eaeaea" font-size="11.5">&#10003; nullifier (spent once)</text>
+        <text x="365" y="166" text-anchor="middle" fill="#eaeaea" font-size="11.5">&#10003; amounts in range</text>
+        <rect x="540" y="60" width="240" height="120" rx="10" fill="#0f0f0f" stroke="#444"/>
+        <text x="660" y="88" text-anchor="middle" fill="#eaeaea" font-weight="700">On chain</text>
+        <text x="660" y="112" text-anchor="middle" fill="#888" font-size="11">nullifier published</text>
+        <text x="660" y="130" text-anchor="middle" fill="#888" font-size="11">new note commitment</text>
+        <text x="660" y="148" text-anchor="middle" fill="#888" font-size="11">no value · no identity</text>
+        <text x="215" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
+        <text x="513" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
+      </g>
+      <text x="410" y="226" text-anchor="middle" fill="#888" font-size="11">The witness never leaves your device. The chain sees only commitments and a verified proof.</text>
+    </svg>
 
-    <h2 id="privacy">4. Privacy Model: FCMP++</h2>
-    <p>MoneroUSD implements FCMP++ (Full-Chain Membership Proofs with Forward Secrecy), representing the next generation of Monero privacy research. Unlike ring signatures, which provide a fixed anonymity set of 16 decoys, FCMP++ proves that a spent output belongs to the <em>entire</em> UTXO set without revealing which specific output is being spent.</p>
+    <h2 id="pq">5. Post-Quantum Cryptography</h2>
+    <p>A digital dollar must outlive the arrival of large quantum computers. MoneroUSD therefore uses post-quantum primitives at the base layer — its privacy and authentication do not rest on elliptic-curve assumptions that a quantum adversary could break. Spend authorization, membership, stealth derivation, and nullifiers are all built on hash-based and lattice-grade constructions and proven with STARKs (hash-based, transparent, no trusted setup).</p>
+    <p>Crucially, verification is <strong>recursive</strong>: a STARK can verify another STARK. That property is what lets the entire chain collapse into one small proof (Section 7) while keeping every guarantee post-quantum. Classical signatures appear only at the edges — for example, when bridging to a non-PQ external chain — never in the MoneroUSD core.</p>
 
-    <h3>Ring Signatures vs FCMP++</h3>
-    <table>
-      <thead><tr><th>Property</th><th>Ring Signatures (Monero)</th><th>FCMP++ (MoneroUSD)</th></tr></thead>
-      <tbody>
-        <tr><td>Anonymity set</td><td>16 decoys per ring</td><td>Entire UTXO set</td></tr>
-        <tr><td>Statistical analysis resistance</td><td>Vulnerable to intersection attacks over time</td><td>Every output equally likely</td></tr>
-        <tr><td>ring_size parameter</td><td>16 (configurable)</td><td>1 (FCMP++ replaces rings)</td></tr>
-        <tr><td>Proof system</td><td>CLSAG</td><td>Curve tree membership proofs</td></tr>
-      </tbody>
-    </table>
+    <h2 id="dag">6. The Block-DAG (GHOSTDAG)</h2>
+    <p>MoneroUSD is not a single-file chain. Blocks form a <strong>directed acyclic graph</strong>: many producers can publish at once, each block referencing several parents. A GHOSTDAG ordering (running at width 32, with a one-second target) gives every block a deterministic position in the total order without forcing producers to wait their turn.</p>
+    <p>This is the source of <strong>unconditional liveness</strong>. Because blocks are produced in parallel, no single producer — and no committee — can stall the network. There is no "longest chain" race to wedge; there is a mergeset that always advances. Optional carriers such as finality certificates or settlements are never required for a block to be produced.</p>
+    <svg class="wp-svg" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Block-DAG width greater than one">
+      <rect width="820" height="220" rx="14" fill="#141414" stroke="#262626"/>
+      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">PARALLEL BLOCK PRODUCTION (width &gt; 1)</text>
+      <g stroke="#444" stroke-width="1.5">
+        <line x1="120" y1="110" x2="250" y2="70"/><line x1="120" y1="110" x2="250" y2="150"/>
+        <line x1="250" y1="70" x2="400" y2="70"/><line x1="250" y1="70" x2="400" y2="150"/>
+        <line x1="250" y1="150" x2="400" y2="150"/><line x1="250" y1="150" x2="400" y2="70"/>
+        <line x1="400" y1="70" x2="560" y2="110"/><line x1="400" y1="150" x2="560" y2="110"/>
+        <line x1="560" y1="110" x2="700" y2="110"/>
+      </g>
+      <g font-family="JetBrains Mono, monospace" font-size="12">
+        <circle cx="120" cy="110" r="26" fill="#0f0f0f" stroke="#FF6600"/><text x="120" y="115" text-anchor="middle" fill="#FF6600">G</text>
+        <circle cx="250" cy="70" r="24" fill="#0f0f0f" stroke="#666"/><text x="250" y="75" text-anchor="middle" fill="#eaeaea">A</text>
+        <circle cx="250" cy="150" r="24" fill="#0f0f0f" stroke="#666"/><text x="250" y="155" text-anchor="middle" fill="#eaeaea">B</text>
+        <circle cx="400" cy="70" r="24" fill="#0f0f0f" stroke="#666"/><text x="400" y="75" text-anchor="middle" fill="#eaeaea">C</text>
+        <circle cx="400" cy="150" r="24" fill="#0f0f0f" stroke="#666"/><text x="400" y="155" text-anchor="middle" fill="#eaeaea">D</text>
+        <circle cx="560" cy="110" r="24" fill="#0f0f0f" stroke="#666"/><text x="560" y="115" text-anchor="middle" fill="#eaeaea">E</text>
+        <circle cx="700" cy="110" r="24" fill="#0f0f0f" stroke="#22c55e"/><text x="700" y="115" text-anchor="middle" fill="#22c55e">tip</text>
+      </g>
+      <text x="410" y="205" text-anchor="middle" fill="#888" font-size="11">Concurrent blocks A&hellip;E are merged into one deterministic order — the network never waits, never halts.</text>
+    </svg>
 
-    <div class="wp-note">
-      <strong>Implementation note:</strong> ring_size=1 is enforced unconditionally in the wallet and consensus code. The FCMP++ proof replaces the ring signature entirely — the single "ring member" is the real spend, with the membership proof providing privacy. This is not a weaker setting; it is a fundamentally different (and stronger) privacy model.
-    </div>
+    <h2 id="verify">7. Constant-Size Verification &amp; Instant Sync</h2>
+    <p>Conventional chains force every node to download and replay all history. MoneroUSD does not. Each block's validity is folded into an <strong>incrementally verifiable computation (IVC)</strong>, and a <strong>decider</strong> turns the running fold into a single proof of <strong>constant size (&le; 1.8 MB)</strong> — no matter how long the chain grows, how many notes exist, or how wide the DAG runs.</p>
+    <p>A new participant <strong>verifies that one proof and is synced</strong>. There is no multi-day catch-up; the proof is verify-once-and-discard. Producing the proof stays within phone-class memory, so the cost of participating does not grow with the network. This is what makes "fast, instant sync" a property of the protocol rather than a promise.</p>
+    <svg class="wp-svg" viewBox="0 0 820 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Constant-size verification">
+      <rect width="820" height="200" rx="14" fill="#141414" stroke="#262626"/>
+      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">WHOLE CHAIN &rarr; ONE SMALL PROOF</text>
+      <g font-family="Outfit, sans-serif" font-size="12">
+        <rect x="40" y="64" width="60" height="70" rx="6" fill="#0f0f0f" stroke="#444"/><text x="70" y="104" text-anchor="middle" fill="#888">blk 1</text>
+        <rect x="110" y="64" width="60" height="70" rx="6" fill="#0f0f0f" stroke="#444"/><text x="140" y="104" text-anchor="middle" fill="#888">blk 2</text>
+        <rect x="180" y="64" width="60" height="70" rx="6" fill="#0f0f0f" stroke="#444"/><text x="210" y="104" text-anchor="middle" fill="#888">&hellip;</text>
+        <rect x="250" y="64" width="60" height="70" rx="6" fill="#0f0f0f" stroke="#444"/><text x="280" y="104" text-anchor="middle" fill="#888">blk N</text>
+        <text x="345" y="104" text-anchor="middle" fill="#FF6600" font-size="24">&#8680;</text>
+        <rect x="380" y="58" width="190" height="82" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
+        <text x="475" y="92" text-anchor="middle" fill="#FF6600" font-weight="700">IVC fold + Decider</text>
+        <text x="475" y="114" text-anchor="middle" fill="#888" font-size="11">constant work per block</text>
+        <text x="600" y="104" text-anchor="middle" fill="#FF6600" font-size="24">&#8680;</text>
+        <rect x="630" y="58" width="150" height="82" rx="10" fill="#0f0f0f" stroke="#22c55e"/>
+        <text x="705" y="90" text-anchor="middle" fill="#22c55e" font-weight="700">&le; 1.8 MB</text>
+        <text x="705" y="112" text-anchor="middle" fill="#eaeaea" font-size="11">verify once &rarr; synced</text>
+      </g>
+      <text x="410" y="182" text-anchor="middle" fill="#888" font-size="11">Proof size is constant in chain length, note count, and DAG width.</text>
+    </svg>
 
-    <h2 id="reserve">5. Reserve System &amp; Collateralization</h2>
-    <p>The USDm peg is maintained by a crypto reserve consisting of BTC and XMR, held in protocol-controlled wallets under threshold custody. The reserve system enforces a minimum 150% collateralization floor — for every $1 of USDm in circulation, at least $1.50 of crypto assets back it — and is <strong>designed to grow toward 400%+</strong> over time. Every protocol fee, every mint bond, every sovereign-site publish fee, and every successful Buy USDm flow routes its over-collateral into the reserve. The ratio is a floor that compounds upward as ecosystem activity accrues.</p>
+    <h2 id="confidential">8. Confidential Amounts, Fees &amp; Soundness</h2>
+    <p>Confidentiality is meaningless without soundness: a private chain must still be provably honest. MoneroUSD enforces a <strong>no-inflation invariant in-circuit</strong> — the sum of hidden inputs always equals the sum of hidden outputs plus fees, proven without revealing any of those values. No party, including block producers, can create value out of nothing, and the proof that this holds is part of the same constant-size verification every node already runs.</p>
+    <p>Fees themselves are confidential. Peer-to-peer transfers are effectively free (a tiny dust floor deters spam, backed by a lightweight client-side proof-of-work stamp rather than a fee market), and protocol revenue is redistributed rather than extracted per transaction. Every new mechanism added to the protocol ships with an adversarial test that <em>must</em> reject a tampered input — soundness is verified, not assumed.</p>
 
-    <h3>Reserve Health Tiers</h3>
-    <div class="tier-bar tier-normal">
-      <span class="label">Normal</span>
-      <span class="desc">Reserve ratio &gt; 120% — all operations enabled, base fee 0.5%</span>
-      <span class="rate">&gt;120%</span>
-    </div>
-    <div class="tier-bar tier-warning">
-      <span class="label">Warning</span>
-      <span class="desc">Reserve ratio 100%–120% — elevated fees, reduced mining rewards</span>
-      <span class="rate">100-120%</span>
-    </div>
-    <div class="tier-bar tier-stress">
-      <span class="label">Stress</span>
-      <span class="desc">Reserve ratio 80%–100% — high fees, mining rewards at floor</span>
-      <span class="rate">80-100%</span>
-    </div>
-    <div class="tier-bar tier-emergency">
-      <span class="label">Emergency</span>
-      <span class="desc">Reserve ratio &lt; 80% — maximum fees, mining rewards at minimum floor</span>
-      <span class="rate">&lt;80%</span>
-    </div>
+    <h2 id="finality">9. Finality Gadget</h2>
+    <p>The DAG gives instant, unconditional block flow. A <strong>finality gadget</strong> layers economic finality on top: a threshold of bonded validators co-signs a compact certificate that marks a point in the DAG irreversible. This is strictly an overlay — if validators are offline or slow, blocks keep being produced and confirmed; only the "finalized" marker waits. Finality can delay, but it can never halt. The certificate is itself small and cheap to verify, tracking the tip continuously.</p>
 
-    <p>The reserve health directly controls three protocol parameters: swap fees (Section 7), mining emission (Section 8), and lending capacity. This creates a self-correcting feedback loop — stress conditions increase fee revenue while reducing outflows, naturally restoring reserve health.</p>
+    <h2 id="l2">10. L2 Settlement</h2>
+    <p>For high-volume application flow, MoneroUSD supports a settlement layer that batches activity and commits it back to the base chain as a single confidential, verified state transition. Applications like the DEX settle through this path, inheriting the base layer's privacy and soundness while keeping per-action cost low. Settlement carriers are optional — they never gate ordinary block production.</p>
 
-    <h3>Why 150% as a Floor — and Why It Grows</h3>
-    <p>The 1.5:1 floor provides a substantial buffer against crypto market volatility from day one — even a 33% decline in BTC/XMR prices keeps the reserve at 100% coverage. The combination of overcollateralization + adaptive fees + emission gating creates three independent defense layers. For comparison, MakerDAO requires 150-175% collateralization for DAI — MoneroUSD's floor is within established DeFi norms.</p>
-    <p>The crucial design choice, however, is that <strong>the ratio is not static</strong>. Every fee category in the protocol — swap fees, mint bonds, sovereign-site publish bonds, atomic-swap LP fees, mining fee splits, bridge fees, lending interest splits — routes a share into the reserve. As the ecosystem's utility grows, the reserve grows faster than the float. The system is designed to converge toward <strong>400%+ collateralization</strong> over time, at which point even a catastrophic 75% crypto drawdown leaves USDm fully backed. There is no upper limit; the ratio compounds with use.</p>
+    <h2 id="transport">11. Onion-Only Transport</h2>
+    <p>Network-level privacy is part of the threat model, not an afterthought. MoneroUSD nodes speak <strong>libp2p PQ-gossipsub exclusively over Tor v3 onion services</strong> — there is no clearnet listener, no raw-IP peering, no legacy block-by-block sync. A node is always addressed by its onion identity, so an observer cannot map the network by IP or correlate a transaction to an origin address. Peer admission is Sybil-resistant by design, and the mixnet-style relay path protects metadata even from the peers that carry it.</p>
 
-    <h2 id="swaps">6. Swap Protocol</h2>
-    <p>MoneroUSD supports bidirectional swaps between USDm and two collateral assets: BTC and XMR. The swap protocol uses on-chain verification to ensure atomicity — no trust in third parties required.</p>
+    <h2 id="nodes">12. Nodes &amp; Economics</h2>
+    <p>There are two roles, and both are light. <strong>Nodes</strong> verify the constant-size proof and sample data availability — they do not replay history, so a phone can be a full verifier. <strong>Validators</strong> additionally bond capital to co-sign finality. Security is funded without inflation, through a dual-power model:</p>
+    <svg class="wp-svg" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dual-power security model">
+      <rect width="820" height="220" rx="14" fill="#141414" stroke="#262626"/>
+      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">ZERO-EMISSION DUAL POWER</text>
+      <g font-family="Outfit, sans-serif">
+        <rect x="60" y="56" width="320" height="128" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
+        <text x="220" y="84" text-anchor="middle" fill="#FF6600" font-size="14" font-weight="700">Miners (proof-of-useful-work)</text>
+        <text x="220" y="110" text-anchor="middle" fill="#eaeaea" font-size="12">ASIC-resistant, CPU-class &rarr; decentralized</text>
+        <text x="220" y="132" text-anchor="middle" fill="#eaeaea" font-size="12">paid from protocol fees</text>
+        <text x="220" y="154" text-anchor="middle" fill="#888" font-size="11.5">(settlement &amp; proving) — no monetary emission</text>
+        <rect x="440" y="56" width="320" height="128" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
+        <text x="600" y="84" text-anchor="middle" fill="#FF6600" font-size="14" font-weight="700">Bonded validators</text>
+        <text x="600" y="110" text-anchor="middle" fill="#eaeaea" font-size="12">threshold finality &amp; issuance authority</text>
+        <text x="600" y="132" text-anchor="middle" fill="#eaeaea" font-size="12">paid from reserve yield</text>
+        <text x="600" y="154" text-anchor="middle" fill="#888" font-size="11.5">bond scales with value-at-risk</text>
+        <text x="410" y="128" text-anchor="middle" fill="#888" font-size="20">&#8869;</text>
+      </g>
+      <text x="410" y="206" text-anchor="middle" fill="#888" font-size="11">Two independent powers check each other — no inflation, no single security budget to capture.</text>
+    </svg>
+    <p>Validator bonds are sized to the value the network secures (the cost to corrupt always exceeds the value at risk), and the two powers govern bicamerally (Section 23) so neither can capture the protocol.</p>
 
-    <h3>Mint Direction (Crypto &#x2192; USDm)</h3>
-    <div class="wp-formula">
-      <span class="label">Mint Formula</span>
-      receive_usdm = (deposit_amount &times; price_usd) / COLLATERAL_RATIO - fee
-    </div>
-    <p>The user deposits BTC or XMR to a protocol-controlled address. Once the deposit is confirmed on-chain, the protocol mints USDm. The 1.5x collateral ratio means depositing $150 of BTC yields 100 USDm (minus the fee). The surplus grows the reserve.</p>
+    <h2 id="issuance">13. Decentralized Issuance &amp; The Peg</h2>
+    <p>USDm holds its dollar peg through an <strong>overcollateralized, confidential reserve</strong>. New units are never issued by a single key. Issuance authority is a <strong>post-quantum threshold (FROST-style)</strong> held across independent parties — no operator, and not the founder, can issue unilaterally. Reserve health is maintained adaptively, and reserve yield funds the validator set rather than diluting holders. The result is a digital dollar whose supply is governed by a distributed quorum and whose backing is provable in aggregate while remaining confidential at the level of any individual position.</p>
+    <div class="wp-note"><strong>No inflation, no hidden lever.</strong> There is no monetary emission schedule and no single-party control over supply. Issuance is threshold-authorized and bound by in-circuit soundness gates.</div>
 
-    <h3>Redeem Direction (USDm &#x2192; Crypto)</h3>
-    <div class="wp-formula">
-      <span class="label">Redeem Formula</span>
-      payout_crypto = (burn_amount &times; (1 - adaptive_fee)) / price_usd
-    </div>
-    <p>The user burns USDm on the MoneroUSD blockchain. Once the burn transaction is confirmed, the protocol pays out the equivalent crypto. The collateral ratio does NOT apply to redemptions — only the adaptive fee is deducted. This ensures users can always exit at close to face value.</p>
+    <h2 id="wallets">14. Wallets</h2>
+    <p>The wallet is where the ecosystem becomes usable. Every MoneroUSD wallet is <strong>local-first</strong>: keys are generated and used on your device and never transmitted. The lineup at launch:</p>
+    <ul class="wp-list">
+      <li><strong>Desktop wallet</strong> — full post-quantum send/receive of confidential USDm, a built-in dApp browser, and a local provider that lets web apps request payments and actions without ever exposing your keys.</li>
+      <li><strong>Browser extension &amp; dApp provider</strong> — a companion that injects a <code>window.monerousd</code> provider so any site can connect, request a confidential payment, or resolve a username, with per-origin stealth addresses for unlinkability.</li>
+      <li><strong>Light wallet + private lookup</strong> — a server-assisted mode that lets thin clients find their notes without revealing which notes are theirs, using a private-information-retrieval side index.</li>
+      <li><strong>Mobile</strong> — native apps performing all cryptography on-device, matching the desktop's local-first guarantees.</li>
+    </ul>
 
-    <div class="wp-note">
-      <strong>Critical design choice:</strong> The collateral ratio applies only to minting, never to redemption. This asymmetry is intentional — it means every mint grows the reserve (bullish for the protocol), while every redemption is fair to the user (they get face value minus a small fee). Applying the collateral ratio to both directions would make redemption punitive and destroy user trust.
-    </div>
+    <h2 id="usernames">15. Usernames — Human-Readable Addresses</h2>
+    <p>Post-quantum stealth addresses are long and unfriendly. MoneroUSD ships a native <strong>username system</strong>: claim a human-readable name once, on-chain, and have it resolve to your wallet — so people can pay <em>you</em>, not a wall of characters. Names live in a post-quantum, chain-anchored registry; a claim is a confidential carrier that binds the name to your spend authority, and resolution is verifiable against the same chain everyone else verifies.</p>
+    <ul class="wp-list">
+      <li><strong>Own it cryptographically</strong> — a name maps to a key you control; only the owner can update or transfer it, and ownership is provable, not custodial.</li>
+      <li><strong>Privacy preserved</strong> — resolving a name yields a fresh stealth destination, so repeated payments to the same username remain unlinkable on-chain.</li>
+      <li><strong>Ecosystem-wide</strong> — usernames work everywhere: in USDm Pay, in the wallet's send screen, in the dApp provider, and across Ion Swap.</li>
+    </ul>
+    <svg class="wp-svg" viewBox="0 0 820 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Username resolution">
+      <rect width="820" height="170" rx="14" fill="#141414" stroke="#262626"/>
+      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">PAY A NAME, NOT A STRING</text>
+      <g font-family="Outfit, sans-serif" font-size="13">
+        <rect x="50" y="62" width="170" height="56" rx="10" fill="#0f0f0f" stroke="#FF6600"/><text x="135" y="96" text-anchor="middle" fill="#FF6600" font-weight="700">@alice</text>
+        <text x="255" y="96" text-anchor="middle" fill="#888" font-size="22">&#8594;</text>
+        <rect x="300" y="52" width="240" height="76" rx="10" fill="#0f0f0f" stroke="#444"/>
+        <text x="420" y="80" text-anchor="middle" fill="#eaeaea" font-weight="700">on-chain PQ registry</text>
+        <text x="420" y="104" text-anchor="middle" fill="#888" font-size="11">name &rarr; owner key (verifiable)</text>
+        <text x="575" y="96" text-anchor="middle" fill="#888" font-size="22">&#8594;</text>
+        <rect x="620" y="62" width="150" height="56" rx="10" fill="#0f0f0f" stroke="#22c55e"/><text x="695" y="88" text-anchor="middle" fill="#22c55e" font-weight="700">fresh stealth</text><text x="695" y="106" text-anchor="middle" fill="#888" font-size="11">unlinkable each time</text>
+      </g>
+    </svg>
 
-    <h3>Burn Verification</h3>
-    <p>Burns are verified at the daemon level using on-chain transaction confirmation via the <code>/get_transactions</code> RPC endpoint. This is more reliable than wallet-RPC methods (which require an open wallet) and works regardless of wallet state. The protocol also supports <code>check_tx_key</code> as a supplementary verification when available.</p>
+    <h2 id="pay">16. USDm Pay</h2>
+    <p><strong>USDm Pay</strong> is the everyday payments experience built directly into the desktop wallet, on top of the confidential transfer rail. It turns "send a private dollar" into something as simple as sending a message — and extends to real-world spending through a built-in card — for individuals, online stores, and creators alike.</p>
+    <ul class="wp-list">
+      <li><strong>Built-in payment card</strong> — a card integrated into the desktop wallet for spending USDm, so confidential dollars work at checkout and in everyday purchases without leaving your wallet.</li>
+      <li><strong>Pay by username or address</strong> — send confidential USDm to <code>@name</code> or a stealth address; the recipient, sender, and amount stay private by default.</li>
+      <li><strong>Payment requests &amp; links</strong> — generate a request (amount + memo) as a shareable link or QR code; the payer confirms in their wallet and the transfer settles on the PQ rail.</li>
+      <li><strong>Point-of-sale &amp; checkout</strong> — merchants accept USDm through the dApp provider or a hosted checkout, with each request resolving to a fresh stealth destination so a storefront's takings aren't publicly linkable.</li>
+      <li><strong>Confidential by construction</strong> — every payment is a post-quantum confidential transfer; there is no public amount, no public counterparty, and no per-transaction fee extraction.</li>
+    </ul>
+    <p>Because USDm Pay rides the same rail as the rest of the protocol, a payment is final under the same guarantees, verifiable by the same constant-size proof, and private at the same standard as every other action on the network.</p>
 
-    <h3>Automatic Recovery</h3>
-    <p>If a swap fails due to transient issues (network timeout, service restart, temporary resource unavailability), the protocol automatically detects and recovers the swap on the next service restart. Failed burns are reset to their pre-failure state and retried. Users never lose funds due to transient infrastructure issues.</p>
-
-    <h2 id="fees">7. Adaptive Fee System</h2>
-    <p>Swap fees dynamically adjust based on reserve health. The base fee rate is 0.5%, competitive with major decentralized exchanges. Under reserve stress, fees increase in predefined tiers to create a natural circuit breaker.</p>
-
-    <table>
-      <thead><tr><th>Tier</th><th>Reserve Ratio</th><th>Fee Rate</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr><td>Normal</td><td>&gt; 120%</td><td>0.5%</td><td>Standard operation, competitive rates</td></tr>
-        <tr><td>Warning</td><td>100% – 120%</td><td>1.0%</td><td>Mildly discourages outflows</td></tr>
-        <tr><td>Stress</td><td>80% – 100%</td><td>2.0%</td><td>Strongly discourages outflows, doubles fee revenue</td></tr>
-        <tr><td>Emergency</td><td>&lt; 80%</td><td>3.0%</td><td>Maximum protection, high fee revenue per swap</td></tr>
-      </tbody>
-    </table>
-
-    <h3>Fee Distribution</h3>
+    <h2 id="ionswap">17. Ion Swap — Post-Quantum DEX</h2>
+    <p><strong>Ion Swap is a fully post-quantum decentralized exchange.</strong> It is not a transparent AMM bolted onto a private coin — value moves through the same post-quantum confidential transfer rail as the rest of MoneroUSD, and trades are authorized by the same zero-knowledge machinery. You can provide liquidity, create tokens, and swap, all without exposing your balances, your counterparties, or your strategy.</p>
     <div class="wp-card-grid">
-      <div class="wp-card"><h4>Reserves</h4><div class="val">80%</div><p>Directly strengthens the backing</p></div>
-      <div class="wp-card"><h4>Yield Pool</h4><div class="val">15%</div><p>Funds staking rewards</p></div>
-      <div class="wp-card"><h4>Operations</h4><div class="val">5%</div><p>Infrastructure and development</p></div>
+      <div class="wp-card"><h4>Rail</h4><div class="val">PQ transfers</div><p>Liquidity, swaps, and token actions move via post-quantum confidential carriers — never classical, transparent transfers.</p></div>
+      <div class="wp-card"><h4>Order flow</h4><div class="val">Sealed-bid</div><p>Batched, commit-reveal execution makes front-running and MEV cryptographically impossible.</p></div>
+      <div class="wp-card"><h4>Assets</h4><div class="val">ion1_ tokens</div><p>Permissionless custom tokens and pools, with confidential reserves and balances.</p></div>
+      <div class="wp-card"><h4>Custody</h4><div class="val">Non-custodial</div><p>Keys never leave your wallet; the DEX settles through the chain, not an operator.</p></div>
     </div>
+    <svg class="wp-svg" viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ion Swap post-quantum DEX flow">
+      <rect width="820" height="230" rx="14" fill="#141414" stroke="#262626"/>
+      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">ION SWAP — CONFIDENTIAL, POST-QUANTUM</text>
+      <g font-family="Outfit, sans-serif" font-size="12">
+        <rect x="40" y="66" width="150" height="110" rx="10" fill="#0f0f0f" stroke="#444"/>
+        <text x="115" y="92" text-anchor="middle" fill="#eaeaea" font-weight="700">Wallet</text>
+        <text x="115" y="116" text-anchor="middle" fill="#888" font-size="11">sign + build</text>
+        <text x="115" y="134" text-anchor="middle" fill="#888" font-size="11">PQ carrier</text>
+        <text x="215" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
+        <rect x="245" y="58" width="200" height="126" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
+        <text x="345" y="84" text-anchor="middle" fill="#FF6600" font-weight="700">Sealed-bid batch</text>
+        <text x="345" y="108" text-anchor="middle" fill="#eaeaea" font-size="11">commit &rarr; reveal &rarr; clear</text>
+        <text x="345" y="128" text-anchor="middle" fill="#eaeaea" font-size="11">no front-running / MEV</text>
+        <text x="345" y="150" text-anchor="middle" fill="#888" font-size="11">confidential pools</text>
+        <text x="470" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
+        <rect x="500" y="66" width="135" height="110" rx="10" fill="#0f0f0f" stroke="#444"/>
+        <text x="567" y="92" text-anchor="middle" fill="#eaeaea" font-weight="700">Settle</text>
+        <text x="567" y="116" text-anchor="middle" fill="#888" font-size="11">on-chain,</text>
+        <text x="567" y="134" text-anchor="middle" fill="#888" font-size="11">confidential</text>
+        <text x="655" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
+        <rect x="685" y="66" width="95" height="110" rx="10" fill="#0f0f0f" stroke="#22c55e"/>
+        <text x="732" y="116" text-anchor="middle" fill="#22c55e" font-weight="700">Verified</text>
+        <text x="732" y="134" text-anchor="middle" fill="#888" font-size="10">in the proof</text>
+      </g>
+      <text x="410" y="212" text-anchor="middle" fill="#888" font-size="11">Provide liquidity, create tokens, and swap — balances, counterparties, and order sizes stay private.</text>
+    </svg>
 
-    <p>The adaptive fee system creates a self-correcting feedback loop. During stress, higher fees simultaneously discourage outflows (reducing selling pressure) and generate more revenue per swap (rebuilding reserves faster). This is fundamentally different from algorithmic stablecoins (like UST) that relied on arbitrage incentives that collapsed under stress. MoneroUSD's fees are a transparent, deterministic circuit breaker — users always know the current rate.</p>
+    <h2 id="tokens">18. Custom Tokens &amp; Programmable Privacy</h2>
+    <p>Anyone can create a custom token (<code>ion1_</code>) and liquidity for it, permissionlessly, with confidential supply and balances. Beyond simple tokens, MoneroUSD supports <strong>programmable privacy</strong>: contracts whose state, inputs, and events are hidden by construction. Logic executes deterministically; outputs are committed and proven rather than published; and events are sealed to the recipient's viewing key. Front-running is prevented by commit-reveal, and the execution model is structured so that whole classes of contract exploits are impossible rather than merely discouraged.</p>
 
-    <h2 id="emission">8. Adaptive Mining Emission</h2>
-    <p>MoneroUSD uses a usage-proportional emission model rather than a fixed block reward. Mining rewards scale with network activity, preventing reserve dilution while rewarding miners proportionally to the value they secure.</p>
+    <h2 id="bridges">19. Cross-Chain Bridges</h2>
+    <p>MoneroUSD connects to the outside world without a custodian. Bridging uses a <strong>threshold (FROST-style) custody quorum</strong> — funds on the external side are controlled by a t-of-n signer set, never a single operator — and, where the counterpart chain allows, <strong>atomic swaps</strong> remove custody from the path entirely. Assets bridged in become confidential MoneroUSD-side representations usable across the ecosystem (in Pay, in Ion Swap, in contracts). Classical signatures used to talk to a non-PQ chain are confined to the bridge endpoint; the MoneroUSD side stays post-quantum.</p>
+    <svg class="wp-svg" viewBox="0 0 820 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Threshold bridge custody">
+      <rect width="820" height="180" rx="14" fill="#141414" stroke="#262626"/>
+      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">NO SINGLE CUSTODIAN</text>
+      <g font-family="Outfit, sans-serif" font-size="12">
+        <rect x="50" y="64" width="150" height="64" rx="10" fill="#0f0f0f" stroke="#444"/><text x="125" y="92" text-anchor="middle" fill="#eaeaea" font-weight="700">External chain</text><text x="125" y="112" text-anchor="middle" fill="#888" font-size="11">BTC / XMR / &hellip;</text>
+        <text x="220" y="100" text-anchor="middle" fill="#FF6600" font-size="20">&#8596;</text>
+        <rect x="250" y="52" width="240" height="88" rx="10" fill="#0f0f0f" stroke="#FF6600"/><text x="370" y="80" text-anchor="middle" fill="#FF6600" font-weight="700">t-of-n FROST custody</text><text x="370" y="104" text-anchor="middle" fill="#eaeaea" font-size="11">threshold signers &middot; or atomic swap</text><text x="370" y="124" text-anchor="middle" fill="#888" font-size="11">no operator can move funds alone</text>
+        <text x="510" y="100" text-anchor="middle" fill="#FF6600" font-size="20">&#8596;</text>
+        <rect x="540" y="64" width="230" height="64" rx="10" fill="#0f0f0f" stroke="#22c55e"/><text x="655" y="92" text-anchor="middle" fill="#22c55e" font-weight="700">Confidential USDm-side asset</text><text x="655" y="112" text-anchor="middle" fill="#888" font-size="11">usable in Pay, Ion Swap, contracts</text>
+      </g>
+    </svg>
 
-    <div class="wp-formula">
-      <span class="label">Emission Formula</span>
-      block_reward = max(FLOOR, avg_fee_per_block &times; 0.25)
-      <br />where FLOOR = 0.00001 USDm, CAP = 0.1 USDm
-    </div>
+    <h2 id="explorer">20. Privacy-Preserving Explorer</h2>
+    <p>A public explorer lets anyone confirm the network is healthy — block flow, the DAG tip, finality progress, and the constant-size proof — <strong>without</strong> exposing what conventional explorers leak. Because amounts, senders, and receivers are confidential at the protocol level, there is nothing to surveil: the explorer shows that the chain is sound and live, not who paid whom.</p>
 
-    <h3>Emission Parameters</h3>
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Reward Rate</h4><div class="val">25%</div><p>Of average fee per block</p></div>
-      <div class="wp-card"><h4>Floor</h4><div class="val">0.00001</div><p>Minimum USDm per block</p></div>
-      <div class="wp-card"><h4>Cap</h4><div class="val">0.1</div><p>Maximum USDm per block</p></div>
-      <div class="wp-card"><h4>Gate</h4><div class="val">Reserve</div><p>Rewards drop to floor under reserve stress</p></div>
-    </div>
+    <h2 id="sovereign">21. Sovereign Web Hosting</h2>
+    <p>Censorship resistance is incomplete if the front-end can be taken down. MoneroUSD therefore lets its own sites — the main site, Ion Swap, the explorer, dashboards — be served <strong>peer-to-peer from inside the wallet</strong>, with chain-anchored content addressing. If any domain is removed, every user's wallet keeps serving a byte-identical copy. The interface to the ecosystem is as unstoppable as the ledger underneath it.</p>
 
-    <h3>Why Adaptive Emission?</h3>
-    <p>A fixed emission rate (e.g., 30 USDm/block) creates constant inflation regardless of network usage. In a stablecoin, uncontrolled inflation directly threatens the peg by diluting reserve backing. Adaptive emission solves this: high network activity generates fees, which justify proportionally larger rewards. Low activity means low fees and minimal emission. Under reserve stress, rewards drop to the floor (0.00001 USDm) — mining never stops, because the blockchain's security depends on continuous block production, but emission becomes negligible to protect reserve backing.</p>
+    <h2 id="ide">22. MoneroUSD IDE</h2>
+    <p>To build on confidential infrastructure you need confidential-aware tooling. The MoneroUSD IDE provides an environment to write, test, and deploy programmable-privacy contracts and token logic, with the privacy model and soundness gates built into the developer workflow — so "private by construction" extends from the protocol all the way to the apps people build on it.</p>
 
-    <h3>Transaction-Triggered Mining</h3>
-    <p>Blocks are only mined by the primary node when the mempool contains transactions. A peer node handles keepalive (empty) blocks to maintain chain liveness. This design minimizes unnecessary emission and ensures miner rewards are correlated with actual economic activity on the network.</p>
+    <h2 id="governance">23. Bicameral Governance</h2>
+    <p>Upgrades are decided by <strong>two independent houses</strong> — miners and bonded validators — that must agree, so neither stake nor hashpower alone can capture the protocol. Changes are enacted within constitutional bounds by a threshold amendment process, every proposal is publicly auditable, and every enactment is chain-anchored and reversible by the same process. No single party — including the founder — can unilaterally change the rules, move funds, or halt the network.</p>
 
-    <h2 id="oracle">9. Price Oracle Architecture</h2>
-    <p>Accurate, manipulation-resistant price data is essential for a stablecoin swap protocol. MoneroUSD implements a multi-source median oracle with redundancy, caching, and deduplication designed to serve thousands of concurrent users reliably.</p>
+    <h2 id="security">24. Security &amp; Soundness</h2>
+    <p>MoneroUSD is adversarial by design. Beyond the in-circuit no-inflation and tamper gates, the network assumes a hostile environment at every layer: peer admission resists Sybil attacks; the onion transport resists traffic analysis and flooding; the DAG resists liveness attacks; and bridge custody resists single-signer compromise. Each mechanism carries adversarial tests that must reject the attack, and the trust surface is minimized everywhere — settlement authority is bound to the chain, not to any operator. The guiding standard is simple: ask whether any one party can control, censor, halt, or inflate a layer; if the answer could be yes, it is redesigned until it is no.</p>
 
-    <h3>Oracle Sources</h3>
+    <h2 id="comparison">25. Comparison</h2>
     <table>
-      <thead><tr><th>#</th><th>Source</th><th>Type</th><th>Assets</th></tr></thead>
+      <thead><tr><th>Property</th><th>Transparent stablecoins</th><th>Privacy coins</th><th>MoneroUSD</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>CoinGecko</td><td>Aggregator</td><td>BTC, XMR</td></tr>
-        <tr><td>2</td><td>CryptoCompare</td><td>Aggregator</td><td>BTC, XMR</td></tr>
-        <tr><td>3</td><td>Coinbase</td><td>Exchange</td><td>BTC, XMR</td></tr>
-        <tr><td>4</td><td>Kraken</td><td>Exchange</td><td>BTC, XMR</td></tr>
-        <tr><td>5</td><td>Binance</td><td>Exchange</td><td>BTC, XMR</td></tr>
-        <tr><td>6</td><td>OKX</td><td>Exchange</td><td>BTC, XMR</td></tr>
-        <tr><td>7</td><td>Bitfinex</td><td>Exchange</td><td>BTC, XMR</td></tr>
+        <tr><td>Confidential amounts</td><td>No</td><td>Often</td><td><strong>Yes, by default</strong></td></tr>
+        <tr><td>USD-pegged</td><td>Yes</td><td>No</td><td><strong>Yes</strong></td></tr>
+        <tr><td>Post-quantum</td><td>No</td><td>Rarely</td><td><strong>Yes, base layer</strong></td></tr>
+        <tr><td>Sync cost</td><td>Full history</td><td>Full history</td><td><strong>One &le;1.8 MB proof</strong></td></tr>
+        <tr><td>Parallel blocks</td><td>No</td><td>No</td><td><strong>Yes (DAG)</strong></td></tr>
+        <tr><td>Private DEX &amp; payments</td><td>No</td><td>Limited</td><td><strong>Ion Swap + USDm Pay</strong></td></tr>
+        <tr><td>Single point of control</td><td>Issuer</td><td>Varies</td><td><strong>None (threshold)</strong></td></tr>
       </tbody>
     </table>
 
-    <h3>Median Pricing</h3>
-    <p>All 7 sources are queried in parallel. The median price is used — not the mean. Median pricing is resistant to manipulation: even if 3 out of 7 sources are compromised or return outlier data, the median remains accurate. Any source reporting a price more than 10% off the median is flagged and logged for investigation.</p>
-
-    <h3>Reliability Design</h3>
+    <h2 id="launch">26. Launch Readiness</h2>
+    <p>At 100% completion, MoneroUSD is a complete private financial system, not a single coin:</p>
     <ul class="wp-list">
-      <li><strong>Request deduplication</strong> — Concurrent price requests from thousands of users are coalesced into a single external API call. 10,000 users hitting the price endpoint simultaneously results in 1 external query, not 10,000.</li>
-      <li><strong>Background pre-fetching</strong> — Prices are refreshed every 20 seconds regardless of user activity. The cache is always warm; user requests never trigger cold external API calls.</li>
-      <li><strong>Stale-while-revalidate</strong> — If all 7 sources temporarily fail, the last known good price is served for up to 5 minutes. Users never see "price unavailable" due to transient network issues.</li>
-      <li><strong>Tiered cache TTL</strong> — Fresh cache: 30 seconds. Error retry: 5 seconds. Stale fallback: 5 minutes. This balances accuracy with availability.</li>
-      <li><strong>Per-IP rate limiting</strong> — 60 requests per minute per IP, with proper 429 responses and Retry-After headers.</li>
+      <li><strong>Protocol:</strong> post-quantum confidential transfers, GHOSTDAG block production, constant-size verification with instant sync, finality gadget, L2 settlement, onion-only transport, no-inflation soundness.</li>
+      <li><strong>Money:</strong> USDm confidential dollar, threshold-issued, overcollateralized; zero-emission dual-power security.</li>
+      <li><strong>Apps:</strong> Ion Swap post-quantum DEX, USDm Pay, usernames, custom tokens &amp; programmable privacy, cross-chain bridges, privacy-preserving explorer, sovereign web hosting, and the IDE.</li>
+      <li><strong>Clients:</strong> desktop, browser dApp provider, light wallet, and mobile — all local-first.</li>
+      <li><strong>Governance:</strong> bicameral, threshold-controlled, fully auditable.</li>
     </ul>
 
-    <h2 id="lending">10. Lending Protocol</h2>
-    <p>MoneroUSD supports collateralized lending, allowing users to borrow USDm against their BTC or XMR holdings without selling them. This preserves crypto exposure while providing stablecoin liquidity.</p>
-
-    <table>
-      <thead><tr><th>Parameter</th><th>BTC Collateral</th><th>XMR Collateral</th></tr></thead>
-      <tbody>
-        <tr><td>Max Loan-to-Value</td><td>60%</td><td>55%</td></tr>
-        <tr><td>Liquidation Threshold</td><td>65%</td><td>65%</td></tr>
-        <tr><td>Interest</td><td>Variable, market-driven</td><td>Variable, market-driven</td></tr>
-        <tr><td>Collateral Ratio</td><td>&gt; 150% at all times</td><td>&gt; 150% at all times</td></tr>
-      </tbody>
-    </table>
-
-    <p>The lower LTV for XMR reflects its higher volatility relative to BTC. Liquidation triggers at 65% LTV, giving borrowers a 5-10% buffer to manage their positions. All loan interest flows into the yield pool, which funds staking rewards — creating a closed economic loop where borrower demand generates staker yield.</p>
-
-    <h2 id="staking">11. Staking &amp; Yield</h2>
-    <p>USDm holders can stake their tokens for yield, with higher rates for longer lock periods. Critically, yield is paid exclusively from lending interest — never from reserves or newly minted tokens.</p>
-
-    <table>
-      <thead><tr><th>Lock Period</th><th>APR</th><th>Withdrawal</th></tr></thead>
-      <tbody>
-        <tr><td>Flexible (no lock)</td><td>1.5%</td><td>Anytime</td></tr>
-        <tr><td>30 days</td><td>3.0%</td><td>After lock expires</td></tr>
-        <tr><td>90 days</td><td>4.5%</td><td>After lock expires</td></tr>
-        <tr><td>180 days</td><td>6.0%</td><td>After lock expires</td></tr>
-      </tbody>
-    </table>
-
-    <div class="wp-note">
-      <strong>Sustainable yield guarantee:</strong> Yield is only distributed when the lending interest pool has sufficient balance. If loan demand drops, yield payouts slow rather than drawing from reserves. This prevents the protocol from promising unsustainable returns — a failure mode that has destroyed many DeFi protocols (Anchor/UST, Celsius, etc.).
-    </div>
-
-    <h2 id="wallet">12. Wallet Architecture</h2>
-    <p>The MoneroUSD desktop wallet follows a local-first, CakeWallet-style architecture. Private keys are generated and stored locally on the user's machine. All cryptographic operations (signing, proof generation) happen locally via a bundled wallet-RPC process.</p>
-
-    <div class="wp-diagram">
-      <div class="flow">
-        <div class="node">Electron App</div>
-        <div class="arrow">&#x2192;</div>
-        <div class="node orange">Local wallet-rpc<br /><small style="color:var(--muted)">localhost:27750</small></div>
-        <div class="arrow">&#x2192;</div>
-        <div class="node">Remote Daemon<br /><small style="color:var(--muted)">TCP/17750</small></div>
-        <div class="arrow">&#x2192;</div>
-        <div class="node orange">USDm Blockchain</div>
-      </div>
-      <div class="caption">Desktop wallet: keys stay local, only blockchain sync data crosses the network</div>
-    </div>
-
-    <h3>Key Properties</h3>
-    <ul class="wp-list">
-      <li><strong>No relay, no sessions, no cookies</strong> — the desktop wallet communicates directly with the daemon. No intermediary server sees your transactions.</li>
-      <li><strong>Auto-restart on crash</strong> — if wallet-RPC dies (network error, daemon unreachable), the app automatically restarts it with exponential backoff.</li>
-      <li><strong>OTA updates</strong> — the wallet checks for updates on launch and applies them automatically, ensuring users always run the latest security patches.</li>
-      <li><strong>Cross-platform</strong> — macOS (ARM64 and x64) with Electron. Same codebase serves both desktop and browser wallet paths.</li>
-    </ul>
-
-    <h3>Node Infrastructure</h3>
-    <p>MoneroUSD is designed for easy node deployment. The desktop wallet includes a one-click node manager that downloads the daemon binary, configures the data directory, starts syncing, and automatically connects the wallet to the local node upon successful verification.</p>
-
-    <h4>Tri-Mode Daemon Source</h4>
-    <p>The wallet supports three daemon connection modes, selectable at runtime with no restart required:</p>
-    <ul class="wp-list">
-      <li><strong>Public node (default)</strong> — connects to the MoneroUSD public daemon. Zero setup; ideal for new users. A green status indicator confirms the connection.</li>
-      <li><strong>Local node</strong> — runs a full USDmd daemon on the user&#x2019;s machine. One-click download, sync, and wallet attachment. An orange status indicator distinguishes it from public mode. Mining starts automatically upon connection.</li>
-      <li><strong>Custom VPS node</strong> — connects to a user-operated remote daemon at any address. Available under Advanced Options. Input is validated (regex format check, 253-character limit, port range 1&#x2013;65535) both in the renderer and the main process for defense-in-depth. Before switching, a JSON-RPC <code>get_info</code> probe confirms the remote daemon is reachable and running USDmd. Non-USDm endpoints are naturally rejected by response validation.</li>
-    </ul>
-    <p>Switching between modes uses a fast path (<code>set_daemon</code> RPC) when only the daemon address changes, avoiding a full wallet-RPC restart. The wallet auto-refreshes balances and sync state after every switch.</p>
-
-    <h4>Auto-Mining</h4>
-    <p>When a local node is running, the wallet automatically starts CPU mining on three code paths to ensure blocks are always produced:</p>
-    <ul class="wp-list">
-      <li><strong>Button click</strong> — user manually starts mining via the Local Node panel.</li>
-      <li><strong>App load</strong> — if a local daemon is detected on startup, mining begins without user interaction.</li>
-      <li><strong>Daemon restart</strong> — if the daemon crashes and auto-restarts, mining resumes immediately via the <code>onLocalNodeRestarted</code> event.</li>
-    </ul>
-    <p>Mining uses background mode with configurable thread count (default 2). This ensures the blockchain always advances, even when only a single local node is running.</p>
-
-    <h4>Block Explorer Integration</h4>
-    <p>The block height displayed in the Local Node panel is interactive. Clicking it navigates the in-app dApp browser to the MoneroUSD block explorer at that specific height, providing instant visibility into block contents, transactions, and miner rewards without leaving the wallet.</p>
-
-    <h4>Advanced Node Options</h4>
-    <p>An expandable Advanced Options panel provides power-user controls: daemon address input, VPS connectivity testing, and custom node configuration. The panel is styled for discoverability (visible accent border) but collapsed by default to keep the primary UI clean. All inputs use <code>.textContent</code> assignment (never <code>innerHTML</code>) to prevent XSS, and daemon processes are spawned with array-based arguments to prevent shell injection.</p>
-
-    <h4>Node Setup Methods</h4>
-    <p>For VPS operators and terminal users, a single-command installer handles platform detection, binary download with SHA256 verification, directory setup, and optional systemd service creation. Both desktop and terminal methods use checkpoint-based fast-sync: hardcoded block hashes at known heights allow new nodes to verify chain integrity via hash comparison rather than re-validating every historical transaction. This is cryptographically sound &#x2014; a block hash commits to the entire block content including all transactions, so a matching hash at height N transitively proves all blocks 0..N are correct. Blocks above the checkpoint height receive full validation: adaptive LWMA difficulty, PoW verification, miner transaction validation, FCMP++ proof verification, and double-spend checks.</p>
-
-    <div class=wp-formula>
-      <span class=label>Node Setup Methods</span>
-      Desktop: Local Node tab &#x2192; Create &#x2192; auto-download + sync + wallet connect<br />
-      Terminal: curl -sSL https://monerousd.org/install-node.sh | bash<br />
-      VPS:     bash install-node.sh --prune --public --systemd<br />
-      Custom:  Advanced Options &#x2192; enter daemon address &#x2192; Connect
-    </div>
-
-    <p>Network ports: P2P sync on 17749, daemon RPC on 17750, restricted RPC on 17751 (public nodes), wallet-RPC on 27750. Seed node discovery via <code>seed.monerousd.org</code> with hardcoded IP fallback for DNS failure resilience. For full setup instructions, see <a href=/run-node.html>Run a Node</a>.</p>
-        <a href="https://ion.monerousd.org" target="_blank" rel="noopener noreferrer">Ion Swap</a>
-        <a href="/developers.html">Developers</a>
-
-    <h2 id="node-privacy">13. Node &amp; Validator Privacy</h2>
-    <p>Privacy in MoneroUSD does not stop at the user&apos;s transaction layer. The network operators &mdash; the people running daemons and the validators securing bridge custody &mdash; are designed to be <em>pseudonymous + un-correlatable by default</em>. A network whose users are private but whose operators must publish their hosting addresses, IPs, and identities is not actually private; it is just a surveillance graph one degree deeper. MoneroUSD treats infrastructure privacy as a first-class concern.</p>
-
-    <h3>13.1 Onion-routed daemon RPC</h3>
-    <p>USDmd inherits the standard CryptoNote SOCKS-proxy and hidden-service primitives (<code>--tx-proxy</code>, <code>--p2p-bind-port-tor</code>, <code>--anonymous-inbound</code>). Operators can run a daemon as a Tor hidden service; wallets connect to the .onion address through the bundled Tor supervisor without ever revealing their IP to the daemon host. Both the wallet&apos;s "Local Node" toggle and the operator-curated public node list accept .onion endpoints natively. A user who never wants to reveal their IP can run a fully sovereign stack &mdash; local wallet + local Tor + .onion-only remote daemon as fallback &mdash; with one click in Settings.</p>
-
-    <h3>13.2 Loopback-only sensitive surfaces</h3>
-    <p>Every component of the desktop wallet that handles sensitive state binds <code>127.0.0.1</code> only: wallet-RPC on :27750, the dApp-browser authentication proxy on :27751, the sovereign-server on :27752, the bundled Tor SOCKS5 listener on :19150. The bindings are enforced at the OS socket level, not at application-CSP level &mdash; a misconfigured firewall, a NAT misadventure, or a malicious local app cannot accidentally expose any of these to the public internet. The wallet&apos;s attack surface for a remote adversary is exactly the network calls it makes <em>outbound</em>, never an inbound port.</p>
-
-    <h3>13.3 Mining without identity</h3>
-    <p>Mining produces blocks &mdash; the settlement layer for every protocol primitive &mdash; and mining payouts are stealth-addressed by the same FCMP++ machinery that protects ordinary transactions. The pool stratum supports incoming connections via Tor SOCKS5, so a miner&apos;s IP is unlinked from both the pool operator and from the on-chain emission payouts. There is no KYC at any layer; a miner&apos;s only protocol-visible artifact is the payout subaddress they nominate, which carries no link to off-chain identity.</p>
-
-    <h3>13.4 Pseudonymous validators</h3>
-    <p>Becoming a bridge validator requires exactly two things: a USDm bond and a libp2p PeerID. There is no KYC, no jurisdiction binding, no real-name disclosure. The validator&apos;s bond ed25519 pubkey appears on chain (necessary for FROST signature aggregation), but the validator&apos;s IP address, hosting provider, geographic location, and real identity remain entirely off-chain and off-platform. A validator who participates from a censored jurisdiction is operationally indistinguishable from one in a permissive jurisdiction; the protocol simply does not encode where its operators live.</p>
-
-    <h3>13.5 libp2p Noise-encrypted FROST mesh</h3>
-    <p>FROST sign rounds and DKG ceremonies operate over a libp2p peer-to-peer mesh secured with Noise-XX handshakes. Validators identify each other by 32-byte derived peer IDs, not by hostname, registry entry, or contact list. The mesh has no central coordinator with a master list of validator endpoints &mdash; there is no single registry to be compelled, subpoenaed, or correlated. Each validator&apos;s host learns its peers&apos; PeerIDs through gossip, and PeerIDs by themselves cannot be linked to real-world infrastructure unless an operator chooses to publish that linkage.</p>
-
-    <h3>13.6 Transport-agnostic signer daemons</h3>
-    <p>Validator signer daemons inherit libp2p&apos;s transport-agnostic design. A signer can serve over Tor, I2P, plain TCP, or any future libp2p transport with no protocol change. A validator operating from a censored jurisdiction can run an onion-only signer; their participation in FROST sign rounds is cryptographically indistinguishable from a validator on a residential IP. This is the property that lets the validator set grow into <em>any</em> jurisdiction without exposing earlier participants to the new arrival&apos;s threat model.</p>
-
-    <h2 id="comparison">14. Comparison with Existing Stablecoins</h2>
-    <p>The following table compares MoneroUSD against major stablecoin designs across dimensions that matter most to users who value privacy and sovereignty.</p>
-
-    <table>
-      <thead>
-        <tr><th>Feature</th><th>USDT / USDC</th><th>DAI</th><th>UST (failed)</th><th style="color: var(--orange);">MoneroUSD</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><strong>Privacy</strong></td><td style="color:var(--muted)">None (transparent ledger)</td><td style="color:var(--muted)">None (Ethereum)</td><td style="color:var(--muted)">None (Terra)</td><td style="color:var(--orange)">FCMP++ (full-chain privacy)</td></tr>
-        <tr><td><strong>Backing</strong></td><td>Fiat reserves (trust required)</td><td>Overcollateralized (150%+)</td><td style="color:var(--muted)">Algorithmic (failed)</td><td style="color:var(--orange)">Overcollateralized (150%+ BTC/XMR)</td></tr>
-        <tr><td><strong>Centralization</strong></td><td style="color:var(--muted)">Centralized issuer</td><td>Semi-decentralized (MKR governance)</td><td>Decentralized (failed)</td><td style="color:var(--orange)">Decentralized (protocol-enforced)</td></tr>
-        <tr><td><strong>Censorship Resistance</strong></td><td style="color:var(--muted)">Can freeze addresses</td><td>Moderate</td><td>N/A</td><td style="color:var(--orange)">Full (Monero-level)</td></tr>
-        <tr><td><strong>Mining</strong></td><td style="color:var(--muted)">None</td><td style="color:var(--muted)">None</td><td style="color:var(--muted)">None</td><td style="color:var(--orange)">RandomX CPU mining</td></tr>
-        <tr><td><strong>Auditability</strong></td><td style="color:var(--muted)">Attestations only</td><td>Full (Ethereum)</td><td>N/A</td><td>View key verification</td></tr>
-        <tr><td><strong>Self-Custody</strong></td><td>Optional (exchange-dependent)</td><td>Yes (Ethereum wallet)</td><td>N/A</td><td style="color:var(--orange)">Required (25-word seed)</td></tr>
-      </tbody>
-    </table>
-
-    <p>DAI is the closest comparable system in terms of collateralization. The key differences are privacy (DAI is fully transparent on Ethereum, MoneroUSD uses FCMP++) and governance (DAI relies on MKR holder votes, MoneroUSD uses deterministic protocol rules). The tradeoff is that MoneroUSD does not benefit from Ethereum's DeFi composability, operating instead as an independent chain optimized for private value transfer.</p>
-
-    <div class="wp-note">
-      <strong>No company or foundation mints or redeems USDm.</strong> Mint and redeem are protocol operations executed by consensus rules. No entity can freeze, blacklist, or confiscate USDm. This is fundamentally different from USDT/USDC, where the issuer maintains a centralized blacklist.
-    </div>
-
-    <h2 id="security">15. Security Considerations</h2>
-
-    <h3>Reserve Solvency</h3>
-    <p>The three-layer defense system (150% overcollateralization + adaptive fees + emission gating) provides defense-in-depth against reserve depletion. Unlike algorithmic stablecoins that rely on market confidence, MoneroUSD's reserves are real crypto assets held in protocol wallets.</p>
-
-    <h3>Oracle Manipulation</h3>
-    <p>Median pricing across 7 independent sources makes oracle manipulation economically infeasible — an attacker would need to compromise 4+ sources simultaneously to move the price. Outlier detection provides real-time alerting for attempted manipulation.</p>
-
-    <h3>Service Reliability</h3>
-    <p>All protocol services use systemd process management with automatic restart, port cleanup on startup (preventing stale process conflicts), and rate limiting. Transient failures trigger automatic recovery rather than permanent failure states.</p>
-
-    <h3>Privacy Guarantees</h3>
-    <p>FCMP++ provides unconditional privacy — all transactions use full-chain membership proofs regardless of transaction type. There is no "transparent mode" or privacy opt-out. The protocol treats privacy as a fundamental right, not a feature toggle.</p>
-
-
-    <h2 id="dex">16. Ion Swap — Private Decentralized Exchange</h2>
-
-    <p>Ion Swap is MoneroUSD's native decentralized exchange (DEX), operating at <a href="https://ion.monerousd.org" target="_blank" rel="noopener noreferrer">ion.monerousd.org</a>. It provides private automated market-making (AMM), dark-pool limit orders, a PoW mining pool, and multi-asset bridging — all inheriting FCMP++ privacy at the consensus layer. Every swap, every liquidity position, and every limit order is private by default. There is no transparent mode.</p>
-
-    <h3>16.1 Private Batch AMM</h3>
-    <p>Ion Swap uses a sealed-bid batch AMM based on the Uniswap v2 constant-product formula (x &times; y = k). Unlike conventional DEXs where trades execute immediately and are visible in the mempool, every Ion Swap trade goes through a mandatory commit-reveal cycle that makes front-running and MEV extraction cryptographically impossible.</p>
-
-    <!-- Commit-Reveal Lifecycle Diagram (SVG) -->
-    <div class="wp-diagram">
-      <svg viewBox="0 0 780 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;height:auto;">
-        <!-- Nodes -->
-        <rect x="10" y="50" width="130" height="60" rx="10" fill="rgba(255,102,0,0.08)" stroke="#FF6600" stroke-width="1.5"/>
-        <text x="75" y="75" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="13" font-weight="600">COMMIT</text>
-        <text x="75" y="95" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">Block N</text>
-
-        <rect x="180" y="50" width="130" height="60" rx="10" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="245" y="75" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="13" font-weight="600">HIDDEN</text>
-        <text x="245" y="95" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">Block N+1</text>
-
-        <rect x="350" y="50" width="130" height="60" rx="10" fill="rgba(255,102,0,0.08)" stroke="#FF6600" stroke-width="1.5"/>
-        <text x="415" y="75" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="13" font-weight="600">REVEAL</text>
-        <text x="415" y="95" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">Block N+2</text>
-
-        <rect x="520" y="50" width="130" height="60" rx="10" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="585" y="75" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="13" font-weight="600">BATCH CLEAR</text>
-        <text x="585" y="95" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">Uniform Price</text>
-
-        <rect x="690" y="50" width="80" height="60" rx="10" fill="rgba(34,197,94,0.08)" stroke="#22c55e" stroke-width="1.5"/>
-        <text x="730" y="80" text-anchor="middle" fill="#22c55e" font-family="Outfit,sans-serif" font-size="12" font-weight="600">SETTLED</text>
-
-        <!-- Arrows -->
-        <line x1="140" y1="80" x2="175" y2="80" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <line x1="310" y1="80" x2="345" y2="80" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <line x1="480" y1="80" x2="515" y2="80" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <line x1="650" y1="80" x2="685" y2="80" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-
-        <defs>
-          <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#555"/>
-          </marker>
-        </defs>
-
-        <!-- Hash commitment annotation -->
-        <text x="75" y="140" text-anchor="middle" fill="#888" font-family="JetBrains Mono,monospace" font-size="9">H(pool, side,</text>
-        <text x="75" y="155" text-anchor="middle" fill="#888" font-family="JetBrains Mono,monospace" font-size="9">amount, salt)</text>
-
-        <!-- MEV shield annotation -->
-        <text x="245" y="140" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="10">MEV impossible</text>
-        <text x="245" y="155" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">hash hides intent</text>
-
-        <!-- Reveal annotation -->
-        <text x="415" y="140" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">Params + salt</text>
-        <text x="415" y="155" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">verified on-chain</text>
-
-        <!-- Clear annotation -->
-        <text x="585" y="140" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">All reveals clear</text>
-        <text x="585" y="155" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">at one price</text>
-      </svg>
-      <div class="caption">Three-block commit-reveal lifecycle — every swap, no exceptions. MEV is cryptographically impossible.</div>
-    </div>
-
-    <div class="wp-note">
-      <strong>No transparent swap path exists in the codebase.</strong> The only swap ingress is the commit-reveal batch endpoint. During the commit phase, the trader submits a hash commitment that reveals nothing about trade direction or size. All reveals in a block clear at a uniform price computed over net order flow.
-    </div>
-
-    <h3>16.2 Dark-Pool Limit Orders</h3>
-    <p>Large trades can be placed as encrypted limit orders on Ion Swap's dark-pool book. Orders are encrypted with the committee's public key. The committee decrypts and matches orders internally, publishing only per-block net flow — individual order details remain hidden from all observers.</p>
-
-    <!-- Dark Pool Flow Diagram (SVG) -->
-    <div class="wp-diagram">
-      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;height:auto;">
-        <rect x="10" y="40" width="120" height="55" rx="10" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="70" y="63" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="12" font-weight="600">Encrypt Order</text>
-        <text x="70" y="80" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">committee pubkey</text>
-
-        <rect x="170" y="40" width="130" height="55" rx="10" fill="rgba(255,102,0,0.08)" stroke="#FF6600" stroke-width="1.5"/>
-        <text x="235" y="63" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="12" font-weight="600">Committee</text>
-        <text x="235" y="80" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">decrypt + validate</text>
-
-        <rect x="340" y="40" width="120" height="55" rx="10" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="400" y="63" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="12" font-weight="600">Match Engine</text>
-        <text x="400" y="80" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">price-time priority</text>
-
-        <rect x="500" y="40" width="130" height="55" rx="10" fill="rgba(34,197,94,0.08)" stroke="#22c55e" stroke-width="1.5"/>
-        <text x="565" y="63" text-anchor="middle" fill="#22c55e" font-family="Outfit,sans-serif" font-size="12" font-weight="600">Net Flow Only</text>
-        <text x="565" y="80" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">published per-block</text>
-
-        <line x1="130" y1="67" x2="165" y2="67" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <line x1="300" y1="67" x2="335" y2="67" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <line x1="460" y1="67" x2="495" y2="67" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-
-        <!-- Shield icons -->
-        <text x="70" y="120" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">&#x1F512; Order hidden</text>
-        <text x="400" y="120" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">&#x1F512; Match private</text>
-        <text x="565" y="120" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">Only aggregate visible</text>
-      </svg>
-      <div class="caption">Dark-pool order lifecycle — individual orders never revealed publicly</div>
-    </div>
-
-    <h3>16.3 Protocol Fee Split</h3>
-    <p>Every fee collected anywhere in Ion Swap routes through a non-configurable split, enforced at the settlement layer. The split is frozen at release time and cannot be adjusted at runtime — it is a protocol constant, not an operator parameter.</p>
-
-    <table>
-      <thead>
-        <tr><th>Source</th><th>Rate</th><th>Reserves</th><th>POL</th><th>Bounty</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Standard swap</td><td>30 bps</td><td>60%</td><td>30%</td><td>10%</td></tr>
-        <tr><td>Stable-pair swap</td><td>5 bps</td><td>60%</td><td>30%</td><td>10%</td></tr>
-        <tr><td>Dark-pool match</td><td>20 bps</td><td>60%</td><td>30%</td><td>10%</td></tr>
-        <tr><td>Flash-loan</td><td>9 bps</td><td>70%</td><td>20%</td><td>10%</td></tr>
-        <tr><td>PoW mining pool</td><td>1%</td><td>80%</td><td>&mdash;</td><td>20%</td></tr>
-        <tr><td>Merchant invoicing</td><td>30 bps</td><td>60%</td><td>30%</td><td>10%</td></tr>
-        <tr><td>Bridge wrap/unwrap</td><td>10 bps</td><td>70%</td><td>20%</td><td>10%</td></tr>
-        <tr><td>Token creation bond</td><td>Flat</td><td>60%</td><td>30%</td><td>10%</td></tr>
-        <tr><td>NFT royalty</td><td>200 bps</td><td>50%</td><td>30%</td><td>20%</td></tr>
-      </tbody>
-    </table>
-
-    <h3>16.4 Reserve Accretion Model</h3>
-    <p>Every feature in Ion Swap is designed to be reserve-accretive or reserve-neutral. No feature can drain MoneroUSD reserves. LP rewards never come from minted USDm — only from accumulated fee revenue, hard-capped by the reserves slice collected each block.</p>
-
-    <div class="wp-formula">
-      <span class="label">Daily reserve accretion</span>
-      &Delta;reserves = &Sigma;(fee<sub>i</sub> &times; reserve_split<sub>i</sub>) + &Sigma;(POL_earnings) + &Sigma;(mint_inflows)
-    </div>
-
-    <!-- Reserve Accretion Flow (SVG) -->
-    <div class="wp-diagram">
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;height:auto;">
-        <!-- Fee source -->
-        <rect x="10" y="10" width="140" height="45" rx="8" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="80" y="37" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="12" font-weight="600">Trade Fees</text>
-
-        <!-- Three lanes -->
-        <rect x="220" y="10" width="160" height="45" rx="8" fill="rgba(255,102,0,0.08)" stroke="#FF6600" stroke-width="1.5"/>
-        <text x="300" y="30" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="12" font-weight="700">60% Reserves</text>
-        <text x="300" y="45" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">direct to reserve wallets</text>
-
-        <rect x="220" y="70" width="160" height="45" rx="8" fill="rgba(255,102,0,0.05)" stroke="#FF6600" stroke-width="1" stroke-dasharray="4"/>
-        <text x="300" y="90" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="12" font-weight="600">30% POL</text>
-        <text x="300" y="105" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">LP positions &rarr; reserves own</text>
-
-        <rect x="220" y="130" width="160" height="45" rx="8" fill="rgba(34,197,94,0.06)" stroke="#22c55e" stroke-width="1"/>
-        <text x="300" y="150" text-anchor="middle" fill="#22c55e" font-family="Outfit,sans-serif" font-size="12" font-weight="600">10% Bounty</text>
-        <text x="300" y="165" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">security bug bounties</text>
-
-        <!-- Arrows from trade to 3 lanes -->
-        <line x1="150" y1="32" x2="215" y2="32" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <line x1="150" y1="32" x2="215" y2="92" stroke="#555" stroke-width="1" marker-end="url(#arrowhead)"/>
-        <line x1="150" y1="32" x2="215" y2="152" stroke="#555" stroke-width="1" marker-end="url(#arrowhead)"/>
-
-        <!-- POL compound loop -->
-        <rect x="450" y="70" width="140" height="45" rx="8" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="520" y="90" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="11" font-weight="600">POL Earns Fees</text>
-        <text x="520" y="105" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">as LP in every pool</text>
-
-        <line x1="380" y1="92" x2="445" y2="92" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-
-        <rect x="450" y="130" width="140" height="45" rx="8" fill="rgba(255,102,0,0.08)" stroke="#FF6600" stroke-width="1.5"/>
-        <text x="520" y="150" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="11" font-weight="700">100% &rarr; Reserves</text>
-        <text x="520" y="165" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">compound accretion</text>
-
-        <line x1="520" y1="115" x2="520" y2="125" stroke="#FF6600" stroke-width="1.5" marker-end="url(#arrowhead2)"/>
-
-        <!-- Loop arrow back from POL fees to POL earning -->
-        <path d="M 590 152 Q 640 152 640 92 Q 640 60 590 60" fill="none" stroke="#FF6600" stroke-width="1" stroke-dasharray="4" marker-end="url(#arrowhead2)"/>
-        <text x="660" y="110" fill="#FF6600" font-family="Outfit,sans-serif" font-size="9" font-weight="600">compound</text>
-        <text x="660" y="122" fill="#FF6600" font-family="Outfit,sans-serif" font-size="9" font-weight="600">loop</text>
-
-        <defs>
-          <marker id="arrowhead2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#FF6600"/>
-          </marker>
-        </defs>
-
-        <!-- Reserves total bar at bottom -->
-        <rect x="10" y="210" width="700" height="50" rx="10" fill="rgba(255,102,0,0.06)" stroke="#FF6600" stroke-width="1.5"/>
-        <text x="360" y="233" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="14" font-weight="700">MoneroUSD Reserves — monotonically thickening</text>
-        <text x="360" y="250" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">reserves(t+1) &ge; reserves(t) for every block — hard invariant, settlement-enforced</text>
-
-        <line x1="300" y1="55" x2="300" y2="205" stroke="#FF6600" stroke-width="1" stroke-dasharray="3" opacity="0.3"/>
-        <line x1="520" y1="175" x2="520" y2="205" stroke="#FF6600" stroke-width="1" stroke-dasharray="3" opacity="0.3"/>
-      </svg>
-      <div class="caption">Three-lane fee split with POL compound accretion loop — reserves grow every block</div>
-    </div>
-
-    <h3>16.5 Dual-Rail Mint/Burn</h3>
-    <p>USDm issuance operates on two rails, selected automatically based on the source asset's class. Users see a unified interface; the protocol dispatches internally.</p>
-
-    <!-- Dual Rail Diagram (SVG) -->
-    <div class="wp-diagram">
-      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;height:auto;">
-        <!-- Source asset -->
-        <rect x="10" y="80" width="120" height="50" rx="10" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="70" y="100" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="12" font-weight="600">Source Asset</text>
-        <text x="70" y="118" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">any supported coin</text>
-
-        <!-- Classifier -->
-        <rect x="180" y="80" width="120" height="50" rx="10" fill="rgba(255,102,0,0.08)" stroke="#FF6600" stroke-width="1.5"/>
-        <text x="240" y="100" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="12" font-weight="700">classify()</text>
-        <text x="240" y="118" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">frozen, immutable</text>
-
-        <line x1="130" y1="105" x2="175" y2="105" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-
-        <!-- Volatile rail -->
-        <rect x="370" y="20" width="180" height="70" rx="10" fill="rgba(234,179,8,0.08)" stroke="#eab308" stroke-width="1.5"/>
-        <text x="460" y="42" text-anchor="middle" fill="#eab308" font-family="Outfit,sans-serif" font-size="12" font-weight="700">Volatile Rail (150%)</text>
-        <text x="460" y="58" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">BTC, XMR, ETH, LTC,</text>
-        <text x="460" y="72" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">DOGE, SOL, ADA, BCH</text>
-
-        <!-- Stable rail -->
-        <rect x="370" y="120" width="180" height="70" rx="10" fill="rgba(34,197,94,0.08)" stroke="#22c55e" stroke-width="1.5"/>
-        <text x="460" y="142" text-anchor="middle" fill="#22c55e" font-family="Outfit,sans-serif" font-size="12" font-weight="700">Stable PSM (1:1)</text>
-        <text x="460" y="158" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">USDC, RLUSD, USDT</text>
-        <text x="460" y="172" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">0 bps mint / 5 bps burn</text>
-
-        <!-- Arrows from classifier to rails -->
-        <line x1="300" y1="95" x2="365" y2="55" stroke="#eab308" stroke-width="1.5" marker-end="url(#arr-y)"/>
-        <line x1="300" y1="115" x2="365" y2="155" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arr-g)"/>
-
-        <!-- USDm output -->
-        <rect x="610" y="75" width="80" height="60" rx="10" fill="rgba(255,102,0,0.12)" stroke="#FF6600" stroke-width="2"/>
-        <text x="650" y="100" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="16" font-weight="700">USDm</text>
-        <text x="650" y="118" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">minted</text>
-
-        <line x1="550" y1="55" x2="605" y2="95" stroke="#eab308" stroke-width="1" marker-end="url(#arr-y)"/>
-        <line x1="550" y1="155" x2="605" y2="115" stroke="#22c55e" stroke-width="1" marker-end="url(#arr-g)"/>
-
-        <defs>
-          <marker id="arr-y" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eab308"/></marker>
-          <marker id="arr-g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#22c55e"/></marker>
-        </defs>
-      </svg>
-      <div class="caption">Asset classification is immutable per launch list — no runtime reclassification. User sees a unified interface.</div>
-    </div>
-
-    <h3>16.6 Multi-Asset Support &amp; Zero-Deposit Bridging</h3>
-    <p>Ion Swap supports bridging from 12+ home chains. Every bridge operation follows a zero-deposit model — the user's wallet only needs the asset being bridged, never a separate gas token. Bridge relayers pay all source-chain gas via chain-appropriate fee-delegation mechanisms.</p>
-
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Volatile Assets (150%)</h4><div class="val">8</div><p>BTC, XMR, ETH, LTC, DOGE, SOL, ADA, BCH</p></div>
-      <div class="wp-card"><h4>Stablecoin Assets (1:1)</h4><div class="val">7</div><p>USDC (Stellar, Algo, Hedera, ETH, SOL), RLUSD, USDT</p></div>
-      <div class="wp-card"><h4>Custom Tokens</h4><div class="val">USDm-T1</div><p>Private fungible tokens with FCMP++ privacy</p></div>
-      <div class="wp-card"><h4>Shadow NFTs</h4><div class="val">USDm-N1</div><p>Hidden ownership, encrypted content, view-key reveals</p></div>
-    </div>
-
-    <div class="wp-note">
-      <strong>Bridge reserves are strictly segregated from USDm reserves.</strong> Each wrapped asset has its own reserve wallet on its home chain. A 50% BTC crash cannot impair USDm's collateralization ratio. Per-block invariant: home_chain_reserve &ge; circulating_wrapped_supply.
-    </div>
-
-    <h3>16.7 Token Addresses (ion1_)</h3>
-    <p>Every asset on the MoneroUSD network is identified by a unique <code>ion1_</code> token address &mdash; a 69-character identifier derived from a BLAKE2b-256 cryptographic hash. Token addresses provide a universal, privacy-preserving identification scheme for both protocol-native verified assets and user-created custom tokens.</p>
-
-    <div class="wp-formula">
-      <span class="label">Token Address Format</span>
-      ion1_ + BLAKE2b-256(input) &rarr; 69 characters (5-char prefix + 64 hex digits)
-    </div>
-
-    <p>For protocol-native verified assets (USDm, wBTC, wXMR, wETH, etc.), addresses are derived deterministically from the protocol identifier: <code>BLAKE2b("MoneroUSD_protocol_asset:" + symbol)</code>. These addresses are permanent, reproducible, and independently verifiable. For user-created custom tokens, addresses are derived from the creator&rsquo;s stealth key and a random salt: <code>BLAKE2b(creatorStealth + randomSalt)</code>. This ensures that custom token addresses are unique and privacy-preserving &mdash; the address reveals neither the creator&rsquo;s identity nor the token&rsquo;s name.</p>
-
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Prefix</h4><div class="val">ion1_</div><p>Version byte 1 &mdash; distinguishes token addresses from wallet addresses and tx hashes</p></div>
-      <div class="wp-card"><h4>Hash</h4><div class="val">BLAKE2b</div><p>CryptoNote-native hash function &mdash; same as key derivation and tx hashing</p></div>
-      <div class="wp-card"><h4>Length</h4><div class="val">69 chars</div><p>5-char prefix + 64 hex digits (256-bit security)</p></div>
-      <div class="wp-card"><h4>Privacy</h4><div class="val">Stealth</div><p>Custom token addresses hide creator identity via stealth key + random salt</p></div>
-    </div>
-
-    <div class="wp-note">
-      <strong>Why BLAKE2b?</strong> BLAKE2b is the hash function used natively throughout CryptoNote and Monero for key derivation, transaction hashing, and PoW. Using it for token addresses maintains cryptographic consistency across the entire protocol stack. The <code>ion1_</code> prefix (version 1) enables future address format upgrades without ambiguity.
-    </div>
-
-    <h3>16.8 Privacy Features</h3>
-    <p>Ion Swap includes several privacy-first features that are impossible on transparent blockchains. Each generates protocol revenue and strengthens reserves.</p>
-
-    <!-- Privacy Features Grid (SVG icons) -->
-    <div class="wp-card-grid">
-      <div class="wp-card">
-        <h4>Private DCA</h4>
-        <div class="val" style="font-size:1.6rem;">&#x1F504;</div>
-        <p>Scheduled recurring swaps with time jitter to break correlation patterns</p>
-      </div>
-      <div class="wp-card">
-        <h4>Stealth Invoicing</h4>
-        <div class="val" style="font-size:1.6rem;">&#x1F4E8;</div>
-        <p>Merchants receive any asset, settled privately via stealth subaddresses</p>
-      </div>
-      <div class="wp-card">
-        <h4>Incognito Mode</h4>
-        <div class="val" style="font-size:1.6rem;">&#x1F576;</div>
-        <p>Enforced .onion routing, fresh subaddresses, no localStorage</p>
-      </div>
-      <div class="wp-card">
-        <h4>Flash Loans</h4>
-        <div class="val" style="font-size:1.6rem;">&#x26A1;</div>
-        <p>Borrow + repay in one batch window. 9 bps fee to reserves</p>
-      </div>
-      <div class="wp-card">
-        <h4>iUSD Vault</h4>
-        <div class="val" style="font-size:1.6rem;">&#x1F3E6;</div>
-        <p>Pedersen-committed savings vault earning fee-split yield</p>
-      </div>
-      <div class="wp-card">
-        <h4>CMAP</h4>
-        <div class="val" style="font-size:1.6rem;">&#x1F512;</div>
-        <p>Confidential asset tags hide even the asset type from observers</p>
-      </div>
-    </div>
-
-    <h3>16.9 PoW Mining Pool</h3>
-    <p>Ion Swap operates a Stratum V2 + RandomX mining pool for USDm hashrate. PPLNS payout with per-miner variable difficulty. Username is a USDm wallet address — no account creation required. A Tor (.onion) stratum endpoint provides IP privacy for miners.</p>
-
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Pool Fee</h4><div class="val">1%</div><p>80% to reserves, 20% to bounty</p></div>
-      <div class="wp-card"><h4>Payout Scheme</h4><div class="val">PPLNS</div><p>Sliding window share accounting</p></div>
-      <div class="wp-card"><h4>Difficulty</h4><div class="val">Vardiff</div><p>Per-miner adaptive adjustment</p></div>
-    </div>
-
-    <h3>16.10 Circuit Breaker Recovery</h3>
-    <p>The protocol includes automated reserve-recovery mechanisms that activate during market stress. Critically, no feature is ever halted or disabled — the Monero ethos requires recovery through increased fees, not restrictions.</p>
-
-    <!-- Circuit Breaker Tiers -->
-    <div class="tier-bar tier-normal"><span class="label">HEALTHY</span><span class="desc">ratio &ge; 150% — Normal operations</span><span class="rate">1&times; fees</span></div>
-    <div class="tier-bar tier-warning"><span class="label">WARNING</span><span class="desc">130–149% — Increased fees, reserve-priority split</span><span class="rate">1.5&times; fees</span></div>
-    <div class="tier-bar tier-stress"><span class="label">STRESS</span><span class="desc">110–129% — Double fees, 175% collateral requirement</span><span class="rate">2&times; fees</span></div>
-    <div class="tier-bar tier-emergency"><span class="label">EMERGENCY</span><span class="desc">&lt; 110% — Triple fees, accelerated liquidation</span><span class="rate">3&times; fees</span></div>
-
-    <div class="wp-note">
-      <strong>Recovery, never restriction.</strong> Every feature stays fully operational at every tier. The system rebuilds reserves by extracting more revenue from usage during high-volatility periods — when volume is typically highest and reserves need it most. Circuit breaker tiers operate backend-only; no reserve status is exposed to any frontend.
-    </div>
-
-    <h3>16.11 Protocol-Owned Settlement</h3>
-    <p>Ion Swap is non-custodial. The operator does not hold user funds &mdash; every reserve wallet, pool wallet, and swap-signing key is bound to the protocol itself and governed by the settlement rules encoded on the USDm chain. The backend publishes a Merkle root of all pool state (reserves, positions, balances) to the USDm chain each block. Every swap is signed by the protocol's settlement key under rules the operator cannot modify, pause, or freeze at runtime. A discrepancy between the signed receipt and on-chain settlement constitutes a cryptographic fraud proof.</p>
-
-    <!-- Trust Model Diagram (SVG) -->
-    <div class="wp-diagram">
-      <svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;height:auto;">
-        <rect x="10" y="30" width="130" height="50" rx="10" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="75" y="52" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="11" font-weight="600">Pool State</text>
-        <text x="75" y="68" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">reserves + positions</text>
-
-        <rect x="190" y="30" width="130" height="50" rx="10" fill="rgba(255,102,0,0.08)" stroke="#FF6600" stroke-width="1.5"/>
-        <text x="255" y="52" text-anchor="middle" fill="#FF6600" font-family="Outfit,sans-serif" font-size="11" font-weight="700">Merkle Root</text>
-        <text x="255" y="68" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">published each block</text>
-
-        <rect x="370" y="30" width="130" height="50" rx="10" fill="rgba(17,17,17,1)" stroke="#333" stroke-width="1"/>
-        <text x="435" y="52" text-anchor="middle" fill="#eaeaea" font-family="Outfit,sans-serif" font-size="11" font-weight="600">USDm Chain</text>
-        <text x="435" y="68" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">immutable record</text>
-
-        <rect x="550" y="30" width="130" height="50" rx="10" fill="rgba(34,197,94,0.08)" stroke="#22c55e" stroke-width="1.5"/>
-        <text x="615" y="52" text-anchor="middle" fill="#22c55e" font-family="Outfit,sans-serif" font-size="11" font-weight="700">Fraud Proof</text>
-        <text x="615" y="68" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="9">receipt vs. settlement</text>
-
-        <line x1="140" y1="55" x2="185" y2="55" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <line x1="320" y1="55" x2="365" y2="55" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <line x1="500" y1="55" x2="545" y2="55" stroke="#555" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-
-        <text x="350" y="110" text-anchor="middle" fill="#888" font-family="Outfit,sans-serif" font-size="10">Non-custodial. Protocol-owned settlement keys. Non-pausable by the operator — every swap is on-chain verifiable.</text>
-      </svg>
-    </div>
-    <h2 id="dark-contracts">17. Dark Contracts — Programmable Privacy</h2>
-
-    <p>The MoneroUSD base layer defines a fixed set of protocol operations — token create, LP mint/burn, bridge wrap/unwrap, NFT mint, limit order, DCA, savings — each dispatched through a hardcoded opcode inside the attestation monitor. This scales cleanly through v1, but every new protocol feature requires a coordinated change across the backend monitor, the wallet's approval-modal renderer, and the indexer's state-derivation logic. Past that point, most of the interesting things developers want to build on Monero-style economics do not belong in the core backend — they belong in user-deployed contracts.</p>
-
-    <p><strong>Dark Contracts</strong> extend the attestation dispatcher into a programmable virtual machine. Developers write in <strong>DarkSolidity (DSOL)</strong>, a Solidity-like language with privacy-native types and commit-reveal semantics. The compiler emits <code>.dc</code> bytecode that runs in a deterministic off-chain VM, <strong>DarkVM</strong>, hosted identically by every Ion Swap indexer operator. Every state mutation lands in the same append-only <code>pool_events</code> log that the existing Merkle publisher anchors to the USDm chain each block — Dark Contracts inherit the base layer's consensus-by-convention discipline without adding a new publisher path.</p>
-
-    <p>The goal is to match Solidity's developer UX while surpassing it on privacy. Five capabilities that transparent smart-contract chains fundamentally cannot offer are native here:</p>
-    <ul class="wp-list">
-      <li><strong>Private state</strong> — Pedersen commitments over ed25519 with Bulletproofs++ range proofs (see §17). Private fields are never plaintext in any public API response; only commitment hex and a range-proof hash are exposed.</li>
-      <li><strong>Front-run-free execution</strong> — every private mutation is forced through a commit-reveal cycle by the compiler's <code>@batch</code> attribute. There is no public mempool race window.</li>
-      <li><strong>Stealth-scoped identity</strong> — <code>msg.sender</code> resolves to a caller's stealth address, not a persistent account. The same user signs successive calls from different stealth identities with no on-chain linkability.</li>
-      <li><strong>Cross-chain privacy bridge as a language primitive</strong> — the <code>syscall(BRIDGE_WRAP)</code> / <code>syscall(BRIDGE_UNWRAP)</code> host-call forms let DSOL contracts pull wBTC, wXMR, wETH, and other wrapped assets into contract logic without revealing amounts.</li>
-      <li><strong>No state-inspection attacks</strong> — contract storage is Merkle-committed to the chain for replay determinism, but never publicly readable. View access requires the contract's or caller's viewkey.</li>
-    </ul>
-
-    <h3>17.1 The DarkVM</h3>
-    <p>The DarkVM is a pure-JavaScript stack machine with approximately 60 opcodes. It uses <code>BigInt</code> throughout — no <code>Number</code>, no <code>Date</code>, no <code>Math.random</code> — so every indexer operator running the same bytecode converges on byte-identical state. The interpreter is auditable end-to-end in roughly a week of review. A WASM backend is planned for Phase 3 performance work; the bytecode semantics do not change.</p>
-
-    <p>Resource discipline is intentionally flat, not market-priced. Every call pays a fixed 0.1 USDm fee and is capped at 1,000,000 instructions and 256 KB of combined stack + heap memory. The limits are constants, not parameters, so no two indexers can ever disagree on whether a given call halted successfully or ran out of budget. This trades the flexibility of per-opcode gas for a stronger consensus guarantee — in line with the broader Monero ethos of avoiding fee auctions wherever possible.</p>
-
-    <h3>17.2 DarkSolidity (DSOL)</h3>
-    <p>DSOL is a Solidity-dialect source language. The compiler lowers DSOL source through an abstract syntax tree, a typed intermediate representation, and a code generator that produces the <code>.dc</code> bytecode artifact plus a companion <code>abi.json</code> descriptor. Source is advisory; bytecode is the consensus artifact. The compiler ships inside the desktop wallet so every user can compile and sign a contract deployment locally, without uploading source anywhere.</p>
-
-    <p>A production-ready private ERC-20 analogue in DSOL:</p>
-    <div class="wp-formula">
-<span class="label">DSOL — Erc20Private (production-ready)</span>dark contract Erc20Private is Ownable {
-  private mapping(stealth =&gt; uint64) balances;
-  public string symbol;
-  public uint64 totalSupply;
-
-  constructor(string sym, uint64 supply) {
-    symbol = sym;
-    totalSupply = supply;
-    balances[msg.sender] = supply;
-  }
-
-  @batch
-  entry transfer(stealth to, uint64 amount) {
-    require(amount &gt; 0, "AMOUNT_ZERO");
-    require(to != msg.sender, "SELF_TRANSFER");
-    require(balances[msg.sender] &gt;= amount, "INSUFFICIENT");
-    balances[msg.sender] = balances[msg.sender] - amount;
-    balances[to] = balances[to] + amount;
-    emit encrypted Transfer(msg.sender, to, amount);
-  }
-
-  @direct
-  entry balanceOf(stealth who) returns (uint64 when revealed) {
-    return balances[who];
-  }
-}</div>
-    <p>Three <code>require</code> guards on <code>transfer</code> are mandatory across every DSOL transfer entrypoint — <code>amount &gt; 0</code> rejects no-op gas-burn calls, <code>to != msg.sender</code> rejects no-op self-transfers, and the balance check rejects overdrafts. The compiler does not insert these for you. v1.2.182&apos;s production-readiness sweep made them mandatory across the standard library; any contract that ships without them is a regression.</p>
-
-    <p>Four language constructs do most of the privacy work:</p>
-    <ul class="wp-list">
-      <li><code>private</code> fields are Pedersen-committed on every write; range proofs are emitted at reveal time.</li>
-      <li><code>@batch</code> on an entrypoint forces the commit-reveal cycle so the call cannot be front-run — the compiler emits a <code>REQUIRE_COMMIT_REVEAL</code> preamble that the runtime enforces (invariant DC-4).</li>
-      <li><code>emit encrypted</code> AES-256-GCM-wraps the event payload using a key derived via HKDF-SHA256 from the caller's viewkey, the contract id, and the event name — only the caller can decrypt.</li>
-      <li><code>when revealed</code> on a return type compiles to an explicit open-and-prove: the compiler auto-generates the range proof and encrypts the opened value to <code>msg.sender</code>, so a public getter is actually a per-caller private disclosure.</li>
-    </ul>
-
-    <p>Phase 3 of the language adds Solidity-familiar constructs: <code>is</code> inheritance with C3 linearization, <code>modifier</code> declarations inlined per-entrypoint, and <code>EXT_CALL_TAIL</code> — an inter-contract call restricted to tail position. Tail-only calling eliminates reentrancy by construction, because there is no caller frame to return into. Upgrades are expressed through a nullifier-gated proxy pattern rather than mutable bytecode, preserving invariant DC-13.</p>
-
-    <h3>17.3 Life of a call</h3>
-    <div class="wp-diagram">
-      <div class="flow">
-        <div class="node">dsolc compile</div>
-        <span class="arrow">→</span>
-        <div class="node orange">DC_DEPLOY</div>
-        <span class="arrow">→</span>
-        <div class="node">DC_CALL_COMMIT</div>
-        <span class="arrow">→</span>
-        <div class="node orange">DC_CALL_REVEAL</div>
-        <span class="arrow">→</span>
-        <div class="node">DarkVM execute</div>
-        <span class="arrow">→</span>
-        <div class="node">pool_events</div>
-      </div>
-      <div class="caption">Deploy once, then commit at block N and reveal at block N+2. The indexer's <code>deriveDarkState</code> pass picks up every state diff deterministically; the explorer decodes arguments against <code>abi.json</code>.</div>
-    </div>
-
-    <p>Scheduled logic is handled through a permissionless keeper model. Contracts expose a public <code>tick()</code> entrypoint that anyone can call for a per-call bounty; there is no per-block "run every contract" loop that would force every indexer to do work the operator may not care about. Contracts the operator is not interested in can be replayed lazily on demand — the <code>/v1/contracts/:id</code> endpoint surfaces a <code>lastComputedBlock</code> so clients can tell whether they are looking at up-to-date state.</p>
-
-    <h3>17.4 Invariants</h3>
-    <p>Dark Contracts layer fifteen invariants on top of the existing base-layer rules. Each one has a single enforcement point so the audit surface stays small.</p>
-
-    <table>
-      <thead><tr><th>#</th><th>Invariant</th><th>Enforcement</th></tr></thead>
-      <tbody>
-        <tr><td>DC-1</td><td>Deterministic execution</td><td>Pure-JS <code>BigInt</code> VM; no <code>Number</code> / <code>Date</code> / <code>Math.random</code>; typecheck rejects non-deterministic sources.</td></tr>
-        <tr><td>DC-2</td><td>Step-limit termination</td><td>1,000,000-opcode counter in <code>vm.js::execute</code>; overrun aborts the call, rolls back state, keeps the fee.</td></tr>
-        <tr><td>DC-3</td><td>Memory-limit termination</td><td>Per-call 256 KB cap tracked across stack + heap.</td></tr>
-        <tr><td>DC-4</td><td>Commit-reveal for private mutations</td><td>Compiler emits <code>REQUIRE_COMMIT_REVEAL</code> preamble; runtime rejects direct calls.</td></tr>
-        <tr><td>DC-5</td><td>Nullifier uniqueness</td><td><code>contract_nullifiers</code> primary-key enforcement; duplicate insert aborts the tx.</td></tr>
-        <tr><td>DC-6</td><td>No plaintext private state in public APIs</td><td><code>/v1/contracts</code> returns commitment hex + range-proof hash only.</td></tr>
-        <tr><td>DC-7</td><td>Syscall allowlist</td><td>Frozen table in <code>host.js</code>; unknown codes yield <code>DC_SYSCALL_UNKNOWN</code>.</td></tr>
-        <tr><td>DC-8</td><td>Syscall invariants propagate</td><td>Host forwards to existing base-layer handlers; same rules apply.</td></tr>
-        <tr><td>DC-9</td><td>State anchored every block</td><td>Existing <code>pool_events</code> + Merkle publisher pipeline; zero new publisher code.</td></tr>
-        <tr><td>DC-10</td><td>Deployment bond non-refundable</td><td>Re-uses the same bond path as TOKEN_CREATE.</td></tr>
-        <tr><td>DC-11</td><td>No transparent call path</td><td>No HTTP route mutates contract state; only attestations can.</td></tr>
-        <tr><td>DC-12</td><td>No <code>pool_events</code> bypass</td><td>Single writer always emits the event inside the mutation's transaction.</td></tr>
-        <tr><td>DC-13</td><td>Bytecode immutable</td><td><code>code_hash</code> update trigger denies mutation; upgrades flow through the proxy pattern only.</td></tr>
-        <tr><td>DC-14</td><td>Compile-time privacy analysis</td><td>Typecheck runs information-flow analysis: private → public without <code>when revealed</code> is a compile error.</td></tr>
-        <tr><td>DC-15</td><td>Wallet decodes before approval</td><td>The approval modal decodes <code>DC_CALL</code> arguments against ABI; loud warning if the ABI is missing.</td></tr>
-      </tbody>
-    </table>
-
-    <h3>17.5 Composition with the base layer</h3>
-    <p>Dark Contracts are strictly additive. The hardcoded fast path for TOKEN_TRANSFER, LP_MINT, BRIDGE_WRAP, and the other v1 opcodes remains unchanged — any asset the base layer already tracks keeps its fast-path guarantees. New DSOL contracts that need those primitives reach them through the syscall interface (<code>syscall(TOKEN_TRANSFER_EMIT, {...})</code>), which forwards into the exact same backend handler that processes the hardcoded path. The on-chain <code>token_transfer</code>, <code>bridge_mint</code>, and <code>bridge_burn</code> events are byte-identical whether a base-layer op or a Dark Contract produced them, so indexers require no special-casing.</p>
-
-    <p>Inter-contract calls are restricted to tail position through the <code>EXT_CALL_TAIL</code> opcode. This removes the entire class of reentrancy vulnerabilities that have driven most historical smart-contract exploits on transparent chains — there is no caller frame to return into, so there is no window in which a callee can re-enter a mid-execution caller. Arbitrary call graphs are intentionally deferred; they will return only alongside a formal reentrancy discipline.</p>
-
-    <h3>17.6 Production-readiness security model (v1.2.182)</h3>
-    <p>Two security rules are now binding on every DSOL contract that lands in the wallet bundle:</p>
-    <ul class="wp-list">
-      <li><strong>Caller-authorization on every state-mutating entrypoint.</strong> Nobody other than the owner, the scoped stealth address, or the explicit <code>operatorStealth</code> set at deploy may call any function that mutates state attributed to a specific actor, acts as a privileged operator, or modifies another actor&apos;s resource. Comments-as-authorization (e.g. <code>// operator-only</code> without the matching <code>require()</code>) are forbidden — that bug class produced two critical findings in the v1.2.182 audit.</li>
-      <li><strong>Mandatory security audit before bundling.</strong> Every contract change runs through a checklist before it&apos;s compiled into the wallet binary: documented authorization model, <code>msg.sender</code> guards on every privileged path, positivity checks on numeric inputs, self-transfer + zero-destination checks on transfer paths, unique nullifiers per authorized intent, and parent-guard replication across every override. The full DSOL test suite must pass.</li>
-    </ul>
-    <div class="wp-note"><strong>Layered defense.</strong> For mints, supply changes, and bridge unwraps, the on-chain DSOL <code>require()</code> chain is one layer; the backend canonical-handler check (e.g. <code>tokens/mint.js::mintSupply</code> validating <code>creator_stealth === ctx.callerStealth</code>) is another. Both must hold for the operation to land. A DSOL bug that bypasses one layer is caught by the other.</div>
-
-    <h2 id="bulletproofs-pp">18. Bulletproofs++ — Real Range-Proof Soundness</h2>
-    <p>Pedersen commitments hide values, but a commitment alone cannot prove the value is in a sensible range. Without a range proof, a malicious party could commit to a negative balance, an absurdly large overdraft, or any other field-element value the verifier cannot directly inspect. <strong>Bulletproofs++</strong> closes that gap: it lets a prover demonstrate that a committed value lies in <code>[0, 2<sup>64</sup>)</code> without revealing the value itself, in <strong>544 bytes</strong> per proof, with no trusted setup.</p>
-
-    <p>The MoneroUSD verifier is a clean-room implementation in approximately 2,660 lines of pure-JavaScript <code>BigInt</code> arithmetic — auditable end-to-end, deterministic across every indexer operator, and live across the protocol since v1.2.182. Soundness defenses were validated against the twelve-item attack-surface review in <code>BPP-AUDIT.md</code>, with 250 adversarial tests covering torsion-point rejection, non-canonical scalar refusal, transcript-replay resistance, and prover/verifier fold-round consistency.</p>
-
-    <h3>18.1 Why Bulletproofs++, not Bulletproofs+</h3>
-    <p>Bulletproofs+ (BP+, single-plus) is the proof system shipping today inside Monero&apos;s base layer. Bulletproofs++ (BP++, double-plus) is the next-generation construction by Eagen, Kanjalkar, Ruffing, and Nick (IACR ePrint 2022/510, EUROCRYPT 2024) that swaps BP+&apos;s inner-product argument for the <strong>weighted norm linear argument (WNLA)</strong> built on top of a <strong>reciprocal set-membership argument</strong>. Practical wins:</p>
-
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Proof Size</h4><div class="val">544 B</div><p>vs ~672 B for BP+ on the same 64-bit range</p></div>
-      <div class="wp-card"><h4>Verifier Time</h4><div class="val">~800ms</div><p>End-to-end on commodity hardware</p></div>
-      <div class="wp-card"><h4>Trusted Setup</h4><div class="val">None</div><p>Pure DL hardness on ed25519</p></div>
-      <div class="wp-card"><h4>Aggregation</h4><div class="val">Native</div><p>WNLA composes for batch range proofs</p></div>
-    </div>
-
-    <h3>18.2 Construction in three layers</h3>
-    <p>The Bulletproofs++ verifier is implemented as a stack of four well-defined pieces, each independently testable. The combined module is approximately 2,660 lines of JavaScript, audited end-to-end (see <code>BPP-AUDIT.md</code>) against twelve attack-surface items.</p>
-
-    <div class="wp-diagram">
-      <div class="flow">
-        <div class="node">proveRange / verifyRange</div>
-        <span class="arrow">→</span>
-        <div class="node orange">Arithmetic Circuit</div>
-        <span class="arrow">→</span>
-        <div class="node">WNLA</div>
-        <span class="arrow">→</span>
-        <div class="node orange">Transcript / SHA-512</div>
-      </div>
-      <div class="caption">Reciprocal range proof at the top reduces to a circuit of multiplication + linear gates, which reduces to a single WNLA invocation, which reduces to a Fiat-Shamir transcript of point + scalar appends.</div>
-    </div>
-
-    <ul class="wp-list">
-      <li><strong>Reciprocal range argument (top layer).</strong> Decomposes the value <code>X</code> into <code>k</code> digits in base <code>b</code>, then proves digit-validity via the identity <code>r<sub>i</sub> · (d<sub>i</sub> + e) = 1</code> where <code>e</code> is a Fiat-Shamir challenge. The trick: this identity holds iff every <code>d<sub>i</sub></code> is in <code>[0, b)</code>. Canonical parameterization for uint64 is <code>k = b = 16</code>.</li>
-      <li><strong>Arithmetic circuit (middle layer).</strong> Translates the digit-decomposition + multiplicity vectors into a circuit of multiplication and linear gates, builds the eight partition-routed coefficient matrices, and constructs the polynomial commitments that feed the WNLA.</li>
-      <li><strong>Weighted Norm Linear Argument (WNLA, inner layer).</strong> Replaces BP+&apos;s inner-product argument with a recursion over even-odd halving of length-<code>n</code> vectors, emitting one cross-term commitment <code>(R, X)</code> pair per fold round. For canonical parameters, four fold rounds shrink the proof to two final scalars per side.</li>
-      <li><strong>Fiat-Shamir transcript.</strong> SHA-512 over a domain-prefixed (<code>BPPP-V1-</code>) sequence of length-prefixed appends. Every challenge is non-zero-checked. The same transcript shape is replayed by the verifier — any prover/verifier divergence on a single byte produces a different challenge and the proof is rejected.</li>
-    </ul>
-
-    <h3>18.3 Wire format (canonical 64-bit range)</h3>
-    <p>The serialized proof is fixed-length for given <code>(N<sub>d</sub>, N<sub>p</sub>) = (16, 16)</code>:</p>
-    <div class="wp-formula">
-<span class="label">Wire layout — 544 bytes total</span>offset  size  field
-──────  ────  ─────────────────────────────
-     0    32  V        — commitment to reciprocals
-    32    32  CL       — left-wire blinding
-    64    32  CR       — right-wire blinding
-    96    32  CO       — output-wire blinding
-   128    32  CS       — cross-term blinding
-   160   256  WNLA fold rounds (4 × 64 B)
-   416    64  WNLA final L vector (2 × 32 B)
-   480    64  WNLA final N vector (2 × 32 B)</div>
-    <p>The byte layout has no internal length prefixes — the deserializer parses by offset. Two byte sequences of the SAME length cannot decode to the same proof because every field is bijective at its offset, so malleable-serialization attacks (A4 in the audit) are foreclosed by construction.</p>
-
-    <h3>18.4 The DSOL syscall</h3>
-    <p>Dark Contracts call the verifier through a single syscall:</p>
-    <div class="wp-formula">
-<span class="label">DSOL — verify a range proof</span>// argv: { commitmentHex, proofHex, Nd?, Np? }
-// returns: { valid: bool, soundnessMode: "real"|"soft", Nd, Np }
-let result = syscall(VERIFY_RANGE_PROOF_BPPP_V1, argv_bytes);
-require(result.valid, "RANGE_PROOF_INVALID");</div>
-
-    <p>The syscall charges <strong>100,000 instruction steps</strong> (10% of the per-call 1,000,000 budget) — heavy enough to deter contracts that loop on verification, cheap enough that ~10 verifications per call are economically reasonable. Step-cost is consensus-relevant: every indexer running the same bytecode on the same input consumes the same budget.</p>
-
-    <h3>18.5 Soundness audit</h3>
-    <p>Twelve attack-surface items (A1–A12) were enumerated in the original spec and covered by adversarial tests before activation. Highlights:</p>
-
-    <table>
-      <thead><tr><th>#</th><th>Attack</th><th>Defense</th></tr></thead>
-      <tbody>
-        <tr><td>A1</td><td>Small-subgroup point input</td><td>Every deserialized point routes through <code>assertPrimeOrder</code> backed by noble&apos;s <code>isTorsionFree()</code>. Tested against all 7 real ed25519 torsion points + a contamination case.</td></tr>
-        <tr><td>A4</td><td>Malleable serialization</td><td>Fixed-length wire format (no internal prefixes); length mismatch throws <code>BPPP_WIRE_LENGTH_MISMATCH</code>.</td></tr>
-        <tr><td>A5</td><td>Zero / edge-case challenge</td><td><code>challenge()</code> loops on zero; every consumed challenge is in <code>[1, L)</code>.</td></tr>
-        <tr><td>A8</td><td>Non-canonical scalar (≥ L)</td><td><code>scalarFromBytes32</code> rejects encodings whose value reduces to a non-canonical representative.</td></tr>
-        <tr><td>A9</td><td>Compressed-point ambiguity</td><td>noble&apos;s canonical <code>fromHex</code> rejects <code>y ≥ p</code> + off-curve encodings.</td></tr>
-        <tr><td>A12</td><td>WNLA fold inconsistency</td><td>Pure-function fold-count derivation from <code>(N<sub>d</sub>, N<sub>p</sub>)</code> guarantees prover/verifier agreement.</td></tr>
-      </tbody>
-    </table>
-
-    <p>Out-of-scope items, declared explicitly: side-channel timing leaks from the prover (the verifier runs in trusted contexts; the prover&apos;s wallet is not the threat model), and quantum resistance (BP++ relies on DL hardness, broken by Shor — same posture as the rest of the MoneroUSD stack).</p>
-
-    <p>The complete defense matrix lives in <code>BPP-AUDIT.md</code>. Total tests: 250 (229 in <code>bulletproofs-plus-plus.test.js</code> + 14 in <code>bppp-integration.test.js</code> + 7 in <code>pedersen.test.js</code>).</p>
-
-    <h3>18.6 What contracts get</h3>
-    <p>Every Dark Contract has direct access to the verifier via <code>syscall(VERIFY_RANGE_PROOF_BPPP_V1, …)</code>, and every Pedersen-committed value the protocol emits — LP positions, custom-token balances, NFT rarity commitments — is range-bounded by a 544-byte BP++ proof. <code>pedersen.js::rangeProof()</code> emits the canonical (commitment, proof) pair as 576 bytes; consumers parse by fixed offsets, and any byte tampering produces an immediate length-mismatch reject before the cryptographic check runs.</p>
-
-    <h2 id="lws-pir">19. Light Wallet Server &amp; PIR Side-Index</h2>
-    <p>Wallet restore is the single most user-visible slow path in any cryptocurrency. On a wallet with 17,000+ historical transactions, a classical chain scan walks every block looking for outputs the receiver can claim — minutes of wall-clock time, every device, every time. MoneroUSD addresses this with a two-layer architecture: a <strong>Light Wallet Server (LWS)</strong> for cross-device fast restore, and a <strong>PIR layer over an FCMP++-anchored side-index</strong> for queries that don&apos;t leak the receiver&apos;s address.</p>
-
-    <h3>19.1 Option 3 — encrypted scope-tag index</h3>
-    <p>Each wallet derives a <em>scope key pair</em> from its spend key via <code>HKDF-SHA512(spend_priv, "monerousd-lws-scope-v1")</code>. Receivers publish ECIES-encrypted <em>SCOPE_TAG_V1</em> entries keyed by <code>scope_id = SHA-256(scope_pub)[..8]</code>. Senders embed the SCOPE_TAG in the carrier transaction&apos;s <code>tx_extra</code>, so the daemon&apos;s block-time parser indexes every confirmed output as it arrives — no operator needs to backfill historical state.</p>
-    <p>The LWS index is operator-run but operator-blind: it stores ECIES ciphertext keyed by 8-byte scope_id. The operator can see <em>that</em> a given scope_id has N entries but cannot learn the receiver&apos;s address, the amount, the sender, or any correlation across different scope_ids. Forging entries is impossible (ECIES AEAD catches that), and the wallet&apos;s <code>spend_priv</code> never leaves its process.</p>
-
-    <h3>19.2 SCOPE_TAG_V1.5 — all assets, not just USDm</h3>
-    <p>The original SCOPE_TAG plaintext encoded only <code>(output_idx, view_tag_hint, amount_hint)</code> — implicitly USDm-only. V1.5 appends a 32-byte <code>token_id</code> slot (all-zero = USDm sentinel; <code>SHA-256("ion1_asset_v1/" + symbol)</code> for wrapped or custom tokens). Receivers detect shape by decoded plaintext length: 13 bytes = v1 (legacy), 45 bytes = v1.5. A single LWS query during welcome-restore now returns USDm + every wrapped/custom token the user has received, all rendered in &lt; 2 seconds.</p>
-
-    <h3>19.3 PIR-protected scope-tag index</h3>
-    <p>An encrypted scope-tag index is fast but leaks query patterns: the operator can see which <code>scope_id</code> a wallet reads, even when it cannot decrypt the entries. The PIR layer closes that gap by routing every scope-id query through a <strong>SimplePIR</strong> (Henzinger et al., USENIX Sec 2023) round over the FCMP++-anchored side-index. The operator sees only an opaque LWE-encoded query vector; it cannot determine which <code>scope_id</code> the wallet read, nor whether the entry was found.</p>
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Privacy gain</h4><div class="val">Query-blind</div><p>Operator can&apos;t correlate scope_ids across queries by the same wallet</p></div>
-      <div class="wp-card"><h4>Round-trip</h4><div class="val">~300 ms</div><p>8 fixed PIR queries per scope_id, parallel — independent of result existence</p></div>
-      <div class="wp-card"><h4>Index integrity</h4><div class="val">FCMP++ anchor</div><p>Daemon hashes side-index root every block; tampering rejected at consensus</p></div>
-      <div class="wp-card"><h4>Soundness</h4><div class="val">2<sup>-128</sup></div><p>SimplePIR over secp256k1-equivalent — DLOG-hard</p></div>
-    </div>
-
-    <h3>19.4 The side-index — chain-anchored, LMDB-backed</h3>
-    <p>The USDmd daemon maintains a <code>side_index</code> LMDB table mapping <code>scope_id</code> → ECIES ciphertext entries. Every block&apos;s parser walks new transactions&apos; <code>tx_extra</code> for SCOPE_TAG_V1 tags and appends matching entries; rollbacks atomically undo the same way the main UTXO state does. A Merkle root over the side-index is committed in each block header, so a third-party verifier replaying the chain produces a byte-identical index — operator integrity is enforced at the consensus layer, not by trust.</p>
-    <p>Daemon-side EC validation rejects malformed entries at block time (BIP-340-style point-on-curve check via <code>rct::toPointCheckOrder</code>). The PIR retrieval uses a collision-immune row layout with linear probing (<code>MAX_PROBES = 8</code>, fixed regardless of whether the entry exists) so the operator can&apos;t learn found-vs-not by query timing or response shape. A real Rust <code>libfcmp_pir.a</code> handles the LWE math; the wallet&apos;s JS reference impl is byte-for-byte parity-tested against it (250+ assertions across 18 distinct gates, all green).</p>
-
-    <h3>19.5 What this means for users</h3>
-    <p>First restore on a fresh device: sub-second balance + full asset rendering, no chain scan, no operator visibility into which addresses you&apos;re asking about. Subsequent restores on the same device: the cache survives across launches and never re-queries the LWS. A user who runs their own daemon gets identical results from the side-index they themselves committed to — no operator trust required at any layer.</p>
-
-    <h2 id="frost-custody">20. FROST Bridge Custody</h2>
-    <p>Bridge reserves — the BTC, XMR, ETH, and other crypto that backs every wrapped asset on the MoneroUSD chain — are held under <strong>FROST t-of-n threshold custody</strong>, not single-key operator hot wallets. A single host compromise CANNOT move funds; an attacker needs simultaneous compromise of at least <code>t</code> independent signer hosts.</p>
-
-    <h3>20.1 Threshold scaling — 2/3+ BFT, validator-set growth</h3>
-    <p>The threshold scales as <code>t = floor(2n/3) + 1</code> — pure Byzantine fault tolerance. The validator set is designed to grow over time: new validators join via the existing DKG2-add ceremony, and the threshold automatically recomputes to maintain 2/3+ as <code>n</code> grows. The <em>group public key stays the same</em> (so reserve addresses remain stable), but the access policy strengthens with every new member. As the set matures, no minority can move funds and no single host compromise threatens reserves.</p>
-    <table>
-      <thead><tr><th>n validators</th><th>t threshold</th><th>Attacker needs</th></tr></thead>
-      <tbody>
-        <tr><td>3</td><td>2</td><td>2 simultaneous host compromises</td></tr>
-        <tr><td>10</td><td>7</td><td>7 simultaneous compromises across operator orgs</td></tr>
-        <tr><td>21</td><td>14</td><td>14 simultaneous compromises</td></tr>
-        <tr><td>100</td><td>67</td><td>67 simultaneous compromises across 67 independent orgs</td></tr>
-      </tbody>
-    </table>
-
-    <h3>20.2 How everyday automation works</h3>
-    <p>FROST does NOT require manual sign-off per claim. Each validator runs a <em>signer daemon</em> — a long-running process holding that validator&apos;s share, listening on a libp2p mesh for sign-round requests. When the chain monitor sees a confirmed deposit:</p>
-    <ol class="wp-list">
-      <li>A coordinator (no secret share of its own) broadcasts &quot;sign this claim digest&quot; to the mesh.</li>
-      <li>Each signer&apos;s daemon runs <em>its own independent policy checks</em> before responding: is the deposit real? does the destination match the canonical reserve? has the matching USDm mint already broadcast?</li>
-      <li>If <code>t</code> validators agree, partial sigs aggregate into a BIP-340 Schnorr signature valid for the FROST group key.</li>
-      <li>Coordinator broadcasts the resulting BTC claim transaction.</li>
-    </ol>
-    <p>The whole flow is sub-second wall-clock when validators are healthy. A compromised coordinator can <em>ask</em> for a signature but cannot bypass any validator&apos;s policy. To drain reserves an attacker must compromise <code>t</code> independent hosts, each independently rejecting the malicious request based on its own indexer view.</p>
-
-    <h3>20.3 Cryptographic surface</h3>
-    <p>The BTC FROST implementation uses <strong>FROST(secp256k1, SHA-256, TR)</strong> — BIP-340 Schnorr signatures over secp256k1, compatible with Taproot key-path spends. The XMR side uses Monero&apos;s native <em>N-of-M wallet-multisig</em> via <code>monerod-wallet-rpc</code>. Each chain&apos;s FROST infrastructure is independently DKG&apos;d (no shared secret material across chains) so a compromise of one chain&apos;s quorum doesn&apos;t cascade.</p>
-    <p>For Taproot outputs with script trees (e.g. the user-refundable HTLCs in the Buy USDm flow), the signer applies the BIP-341 tap-tweak to its key share before signing: <code>d' = d + t_tap (mod n)</code> where <code>t_tap = tagged_hash(&quot;TapTweak&quot;, internal_xonly || merkle_root)</code>. The resulting signature verifies against the tweaked output key on chain — no validator ever sees the user&apos;s actual destination, only its tap-leaf hash.</p>
-
-    <h3>20.4 Buy USDm via BTC — script-locked deposit, FROST-quorum claim</h3>
-    <p>The 150% PSM mint flow (deposit BTC, receive USDm) is the central reserve-growing flow. The deposit address is no longer a single-key operator hot wallet — it&apos;s a per-intent BIP-341 Taproot output:</p>
-    <ul class="wp-list">
-      <li><strong>Internal key</strong> = FROST group x-only pubkey (the same quorum that protects the cold reserve)</li>
-      <li><strong>Script tree</strong> = single leaf: <code>&lt;timeout&gt; OP_CHECKLOCKTIMEVERIFY OP_DROP &lt;user_xonly&gt; OP_CHECKSIG</code></li>
-      <li><strong>Claim path</strong> — FROST quorum signs a key-path spend, BTC enters the cold reserve, PSM mints USDm at 1.5× to the user&apos;s address</li>
-      <li><strong>Refund path</strong> — if the protocol fails to claim within the timeout (~144 blocks ≈ 24 h), the user broadcasts a script-path spend with their own Schnorr sig and reclaims their BTC. No operator action required.</li>
-    </ul>
-    <p>The same architectural pattern extends to wXMR (Monero atomic-swap with multi-sig) and the wETH/wSOL/wADA/wRLUSD wrappers (each chain&apos;s native multi-sig primitive). The protocol-level intent — &quot;script-lock the deposit window, FROST-quorum the claim&quot; — is identical regardless of the chain.</p>
-
-    <h2 id="atomic-swap-v6">21. Atomic Swap Bridges (zk-v6)</h2>
-    <p>Layered on top of FROST custody is a second, complementary bridge architecture: <strong>peer-to-peer atomic swaps</strong>, where bridging happens directly between a user and a liquidity provider with no central operator in the loop. Subpoena-resistant by construction — there is no protocol operator that can be compelled to reveal user-to-mint mappings, because there is no such mapping recorded anywhere.</p>
-
-    <h3>21.1 The 4-phase protocol</h3>
-    <p>A user wanting wBTC (or wanting to redeem wBTC for BTC) finds an LP via the off-chain offer mesh, agrees on a price, and executes a four-phase swap:</p>
-    <ol class="wp-list">
-      <li><strong>Offer</strong> — LP publishes a signed offer: &quot;I&apos;ll release X wBTC at price P, adaptor point T = t·G.&quot;</li>
-      <li><strong>Lock</strong> — User constructs a BTC HTLC (P2TR with adaptor-sig spend conditions); LP constructs a matching wBTC escrow on the MoneroUSD chain via the <code>AtomicSwapEscrow.dsol</code> Dark Contract.</li>
-      <li><strong>Reveal</strong> — User publishes the wBTC-claim transaction. The transaction&apos;s signature cryptographically reveals secret <code>t_user</code> on the USDm chain.</li>
-      <li><strong>Settle</strong> — LP observes <code>t_user</code> in the published USDm sig, uses it to claim the BTC HTLC. Swap complete.</li>
-    </ol>
-
-    <h3>21.2 The cryptographic linkage</h3>
-    <p>Adaptor signatures (Aumayr-Maffei-Moreno-Sanchez-Riahi, Asiacrypt 2021) make the two-chain settlement <em>atomic</em>: completing one chain&apos;s signature is mathematically equivalent to revealing the secret that completes the other. Neither party can unilaterally claim without releasing the value the counter-party needs.</p>
-    <p>From the chain analyst&apos;s perspective: the BTC chain shows &quot;X BTC moved from user-address to LP-address.&quot; The USDm chain shows &quot;X wBTC moved from LP-stealth to user-stealth.&quot; The linkage between the two — the same adaptor secret <code>t</code> on both — exists only in the signature bytes; recovering it requires the discrete log problem.</p>
-
-    <h3>21.3 What MoneroUSD ships for v6</h3>
-    <ul class="wp-list">
-      <li><strong>AtomicSwapEscrow.dsol</strong> — the USDm-side escrow contract (deployed; <code>codeHash d1017d4242a3cc8b…</code>). Three entrypoints: <code>lock()</code>, <code>claim()</code>, <code>refund()</code>.</li>
-      <li><strong>Schnorr-adaptor primitive</strong> — ed25519 variant (for USDm side) shipped; secp256k1 BIP-340 variant for Taproot HTLCs in progress.</li>
-      <li><strong>Three new host syscalls</strong> in the DarkVM — <code>VERIFY_SCHNORR_ADAPTOR_V1</code>, <code>ESCROW_LOCK_V1</code>, <code>ESCROW_RELEASE_V1</code>. Step cost 100,000 each.</li>
-      <li><strong>LP offer board</strong> — a chain-anchored bulletin (<code>/v1/atomic-swap/offers</code>) where LPs publish signed offers and users browse them. Operator cannot alter offer parameters or learn user-LP linkages.</li>
-      <li><strong>Discovery endpoint</strong> — <code>/v1/atomic-swap/contract</code> resolves the canonical AtomicSwapEscrow contractId from chain state by codeHash, with no hardcoded values on either client or server.</li>
-    </ul>
-
-    <p>v6 atomic swaps and the FROST-quorum PSM mint coexist: PSM mint is the high-throughput, predictable-price path for everyday Buy USDm; atomic swap is the operator-less, peer-to-peer path for users who prefer market-rate value-for-value trades. Same wrappers, same chain, different trust models.</p>
-
-    <h2 id="sovereign-hosting">22. Sovereign Web Hosting</h2>
-    <p>Every protocol whose UI lives on a single DNS hostname is one registrar takedown, one TLS revocation, one edge outage away from invisibility. MoneroUSD addresses this by mirroring every official front-end — <code>monerousd.org</code>, <code>ionswap.monerousd.org</code>, <code>explorer.monerousd.org</code>, <code>ide.monerousd.org</code>, <code>installers.monerousd.org</code> — <em>on chain</em>, with the desktop wallet serving byte-identical copies from a local HTTP server.</p>
-
-    <h3>22.1 Three-tier serving model</h3>
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Tier 1 (T1)</h4><div class="val">Bundled</div><p>Every desktop wallet ships every official site in its installer. Zero network round-trips. SHA-256 verified against the chain anchor before serving.</p></div>
-      <div class="wp-card"><h4>Tier 2 (T2)</h4><div class="val">Chain-anchored</div><p>Per-site <code>SITE_PUBLISH</code> attestation records the bundle&apos;s root hash + size + content-type on the USDm chain. <code>site-updater.js</code> background-polls indexer operators for newer versions, verifies hash, atomically swaps.</p></div>
-      <div class="wp-card"><h4>Tier 3 (T3)</h4><div class="val">Developer</div><p>Wallet can be pointed at a local dev directory for active site development. Marked &quot;⚠ Dev mode&quot; in the UI; never confused with verified content.</p></div>
-    </div>
-
-    <h3>22.2 Twenty invariants (SW-1..SW-20)</h3>
-    <p>Sovereign hosting is governed by twenty cryptographic + architectural invariants enforced in code:</p>
-    <ul class="wp-list">
-      <li><strong>SW-1</strong> — Served bytes match the chain-anchored hash. Every response streams through SHA-256 tee; mismatch ⇒ 503 + log + automatic T1 fallback.</li>
-      <li><strong>SW-2, SW-7</strong> — Only the registered publisher can update a domain. Rotation requires an on-chain <code>SITE_TRANSFER</code>.</li>
-      <li><strong>SW-3</strong> — Local sovereign-server NEVER binds an external interface. Loopback only.</li>
-      <li><strong>SW-5</strong> — Unverified third-party sites are sandboxed: <code>window.monerousd</code> throws <code>SOVEREIGN_SANDBOXED</code> until the user explicitly opts in. Verified sites get the provider unconditionally.</li>
-      <li><strong>SW-6</strong> — Hard CSP: no code escalation possible via bundle. <code>nodeIntegration:false</code>, <code>contextIsolation:true</code>.</li>
-      <li><strong>SW-17</strong> — Publishing fees (registration bond + per-KB update fee) route 100% to the protocol reserve. Every developer who publishes strengthens the peg.</li>
-      <li><strong>SW-20</strong> — Self-status surfaces query the CANONICAL anchor: a self-hosted fork of the IDE on <code>localhost:8080</code> shows the same on-chain anchor as <code>ide.monerousd.org</code>, because the bytes match by design.</li>
-    </ul>
-
-    <h3>22.3 Why this matters</h3>
-    <p>If <code>monerousd.org</code> goes dark — registrar pressure, TLS revocation, CDN kill — every installed wallet keeps serving the full UI surface locally. New installs can pull the bundle from any indexer operator, BitTorrent fallback, or another user&apos;s wallet over a libp2p mesh. The fees that fund this layer route entirely to the reserve, so the protocol grows stronger as developers publish more dapps.</p>
-
-    <h2 id="ide">23. MoneroUSD IDE</h2>
-    <p>The MoneroUSD IDE (<code>ide.monerousd.org</code>) is a browser-based development environment for the DSOL Dark Contract language: editor, compiler, browser-side DarkVM preview, on-chain <code>DC_DEPLOY</code> + <code>DC_CALL_*</code>, and <code>SITE_PUBLISH</code> for sovereign sites — all without leaving the wallet&apos;s approval flow.</p>
-
-    <h3>23.1 Architecture</h3>
-    <ul class="wp-list">
-      <li><strong>Single web bundle</strong> reachable three ways — clearnet (<code>ide.monerousd.org</code>), wallet launchpad <code>&lt;webview&gt;</code>, and sovereign mirror (<code>localhost:27752/ide.monerousd.org/</code>). All three serve byte-identical bytes by design.</li>
-      <li><strong>Vendored Monaco editor</strong> with a custom DSOL Monarch tokenizer + hover + completion + diagnostics. No CDN dependencies at runtime; everything ships in the bundle.</li>
-      <li><strong>In-page DSOL compiler</strong> — recompile on every save, surface errors as Monaco red squiggles + a Problems panel.</li>
-      <li><strong>Browser-side DarkVM</strong> for the Run tab. Local-only, sandbox-restricted (no syscalls fire — those are <code>SYSCALL_PREVIEW_DISABLED</code> by design). Lets developers verify logic before deploying.</li>
-      <li><strong>Deploy + Call</strong> via <code>window.monerousd.deployContract</code> / <code>window.monerousd.callContract</code>. Every chain-touching action goes through the wallet&apos;s standard approval modal — no new approval surface in the IDE.</li>
-    </ul>
-
-    <h3>23.2 What you can build</h3>
-    <p>The IDE ships with six DSOL templates (counter, token-transfer, erc-private, NFT collection, voting, escrow) and four site templates (blank, single-page bio, blog, dApp shell). The full DSOL language reference, the <code>PROTOCOL-DC-V1</code> ABI, and the sovereign-site <code>PROTOCOL-SITES-V1</code> ABI are bundled in the Reference panel for offline access.</p>
-    <p>The IDE was itself published to <code>ide.monerousd.org</code> via its own <code>SITE_PUBLISH</code> flow — the recursive bootstrap. The first sovereign site that publishes sovereign sites <em>is</em> a sovereign site.</p>
-
-    <h2 id="governance">24. Self-Upgrading Ecosystem &amp; Bicameral Governance</h2>
-    <p>The MoneroUSD ecosystem is community-owned. Every parameter that can change without breaking core invariants is governed by on-chain proposals; a small set of core invariants are protected by defense in depth across multiple independent layers. There is no admin key, no founder backdoor, no upgrade authority above the validator quorum.</p>
-
-    <h3>24.1 Six governance namespaces</h3>
-    <table>
-      <thead><tr><th>Namespace</th><th>What it changes</th><th>Validator quorum</th><th>Miner quorum</th><th>TTL</th><th>Bond</th></tr></thead>
-      <tbody>
-        <tr><td><code>Idea/*</code></td><td>Informational (no enactment)</td><td>—</td><td>—</td><td>7d</td><td>100 USDm</td></tr>
-        <tr><td><code>Mimir/*</code></td><td>Bounded parameter tweak</td><td>⌈2n/3⌉</td><td>½ of signaled @ 10%</td><td>7d</td><td>100 USDm</td></tr>
-        <tr><td><code>Upgrade/*</code></td><td>ETH PSM contract upgrade</td><td>⌈2n/3⌉</td><td>⌈2n/3⌉ @ 30%</td><td>7d + 24h timelock</td><td>100 USDm</td></tr>
-        <tr><td><code>DSOLUpgrade/*</code></td><td>Replace Dark Contract bytecode</td><td>⌈2n/3⌉</td><td>⌈2n/3⌉ @ 30%</td><td>7d</td><td>100 USDm</td></tr>
-        <tr><td><code>Rollback/*</code></td><td>Un-enact a prior DSOL change</td><td>⌈2n/3⌉</td><td>⌈2n/3⌉ @ 30%</td><td>7d</td><td>100 USDm</td></tr>
-        <tr><td><code>Constitutional/*</code></td><td>Amend Constitution (within bounds)</td><td>⌈4n/5⌉</td><td>⌈4n/5⌉ @ 30%</td><td>30d + 60d activation</td><td>1000 USDm</td></tr>
-        <tr><td><code>EmergencyCancel/*</code></td><td>Cancel a pending proposal</td><td>⌈n/2⌉</td><td>—</td><td>1d</td><td>100 USDm</td></tr>
-      </tbody>
-    </table>
-
-    <h3>24.2 Bicameral consensus — validators AND miners</h3>
-    <p>Every enacting proposal requires <em>both</em> a validator quorum AND a miner-hashpower quorum, with a per-namespace participation floor (10% of blocks for Mimir, 30% for Upgrade-class, 50% for daemon binary upgrades). This is the structural answer to &quot;huge hashpower vs. many bonded validators — neither should overpower the other.&quot;</p>
-    <p>An attacker holding 4/5 of validators but only 1/2 of hashpower cannot pass any state-mutating proposal; an attacker renting 2/3 hashpower but only controlling 1/2 of validators is equally blocked. The combined cost is the <em>product</em> of two independent expensive attacks sustained across the full TTL, with the 1-day <code>EmergencyCancel</code> as a community-driven veto if a manipulation slips past initial review.</p>
-
-    <h3>24.3 The Constitution — defense in depth</h3>
-    <p>The on-chain Constitution exposes two classes of slot: <em>amendable-within-bounds</em> (rate parameters with min/max guardrails the community can tune) and <em>protected</em> (core invariants the protocol relies on). Protected invariants are enforced at four independent layers:</p>
-    <ol class="wp-list">
-      <li><strong>Smart contract layer</strong> — <code>Constitution.dsol</code> exposes no setter for protected slots; calls to mutate them fail at the language level.</li>
-      <li><strong>Backend application layer</strong> — <code>checkProposalConstitutional</code> rejects every proposal targeting a protected slot before any bond is escrowed.</li>
-      <li><strong>Wallet pre-broadcast layer</strong> — the wallet-side mirror rejects the proposal before the user spends the bond, surfacing the rejection in the approval modal.</li>
-      <li><strong>Daemon consensus layer</strong> — every USDmd binary hardcodes the consensus check that each block conforms to the Constitution. Non-conforming blocks are rejected by every honest node.</li>
-    </ol>
-    <p>A successful attack would need to compromise all four layers <em>simultaneously</em>. The community always retains Bitcoin-style social hard-fork resistance — refusing to run a daemon binary that breaks the rule.</p>
-
-    <h3>24.4 Sybil-resistant validator entry</h3>
-    <p>Validators bond USDm to apply, and the bond scales superlinearly with validator count: <code>bond_N = MIN_BOND × (1 + N²/10000)</code>. Cumulative attacker cost to deploy K Sybil validators:</p>
-    <table>
-      <thead><tr><th>K Sybils</th><th>Cumulative bond cost (× MIN_BOND)</th></tr></thead>
-      <tbody>
-        <tr><td>10</td><td>~10×</td></tr>
-        <tr><td>100</td><td>~13× (13,000 USDm at MIN_BOND = 100)</td></tr>
-        <tr><td>1,000</td><td>~333× (333,000 USDm)</td></tr>
-        <tr><td>10,000</td><td>~3,333× (astronomical)</td></tr>
-      </tbody>
-    </table>
-    <p>Combined with bicameral consensus, even a successful Sybil on validators cannot pass enacting proposals without ALSO controlling 2/3 of hashpower. The two defenses multiply: the cost to manipulate the protocol is the product of validator-Sybil and hashpower-rental costs, sustained across the full TTL.</p>
-
-    <h3>24.5 What the community can change</h3>
-    <p>Within Constitution bounds, the community can vote to: adjust fee splits (subject to <code>MIMIR_BOUNDS</code>), upgrade Dark Contracts, change miner-emission curves, add new wrapped assets, rotate the amendment driver&apos;s FROST quorum, transfer sovereign-site domain ownership, and roll back any prior DSOL change. Every enactment is chain-anchored, every proposal is publicly auditable, and every bond contributes to the reserve.</p>
-
-    <h2 id="future">25. Future Work</h2>
-    <p>Several areas are under active development or consideration for future protocol upgrades:</p>
-    <ul class="wp-list">
-      <li><strong>Multi-node infrastructure:</strong> The one-click desktop node and terminal installer now make it easy for anyone to run a node. The next step is deploying geographically distributed seed nodes to eliminate single-VPS dependency, improve sync latency, and strengthen network resilience through community-operated infrastructure.</li>
-      <li><strong>Sovereign web hosting on the MoneroUSD blockchain:</strong> Bringing the entire monerousd.org site, Ion Swap, the block explorer, and every protocol dashboard inside the desktop wallet as a locally hostable, censorship-proof service. Chain-anchored content addressing ensures that if any domain is taken down, every user's wallet continues to serve a byte-identical copy peer-to-peer. Adds a launchpad tile for self-hosting these sites locally.</li>
-      <li><strong>Additional collateral types:</strong> Expanding reserve assets beyond BTC and XMR. Candidates include other major proof-of-work assets. Any addition must meet strict liquidity and decentralization requirements.</li>
-      <li><strong>Mobile wallet:</strong> Native iOS and Android wallet applications that perform all cryptographic operations locally on the device, matching the desktop wallet's local-first architecture.</li>
-      <li><strong>Governance exploration:</strong> On-chain governance for protocol parameter updates (fee schedule, collateral ratios) that preserves the deterministic nature of the current design while allowing community input. This is approached cautiously — governance capture is a real risk.</li>
-    </ul>
-
-    <h2 id="conclusion">26. Conclusion</h2>
-    <p>MoneroUSD proves privacy and stability are not a tradeoff. Built on Monero&apos;s battle-tested privacy stack and extended with FCMP++, overcollateralized BTC + XMR reserves, adaptive fees, and usage-proportional emission, USDm delivers a digital dollar that respects user sovereignty without compromising on the privacy guarantees Monero users expect.</p>
-    <p>Ion Swap, Dark Contracts, and the cross-chain bridge turn that foundation into a complete private DeFi ecosystem — sealed-bid AMM, programmable smart contracts in DarkSolidity, custom <code>ion1_</code> tokens, hidden-ownership NFTs, multi-chain wrapped assets, and CPU-friendly RandomX mining. Every contract inherits privacy by construction: Pedersen commitments backed by Bulletproofs++ range proofs, commit-reveal that defeats front-running, AES-GCM-encrypted events sealed to the caller&apos;s viewkey, and tail-only inter-contract calls that make reentrancy impossible.</p>
-    <p>The protocol is non-custodial, deterministic, and open-source from the daemon to the contract layer. Settlement keys are bound to the chain, not to any operator. Fee revenue routes through a frozen three-lane split (reserves, protocol-owned liquidity, bounty) that monotonically strengthens the peg with every trade and every bridge. Tradeoffs are acknowledged honestly: standalone privacy chain (no Ethereum DeFi composition), ~20-second sealed-bid batch latency (MEV is cryptographically impossible), flat per-call resource ceilings (deterministic over auction-priced).</p>
-    <p>MoneroUSD is not a replacement for Monero — it&apos;s a complement, built by the same principles: privacy by default, keys on your machine, no surveillance, no compromises. For users who refuse to choose between financial privacy and a working DeFi stack, this is the answer.</p>
-    <p style="text-align: center; color: var(--muted); margin-top: 32px; font-size: 0.92rem;">The MoneroUSD protocol is open source. Verify everything. Trust nothing.</p><p style="text-align: right; color: var(--muted); margin-top: 24px; font-size: 0.95rem; font-style: italic; padding-right: 28px;">— Cas</p>
+    <h2 id="conclusion">27. Conclusion</h2>
+    <p>MoneroUSD proves that privacy, stability, post-quantum security, and scale are not a series of trade-offs to be balanced — they can all be true at once, by construction. A confidential dollar you can verify on a phone; a DEX where no one can see your trade; payments as simple as a username; a network no single party can stop. That is the launch vision, and the whole ecosystem is built to deliver it from day one.</p>
+    <p style="text-align: center; color: var(--muted); margin-top: 32px; font-size: 0.92rem;">The MoneroUSD protocol is open source. Verify everything. Trust nothing.</p>
+    <p style="text-align: right; color: var(--muted); margin-top: 24px; font-size: 0.95rem; font-style: italic; padding-right: 28px;">— Cas</p>
   </div>
 
-  <footer><p>MoneroUSD &copy; 2026 — <a href="/">Home</a> · <a href="/about.html">Details</a> · <a href="/whitepaper.html">Whitepaper</a></p></footer>
+  <footer><p>MoneroUSD &copy; 2026 — <a href="/">Home</a> · <a href="/about.html">Details</a> · <a href="/whitepaper.html">Whitepaper</a> · <a href="/whitepaper-quickref.html">Quick Reference</a></p></footer>
 <script>
 (function() {
   var btn = document.getElementById('navHamburger');
