@@ -132,90 +132,134 @@
     }
     @media (max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
     @media print {
-      /* Page geometry */
-      @page { size: letter; margin: 18mm 16mm 18mm 16mm; }
-      @page :first { margin-top: 12mm; }
+      /* The downloadable PDF and any browser "Print" of this page must match the
+         ON-SCREEN dark theme (black bg, light text, orange accents) — NOT a white
+         page. print-color-adjust:exact tells the renderer to KEEP our background
+         colors instead of stripping them for "ink saving" (the reason the old
+         white-swap PDF lost the theme). Same color tokens as :root above. */
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* Full-bleed: zero @page margin so the dark background reaches the paper
+         edge (no white frame). Section padding below supplies the safe inset. */
+      @page { size: letter; margin: 0; }
+
+      /* Global — identical dark tokens to the on-screen design */
+      html, body {
+        background: #0a0a0a !important;   /* --bg   */
+        color: #eaeaea !important;        /* --text */
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      body { line-height: 1.55 !important; font-size: 10.5pt !important; -webkit-font-smoothing: antialiased; }
 
       /* Hide site chrome */
       nav, .nav-mobile-menu, footer, .download-pdf-btn { display: none !important; }
       .nav-hamburger { display: none !important; }
 
-      /* Print-safe colors — keep the black-bg, orange-accent identity readable on paper.
-         Site stays dark on screen; print swaps to white background with retained orange
-         accents and a darker text color so dim greys don't ghost out. */
-      body { background: #fff !important; color: #1a1a1a !important; line-height: 1.55; font-size: 10.5pt; }
-      .wp-hero::before { display: none !important; }
-      .wp-hero { padding: 0 0 24px !important; }
-      .wp-logo { width: 64px; height: 64px; filter: none !important; }
-      .wp-title { font-size: 24pt !important; color: #1a1a1a; }
-      .wp-title span { color: #e55a00; }
-      .wp-version, .wp-date { color: #555 !important; }
+      /* Hero — full-bleed dark, its own page; keep the orange halo */
+      .wp-hero {
+        background: #0a0a0a !important;
+        padding: 42mm 18mm 26mm !important;
+        text-align: center !important;
+        position: relative !important; overflow: hidden !important;
+        page-break-after: always; break-after: page;
+      }
+      .wp-hero::before {
+        content: '' !important; display: block !important; position: absolute !important;
+        top: 0 !important; left: 50% !important; transform: translateX(-50%) !important;
+        width: 170mm !important; height: 170mm !important;
+        background: radial-gradient(circle, rgba(255,102,0,0.30) 0%, transparent 65%) !important;
+        opacity: 0.3 !important; pointer-events: none !important;
+      }
+      .wp-hero > * { position: relative; z-index: 1; }
+      .wp-logo { width: 22mm !important; height: 22mm !important; filter: drop-shadow(0 0 8mm rgba(255,102,0,0.4)) !important; }
+      .wp-title { font-size: 30pt !important; color: #eaeaea !important; }
+      .wp-title span { color: #FF6600 !important; }
+      .wp-version { color: #b8b8b8 !important; }
+      .wp-date { color: #888 !important; }
 
-      /* Table of Contents — render once, never split */
-      .toc { background: #fff !important; border: 1px solid #888 !important; max-width: 100% !important; margin: 0 0 18pt !important; padding: 14pt 18pt !important; page-break-inside: avoid; page-break-after: always; }
-      .toc h2 { color: #555 !important; }
-      .toc li a { color: #1a1a1a !important; border-bottom: 1px solid #ddd !important; }
-      .toc li a::before { color: #e55a00 !important; }
+      /* Table of Contents — dark, its own page, never split */
+      .toc {
+        background: #0a0a0a !important; border: none !important;
+        max-width: 100% !important; margin: 0 !important;
+        padding: 18mm 18mm !important; border-radius: 0 !important;
+        page-break-inside: avoid; break-inside: avoid;
+        page-break-after: always; break-after: page;
+      }
+      .toc h2 { color: #FF6600 !important; text-align: center; }
+      .toc ol { max-width: 140mm; margin: 0 auto; }
+      .toc li a { color: #eaeaea !important; border-bottom: 1px solid rgba(255,255,255,0.08) !important; }
+      .toc li:last-child a { border-bottom: none !important; }
+      .toc li a::before { color: #FF6600 !important; }
 
-      /* Body content — never page-break inside an atomic block */
-      .wp-content { max-width: 100% !important; padding: 0 !important; }
-      .wp-content h2 { color: #e55a00 !important; font-size: 16pt !important;
-                       margin: 22pt 0 10pt; padding-top: 12pt; border-top: 1px solid #ccc !important;
+      /* Body content — full-bleed dark with a safe side inset */
+      .wp-content { max-width: 100% !important; margin: 0 !important; padding: 16mm 18mm 24mm !important; background: #0a0a0a !important; }
+      .wp-content h2 { color: #FF6600 !important; font-size: 16pt !important;
+                       margin: 22pt 0 10pt; padding-top: 12pt; border-top: 1px solid #2a2a2a !important;
                        page-break-before: auto; page-break-after: avoid; break-after: avoid; }
       .wp-content h2:first-of-type { border-top: none !important; margin-top: 0; padding-top: 0; }
-      .wp-content h3 { font-size: 12pt !important; color: #1a1a1a !important;
+      .wp-content h3 { font-size: 12pt !important; color: #FFD8A0 !important;
                        margin: 18pt 0 8pt; page-break-after: avoid; break-after: avoid; }
-      .wp-content p { margin-bottom: 8pt; orphans: 3; widows: 3; }
+      .wp-content p { color: #eaeaea !important; margin-bottom: 8pt; orphans: 3; widows: 3; }
+      .wp-content strong { color: #FFD8A0 !important; }
+      .wp-content code { background: #1a1a1a !important; color: #FF8833 !important; }
 
-      /* Atomic blocks — keep formulas, code, diagrams, tables, notes whole */
-      .wp-formula, .wp-note, .wp-diagram, .wp-card, .wp-card-grid,
-      .tier-bar, table, pre, blockquote, ul.wp-list, ol {
+      /* Atomic blocks — never page-break inside a visual unit */
+      .wp-note, .wp-diagram, .wp-card, .wp-card-grid,
+      .tier-bar, blockquote, ul.wp-list, .wp-svg, figure {
         page-break-inside: avoid; break-inside: avoid;
       }
+      /* Text-like blocks flow at line/row boundaries (no big bottom gaps) */
+      .wp-formula, pre, table { page-break-inside: auto; break-inside: auto; }
 
-      /* Formulas / code blocks — print-tinted box, mono color preserved */
-      .wp-formula { background: #faf6f3 !important; border: 1px solid #d8c3b0 !important;
-                    color: #c14400 !important; font-size: 9pt !important; padding: 10pt 12pt !important; white-space: pre-wrap; word-break: break-word; }
-      .wp-formula .label { color: #777 !important; }
+      /* Formulas / code blocks — dark panel, mono orange */
+      .wp-formula { background: #0d0d0d !important; border: 1px solid #2a2a2a !important;
+                    color: #FF8833 !important; font-size: 9pt !important; padding: 10pt 12pt !important; white-space: pre-wrap; word-break: break-word; }
+      .wp-formula .label { color: #888 !important; }
 
-      /* Notes — orange-tinted side bar reads cleanly on paper */
-      .wp-note { background: #fff7f0 !important; border-left: 3px solid #e55a00 !important; color: #1a1a1a !important; }
-      .wp-note strong { color: #c14400 !important; }
+      /* Notes — orange-tinted side bar on dark */
+      .wp-note { background: rgba(255,102,0,0.10) !important; border-left: 3px solid #FF6600 !important; color: #eaeaea !important; }
+      .wp-note strong { color: #FF8833 !important; }
 
-      /* Cards / stat grids — flatten to a 2-up so they fit per page */
+      /* Cards / stat grids — dark, 2-up */
       .wp-card-grid { grid-template-columns: 1fr 1fr !important; gap: 8pt !important; }
-      .wp-card { background: #fff !important; border: 1px solid #ccc !important; padding: 10pt !important; page-break-inside: avoid; }
-      .wp-card .val { color: #c14400 !important; font-size: 12pt !important; }
-      .wp-card h4, .wp-card p { color: #555 !important; }
+      .wp-card { background: #161616 !important; border: 1px solid #2a2a2a !important; padding: 10pt !important; page-break-inside: avoid; }
+      .wp-card .val { color: #FF6600 !important; font-size: 12pt !important; }
+      .wp-card h4 { color: #888 !important; }
+      .wp-card p { color: #b8b8b8 !important; }
 
-      /* Tier bars — keep semantic color but on a printable background */
-      .tier-bar { border: 1px solid #ddd !important; background: #fafafa !important; }
-      .tier-normal .label, .tier-normal .rate { color: #16803c !important; }
-      .tier-warning .label, .tier-warning .rate { color: #a16207 !important; }
-      .tier-stress .label, .tier-stress .rate { color: #c14400 !important; }
-      .tier-emergency .label, .tier-emergency .rate { color: #b91c1c !important; }
+      /* Tier bars — dark with semantic accent colors kept */
+      .tier-bar { border: 1px solid #2a2a2a !important; background: #161616 !important; }
+      .tier-normal .label, .tier-normal .rate { color: #22c55e !important; }
+      .tier-warning .label, .tier-warning .rate { color: #eab308 !important; }
+      .tier-stress .label, .tier-stress .rate { color: #FF6600 !important; }
+      .tier-emergency .label, .tier-emergency .rate { color: #ef4444 !important; }
 
-      /* Diagrams — collapse the SVG halo, keep the box flat-rendered */
-      .wp-diagram { background: #fff !important; border: 1px solid #ccc !important; padding: 12pt !important; page-break-inside: avoid; }
-      .wp-diagram .node { background: #fafafa !important; border: 1px solid #ccc !important; }
-      .wp-diagram .node.orange { border-color: #e55a00 !important; color: #c14400 !important; background: #fff7f0 !important; }
+      /* Diagrams — dark panel */
+      .wp-diagram { background: #0d0d0d !important; border: 1px solid #2a2a2a !important; padding: 12pt !important; page-break-inside: avoid; }
+      .wp-diagram .node { background: #1a1a1a !important; border: 1px solid #333 !important; color: #eaeaea !important; }
+      .wp-diagram .node.orange { border-color: #FF6600 !important; color: #FF8833 !important; background: rgba(255,102,0,0.10) !important; }
       .wp-diagram .arrow { color: #888 !important; }
-      .wp-diagram .caption { color: #555 !important; }
+      .wp-diagram .caption { color: #888 !important; }
 
-      /* Tables — repeat header on every page they span; never split a row */
-      .wp-content table { font-size: 9.5pt !important; border-collapse: collapse; page-break-inside: auto; }
+      /* Tables — dark, repeat header on every page, never split a row */
+      .wp-content table { font-size: 9.5pt !important; border-collapse: collapse; border: 1px solid #2a2a2a !important; page-break-inside: auto; }
       .wp-content thead { display: table-header-group; }
       .wp-content tr { page-break-inside: avoid; break-inside: avoid; }
-      .wp-content th { background: #f5f5f5 !important; color: #555 !important; border-bottom: 1px solid #999 !important; }
-      .wp-content td { border-bottom: 1px solid #e0e0e0 !important; color: #1a1a1a !important; }
+      .wp-content th { background: rgba(255,102,0,0.12) !important; color: #FFD8A0 !important; border-bottom: 1px solid #444 !important; }
+      .wp-content td { background: #111 !important; color: #eaeaea !important; border-bottom: 1px solid #1f1f1f !important; }
+      .wp-content tr:nth-child(even) td { background: #161616 !important; }
       .wp-content tr:hover { background: transparent !important; }
 
       /* Lists — keep the orange marker, never orphan the trailing item */
-      ul.wp-list li::marker { color: #e55a00 !important; }
+      ul.wp-list li::marker { color: #FF6600 !important; }
       ul.wp-list li { page-break-inside: avoid; }
 
-      /* Links — readable on paper without underlining every URL */
-      a, a:visited { color: #c14400 !important; text-decoration: none !important; }
+      /* Links — orange, readable on dark, no URL expansion */
+      a, a:visited { color: #FF8833 !important; text-decoration: none !important; }
       a[href^="http"]::after { content: ""; }
     }
 
