@@ -1,4 +1,35 @@
 <!DOCTYPE html>
+<!--
+   Copyright (c) 2026, The MoneroUSD Protocol
+   All rights reserved.
+
+   This file is an original work of the MoneroUSD Protocol — a post-quantum,
+   GHOSTDAG block-DAG, zero-knowledge confidential-value protocol. It is NOT part
+   of the Monero Project. It is licensed under the MoneroUSD Protocol License
+   (BSD 3-Clause with a mandatory attribution-and-display clause); see the
+   LICENSE.MoneroUSD-Protocol file distributed with this source.
+
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this
+      list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice, this
+      list of conditions and the following disclaimer in the documentation and/or
+      other materials provided with the distribution.
+   3. Neither the name of the copyright holder nor the names of its contributors may
+      be used to endorse or promote products derived from this software without
+      specific prior written permission.
+   4. ATTRIBUTION AND DISPLAY: any product, fork, service, or derivative work that
+      uses this software or the cryptographic/consensus/transport advances embodied
+      herein must retain and prominently display the MoneroUSD Protocol License and
+      must credit "The MoneroUSD Protocol" as the origin of those advances.
+
+   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+   ANY DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE.
+-->
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -272,7 +303,7 @@ kill -0 $(cat ~/.monerousd/USDmd.pid) && echo "Daemon running"</pre>
   --daemon-address 127.0.0.1:17750 \
   --generate-new-wallet ~/monerousd-wallet/miner \
   --password "YOUR_SECURE_PASSWORD"</pre>
-    <div class="warn"><strong>Important:</strong> Write down your 25-word seed phrase and store it safely. It is the only way to recover your wallet.</div>
+    <div class="warn"><strong>Important:</strong> Write down your recovery seed and store it safely. It is the only way to recover your wallet — the seed alone restores your full balance and spendability at any chain height.</div>
 
     <h3>Start Mining</h3>
 <pre id="miningCmd"><span class="comment"># Get your wallet address</span>

@@ -1,689 +1,390 @@
 <!DOCTYPE html>
+<!--
+   Copyright (c) 2026, The MoneroUSD Protocol
+   All rights reserved.
+
+   This file is an original work of the MoneroUSD Protocol — a post-quantum,
+   GHOSTDAG block-DAG, zero-knowledge confidential-value protocol. It is NOT part
+   of the Monero Project. It is licensed under the MoneroUSD Protocol License
+   (BSD 3-Clause with a mandatory attribution-and-display clause); see the
+   LICENSE.MoneroUSD-Protocol file distributed with this source.
+
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this
+      list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice, this
+      list of conditions and the following disclaimer in the documentation and/or
+      other materials provided with the distribution.
+   3. Neither the name of the copyright holder nor the names of its contributors may
+      be used to endorse or promote products derived from this software without
+      specific prior written permission.
+   4. ATTRIBUTION AND DISPLAY: any product, fork, service, or derivative work that
+      uses this software or the cryptographic/consensus/transport advances embodied
+      herein must retain and prominently display the MoneroUSD Protocol License and
+      must credit "The MoneroUSD Protocol" as the origin of those advances.
+
+   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+   ANY DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE.
+-->
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MoneroUSD Whitepaper v3 — Post-Quantum Private Dollar &amp; Ecosystem</title>
-  <meta name="description" content="MoneroUSD (USDm) whitepaper v3: a post-quantum, fully private USD stablecoin and ecosystem — PQ-FCMP++ privacy, zero-knowledge confidential amounts, a block-DAG with constant-size verification, the Ion Swap post-quantum DEX, usernames, and USDm Pay." />
-  <style>
-    @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
-    @font-face { font-family: 'JetBrains Mono'; src: url('/fonts/jetbrainsmono-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MoneroUSD — Whitepaper V2</title>
+<meta name="description" content="MoneroUSD Whitepaper V2 — single-page feature reference. Private USD stablecoin with FROST custody, atomic swaps, private light wallet restore, sovereign hosting, and self-upgrading governance." />
+<style>
+  /* ── Fonts ─────────────────────────────────────────────────────────────── */
+  @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+  @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
 
-    :root {
-      --orange: #FF6600;
-      --orange-glow: rgba(255,102,0,0.3);
-      --orange-dim: rgba(255,102,0,0.12);
-      --bg: #0a0a0a;
-      --surface: #111;
-      --card: #161616;
-      --border: #222;
-      --text: #eaeaea;
-      --muted: #888;
-      --green: #22c55e;
-      --yellow: #eab308;
-      --red: #ef4444;
+  /* ── Palette ───────────────────────────────────────────────────────────── */
+  :root {
+    --orange:        #FF6600;
+    --orange-soft:   rgba(255,102,0,0.10);
+    --orange-line:   rgba(255,102,0,0.35);
+    --orange-glow:   rgba(255,102,0,0.22);
+    --bg:            #0a0a0a;
+    --paper:         #0c0c0c;  /* tiny inset under the "sheet" */
+    --text:          #ececec;
+    --muted:         #9a9a9a;
+    --rule:          rgba(255,102,0,0.20);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.28;
+    min-height: 100vh;
+    padding: 18px 0 24px;
+    /* Subtle orange wash so the page doesn't feel flat — easy on eyes, not loud */
+    background-image:
+      radial-gradient(ellipse 1000px 500px at 50% 0%, rgba(255,102,0,0.05) 0%, transparent 65%);
+    background-attachment: fixed;
+  }
+
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { color: #ffaa66; text-decoration: underline; }
+  strong { color: var(--orange); font-weight: 600; }
+
+  /* ── Ribbon (hidden in print) ───────────────────────────────────────────── */
+  .ribbon {
+    max-width: 8.5in;
+    margin: 0 auto 16px;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--orange-line);
+    border-radius: 8px;
+    background: rgba(10,10,10,0.6);
+    backdrop-filter: blur(8px);
+    font-size: 0.85rem;
+  }
+  .ribbon-left { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 600; }
+  .ribbon-left img { height: 22px; width: 22px; filter: drop-shadow(0 0 6px var(--orange-glow)); }
+  .ribbon-right { display: flex; gap: 8px; }
+  .ribbon-btn {
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    border-radius: 5px;
+    border: 1px solid var(--orange-line);
+    color: var(--orange);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .ribbon-btn.solid { background: var(--orange); color: #0a0a0a; border-color: var(--orange); }
+  .ribbon-btn:hover { background: var(--orange); color: #0a0a0a; border-color: var(--orange); }
+
+  /* ── The "sheet" — sized for US Letter (8.5x11) with 0.30in margins ─────── */
+  .sheet {
+    max-width: 8.5in;
+    margin: 0 auto;
+    padding: 0.30in 0.42in 0.30in 0.42in;
+    background: var(--paper);
+    border: 1px solid rgba(255,102,0,0.08);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.02),
+      0 30px 80px rgba(0,0,0,0.6),
+      0 0 60px rgba(255,102,0,0.04);
+  }
+
+  /* ── Title block ────────────────────────────────────────────────────────── */
+  .title {
+    text-align: center;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid var(--orange);
+    box-shadow: 0 1px 0 var(--rule);
+    margin-bottom: 6px;
+  }
+  .title h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+  }
+  .title h1 span { color: var(--orange); }
+  .title .sub {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.01em;
+  }
+  .title .meta {
+    font-size: 0.62rem;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Abstract (single column, slightly indented) ────────────────────────── */
+  .abstract {
+    font-size: 0.76rem;
+    line-height: 1.42;
+    padding: 6px 11px;
+    margin-bottom: 8px;
+    border-left: 2px solid var(--orange);
+    background: rgba(255,102,0,0.04);
+    color: var(--text);
+  }
+  .abstract .label {
+    color: var(--orange);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  /* ── Two-column body ────────────────────────────────────────────────────── */
+  .body {
+    column-count: 2;
+    column-gap: 0.24in;
+    column-rule: 1px solid rgba(255,102,0,0.10);
+  }
+
+  /* ── Section heading — orange uppercase with thin rule ──────────────────── */
+  .body h2 {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    margin-top: 7px;
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--rule);
+    break-after: avoid;
+  }
+  .body h2:first-child { margin-top: 0; }
+  .body h2 .num {
+    color: var(--muted);
+    font-weight: 600;
+    margin-right: 4px;
+    font-size: 0.62rem;
+  }
+
+  /* ── Feature list — inline definition style ─────────────────────────────── */
+  .features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .features li {
+    font-size: 0.68rem;
+    line-height: 1.34;
+    margin-bottom: 2px;
+    color: var(--text);
+    break-inside: avoid;
+  }
+  .features li b {
+    color: var(--orange);
+    font-weight: 600;
+    margin-right: 3px;
+  }
+  .features li b::after { content: ' — '; color: var(--muted); }
+
+  /* ── Footer below the body (still inside the sheet) ─────────────────────── */
+  .foot {
+    margin-top: 6px;
+    padding-top: 4px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.58rem;
+    line-height: 1.4;
+  }
+  .foot .links {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .foot a { color: var(--orange); }
+
+  /* ── Print: collapse ribbon, push sheet to full bleed of paper ──────────── */
+  @media print {
+    @page { size: letter; margin: 0; }
+    html, body {
+      background: #000 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; }
-    a { color: var(--orange); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    /* Navigation */
-    nav { background: rgba(10,10,10,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,102,0,0.1); padding: 0 28px; position: sticky; top: 0; z-index: 100; }
-    .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 68px; }
-    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); font-weight: 700; font-size: 1.2rem; }
-    .nav-logo img { height: 36px; width: 36px; }
-    .nav-links { display: flex; gap: 24px; align-items: center; }
-    .nav-links a { color: var(--muted); font-size: 0.9rem; font-weight: 500; }
-    .nav-links a:hover { color: var(--text); text-decoration: none; }
-    .nav-links a.active { color: var(--orange); }
-
-    .nav-hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 40px; height: 40px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.25s; }
-    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .nav-mobile-menu { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,102,0,0.15); padding: 8px 0 16px; z-index: 99; }
-    .nav-mobile-menu.open { display: flex; }
-    .nav-mobile-menu a { color: var(--muted); text-decoration: none; font-size: 1rem; font-weight: 500; padding: 14px 28px; border-bottom: 1px solid rgba(255,255,255,0.04); transition: color 0.2s, background 0.2s; }
-    .nav-mobile-menu a:last-child { border-bottom: none; }
-    .nav-mobile-menu a:hover { color: var(--text); background: rgba(255,102,0,0.05); text-decoration: none; }
-    .nav-mobile-menu .btn-wallet-mobile { margin: 12px 28px 0; background: var(--orange); color: #fff; border-radius: 10px; text-align: center; padding: 13px 24px; font-weight: 600; border-bottom: none; }
-
-    /* Hero/Title */
-    .wp-hero { text-align: center; padding: 80px 28px 48px; position: relative; overflow: hidden; }
-    .wp-hero::before { content: ''; position: absolute; top: -60%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%); opacity: 0.15; pointer-events: none; }
-    .wp-logo { width: 80px; height: 80px; margin: 0 auto 24px; filter: drop-shadow(0 0 30px rgba(255,102,0,0.3)); }
-    .wp-title { font-size: 2.6rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
-    .wp-title span { color: var(--orange); }
-    .wp-version { color: var(--muted); font-size: 0.95rem; margin-bottom: 8px; }
-    .wp-date { color: var(--muted); font-size: 0.85rem; }
-    .download-pdf-btn:hover { background: #e55a00 !important; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(255,102,0,0.3); }
-
-    /* Table of Contents */
-    .toc { max-width: 480px; margin: 0 auto 64px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; }
-    .toc h2 { font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; border: none; padding: 0; }
-    .toc ol { list-style: none; counter-reset: toc; }
-    .toc li { counter-increment: toc; }
-    .toc li a { display: flex; align-items: center; padding: 8px 0; color: var(--text); font-size: 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.03); transition: color 0.15s; }
-    .toc li a:hover { color: var(--orange); text-decoration: none; }
-    .toc li a::before { content: counter(toc) "."; color: var(--orange); font-weight: 700; width: 28px; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
-    .toc li:last-child a { border-bottom: none; }
-
-    /* Content */
-    .wp-content { max-width: 820px; margin: 0 auto; padding: 0 28px 80px; }
-    .wp-content h2 { font-size: 1.6rem; font-weight: 700; color: var(--orange); margin: 56px 0 16px; padding-top: 24px; border-top: 1px solid var(--border); }
-    .wp-content h2:first-of-type { border-top: none; margin-top: 0; }
-    .wp-content h3 { font-size: 1.15rem; font-weight: 600; margin: 32px 0 12px; color: var(--text); }
-    .wp-content p { margin-bottom: 16px; color: var(--text); font-size: 0.98rem; }
-
-    .wp-content table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; }
-    .wp-content th { text-align: left; padding: 10px 14px; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); background: var(--card); }
-    .wp-content td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
-    .wp-content tr:hover { background: rgba(255,102,0,0.03); }
-
-    .wp-formula { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin: 16px 0 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--orange); overflow-x: auto; }
-    .wp-formula .label { color: var(--muted); font-size: 0.8rem; display: block; margin-bottom: 8px; font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
-
-    .wp-note { background: rgba(255,102,0,0.06); border-left: 3px solid var(--orange); padding: 16px 20px; border-radius: 0 10px 10px 0; margin: 16px 0 24px; font-size: 0.92rem; }
-    .wp-note strong { color: var(--orange); }
-
-    .wp-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 16px 0 24px; }
-    .wp-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-    .wp-card h4 { font-size: 0.82rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .wp-card .val { font-size: 1.3rem; font-weight: 700; color: var(--orange); font-family: 'JetBrains Mono', monospace; }
-    .wp-card p { font-size: 0.88rem; color: var(--muted); margin-top: 4px; margin-bottom: 0; }
-
-    .tier-bar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 10px; margin-bottom: 8px; font-size: 0.9rem; }
-    .tier-bar .label { font-weight: 600; min-width: 80px; }
-    .tier-bar .desc { color: var(--muted); flex: 1; }
-    .tier-bar .rate { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
-    .tier-normal { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.15); }
-    .tier-normal .label, .tier-normal .rate { color: var(--green); }
-    .tier-warning { background: rgba(234,179,8,0.08); border: 1px solid rgba(234,179,8,0.15); }
-    .tier-warning .label, .tier-warning .rate { color: var(--yellow); }
-    .tier-stress { background: rgba(255,102,0,0.08); border: 1px solid rgba(255,102,0,0.15); }
-    .tier-stress .label, .tier-stress .rate { color: var(--orange); }
-    .tier-emergency { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.15); }
-    .tier-emergency .label, .tier-emergency .rate { color: var(--red); }
-
-    .wp-diagram { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 16px 0 24px; text-align: center; }
-    .wp-diagram .flow { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; font-size: 0.9rem; }
-    .wp-diagram .node { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-weight: 600; }
-    .wp-diagram .node.orange { border-color: var(--orange); color: var(--orange); background: rgba(255,102,0,0.06); }
-    .wp-diagram .arrow { color: var(--muted); font-size: 1.2rem; }
-    .wp-diagram .caption { color: var(--muted); font-size: 0.82rem; margin-top: 12px; }
-
-    ul.wp-list { margin: 8px 0 20px 20px; }
-    ul.wp-list li { margin-bottom: 8px; font-size: 0.95rem; }
-    ul.wp-list li::marker { color: var(--orange); }
-
-    footer { border-top: 1px solid var(--border); padding: 24px 28px; text-align: center; color: var(--muted); font-size: 0.8rem; }
-
-    @media (max-width: 640px) {
-      .wp-title { font-size: 1.8rem; }
-      .wp-card-grid { grid-template-columns: 1fr; }
-      .wp-diagram .flow { flex-direction: column; }
-      .wp-diagram .arrow { transform: rotate(90deg); }
+    body { padding: 0; }
+    body { background-image: none; }
+    .ribbon { display: none; }
+    .sheet {
+      max-width: none;
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0;
+      padding: 0.55in 0.6in;
+      border: none;
+      box-shadow: none;
+      background: #000;
     }
-    @media (max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
-    @media print {
-      /* The downloadable PDF and any browser "Print" of this page must match the
-         ON-SCREEN dark theme (black bg, light text, orange accents) — NOT a white
-         page. print-color-adjust:exact tells the renderer to KEEP our background
-         colors instead of stripping them for "ink saving" (the reason the old
-         white-swap PDF lost the theme). Same color tokens as :root above. */
-      *, *::before, *::after {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
+    .title h1 { font-size: 1.45rem; }
+    .body { column-rule-color: rgba(255,102,0,0.25); }
+  }
 
-      /* Full-bleed: zero @page margin so the dark background reaches the paper
-         edge (no white frame). Section padding below supplies the safe inset. */
-      @page { size: letter; margin: 0; }
-
-      /* Global — identical dark tokens to the on-screen design */
-      html, body {
-        background: #0a0a0a !important;   /* --bg   */
-        color: #eaeaea !important;        /* --text */
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      body { line-height: 1.55 !important; font-size: 10.5pt !important; -webkit-font-smoothing: antialiased; }
-
-      /* Hide site chrome */
-      nav, .nav-mobile-menu, footer, .download-pdf-btn { display: none !important; }
-      .nav-hamburger { display: none !important; }
-
-      /* Hero — full-bleed dark, its own page; keep the orange halo */
-      .wp-hero {
-        background: #0a0a0a !important;
-        padding: 42mm 18mm 26mm !important;
-        text-align: center !important;
-        position: relative !important; overflow: hidden !important;
-        page-break-after: always; break-after: page;
-      }
-      .wp-hero::before {
-        content: '' !important; display: block !important; position: absolute !important;
-        top: 0 !important; left: 50% !important; transform: translateX(-50%) !important;
-        width: 170mm !important; height: 170mm !important;
-        background: radial-gradient(circle, rgba(255,102,0,0.30) 0%, transparent 65%) !important;
-        opacity: 0.3 !important; pointer-events: none !important;
-      }
-      .wp-hero > * { position: relative; z-index: 1; }
-      .wp-logo { width: 22mm !important; height: 22mm !important; filter: drop-shadow(0 0 8mm rgba(255,102,0,0.4)) !important; }
-      .wp-title { font-size: 30pt !important; color: #eaeaea !important; }
-      .wp-title span { color: #FF6600 !important; }
-      .wp-version { color: #b8b8b8 !important; }
-      .wp-date { color: #888 !important; }
-
-      /* Table of Contents — dark, its own page, never split */
-      .toc {
-        background: #0a0a0a !important; border: none !important;
-        max-width: 100% !important; margin: 0 !important;
-        padding: 18mm 18mm !important; border-radius: 0 !important;
-        page-break-inside: avoid; break-inside: avoid;
-        page-break-after: always; break-after: page;
-      }
-      .toc h2 { color: #FF6600 !important; text-align: center; }
-      .toc ol { max-width: 140mm; margin: 0 auto; }
-      .toc li a { color: #eaeaea !important; border-bottom: 1px solid rgba(255,255,255,0.08) !important; }
-      .toc li:last-child a { border-bottom: none !important; }
-      .toc li a::before { color: #FF6600 !important; }
-
-      /* Body content — full-bleed dark with a safe side inset */
-      .wp-content { max-width: 100% !important; margin: 0 !important; padding: 16mm 18mm 24mm !important; background: #0a0a0a !important; }
-      .wp-content h2 { color: #FF6600 !important; font-size: 16pt !important;
-                       margin: 22pt 0 10pt; padding-top: 12pt; border-top: 1px solid #2a2a2a !important;
-                       page-break-before: auto; page-break-after: avoid; break-after: avoid; }
-      .wp-content h2:first-of-type { border-top: none !important; margin-top: 0; padding-top: 0; }
-      .wp-content h3 { font-size: 12pt !important; color: #FFD8A0 !important;
-                       margin: 18pt 0 8pt; page-break-after: avoid; break-after: avoid; }
-      .wp-content p { color: #eaeaea !important; margin-bottom: 8pt; orphans: 3; widows: 3; }
-      .wp-content strong { color: #FFD8A0 !important; }
-      .wp-content code { background: #1a1a1a !important; color: #FF8833 !important; }
-
-      /* Atomic blocks — never page-break inside a visual unit */
-      .wp-note, .wp-diagram, .wp-card, .wp-card-grid,
-      .tier-bar, blockquote, ul.wp-list, .wp-svg, figure {
-        page-break-inside: avoid; break-inside: avoid;
-      }
-      /* Text-like blocks flow at line/row boundaries (no big bottom gaps) */
-      .wp-formula, pre, table { page-break-inside: auto; break-inside: auto; }
-
-      /* Formulas / code blocks — dark panel, mono orange */
-      .wp-formula { background: #0d0d0d !important; border: 1px solid #2a2a2a !important;
-                    color: #FF8833 !important; font-size: 9pt !important; padding: 10pt 12pt !important; white-space: pre-wrap; word-break: break-word; }
-      .wp-formula .label { color: #888 !important; }
-
-      /* Notes — orange-tinted side bar on dark */
-      .wp-note { background: rgba(255,102,0,0.10) !important; border-left: 3px solid #FF6600 !important; color: #eaeaea !important; }
-      .wp-note strong { color: #FF8833 !important; }
-
-      /* Cards / stat grids — dark, 2-up */
-      .wp-card-grid { grid-template-columns: 1fr 1fr !important; gap: 8pt !important; }
-      .wp-card { background: #161616 !important; border: 1px solid #2a2a2a !important; padding: 10pt !important; page-break-inside: avoid; }
-      .wp-card .val { color: #FF6600 !important; font-size: 12pt !important; }
-      .wp-card h4 { color: #888 !important; }
-      .wp-card p { color: #b8b8b8 !important; }
-
-      /* Tier bars — dark with semantic accent colors kept */
-      .tier-bar { border: 1px solid #2a2a2a !important; background: #161616 !important; }
-      .tier-normal .label, .tier-normal .rate { color: #22c55e !important; }
-      .tier-warning .label, .tier-warning .rate { color: #eab308 !important; }
-      .tier-stress .label, .tier-stress .rate { color: #FF6600 !important; }
-      .tier-emergency .label, .tier-emergency .rate { color: #ef4444 !important; }
-
-      /* Diagrams — dark panel */
-      .wp-diagram { background: #0d0d0d !important; border: 1px solid #2a2a2a !important; padding: 12pt !important; page-break-inside: avoid; }
-      .wp-diagram .node { background: #1a1a1a !important; border: 1px solid #333 !important; color: #eaeaea !important; }
-      .wp-diagram .node.orange { border-color: #FF6600 !important; color: #FF8833 !important; background: rgba(255,102,0,0.10) !important; }
-      .wp-diagram .arrow { color: #888 !important; }
-      .wp-diagram .caption { color: #888 !important; }
-
-      /* Tables — dark, repeat header on every page, never split a row */
-      .wp-content table { font-size: 9.5pt !important; border-collapse: collapse; border: 1px solid #2a2a2a !important; page-break-inside: auto; }
-      .wp-content thead { display: table-header-group; }
-      .wp-content tr { page-break-inside: avoid; break-inside: avoid; }
-      .wp-content th { background: rgba(255,102,0,0.12) !important; color: #FFD8A0 !important; border-bottom: 1px solid #444 !important; }
-      .wp-content td { background: #111 !important; color: #eaeaea !important; border-bottom: 1px solid #1f1f1f !important; }
-      .wp-content tr:nth-child(even) td { background: #161616 !important; }
-      .wp-content tr:hover { background: transparent !important; }
-
-      /* Lists — keep the orange marker, never orphan the trailing item */
-      ul.wp-list li::marker { color: #FF6600 !important; }
-      ul.wp-list li { page-break-inside: avoid; }
-
-      /* Links — orange, readable on dark, no URL expansion */
-      a, a:visited { color: #FF8833 !important; text-decoration: none !important; }
-      a[href^="http"]::after { content: ""; }
-    }
-
-    /* v3 SVG diagrams — self-contained dark panels, render on screen and print */
-    .wp-svg { display: block; width: 100%; height: auto; margin: 16px 0 24px; border-radius: 12px; }
-    @media print { .wp-svg { page-break-inside: avoid; break-inside: avoid; max-width: 100%; } }
-  </style>
+  /* ── Tighter at mobile — body collapses to single column ────────────────── */
+  @media (max-width: 720px) {
+    .body { column-count: 1; }
+    .sheet { padding: 0.4in 0.4in; }
+  }
+</style>
 </head>
 <body>
-  <nav>
-    <div class="nav-inner">
-      <a href="/" class="nav-logo"><img src="/logo.svg" alt="" />MoneroUSD</a>
-      <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/about.html">Details</a>
-        <a href="/whitepaper.html" class="active">Whitepaper</a>
-        <a href="/run-node.html">Run a Node</a>
-        <a href="https://ion.monerousd.org" target="_blank" rel="noopener noreferrer">Ion Swap</a>
-        <a href="/developers.html">Developers</a>
-      </div>
-      <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-    <div class="nav-mobile-menu" id="navMobileMenu">
-      <a href="/">Home</a>
-      <a href="/about.html">Details</a>
-      <a href="/whitepaper.html">Whitepaper</a>
-      <a href="/run-node.html">Run a Node</a>
-      <a href="https://ion.monerousd.org" target="_blank" rel="noopener noreferrer">Ion Swap</a>
-      <a href="/developers.html">Developers</a>
-    </div>
-  </nav>
 
-  <!-- Hero -->
-  <div class="wp-hero">
-    <img src="/logo.svg" alt="MoneroUSD" class="wp-logo" />
-    <h1 class="wp-title">Monero<span>USD</span> Protocol</h1>
-    <p class="wp-version">Whitepaper v3 — The Post-Quantum Private Dollar &amp; Ecosystem · Post-Quantum ZK · Block-DAG · Constant-Size Verification · Ion Swap PQ-DEX · Usernames · USDm&nbsp;Pay</p>
-    <p class="wp-date">Launch Edition — 2026</p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px">
-      <a href="/MoneroUSD_Whitepaper.pdf" download="MoneroUSD_Whitepaper.pdf" class="download-pdf-btn" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:#FF6600;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.95rem;transition:background 0.2s;">
-        &#x1f4c4; Download Full PDF
-      </a>
-      <a href="/whitepaper-quickref.html" class="download-pdf-btn" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:transparent;color:#FF6600;border:1.5px solid #FF6600;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.95rem;transition:all 0.2s;">
-        &#x26a1; V3 Quick Reference (1 page)
-      </a>
+<nav class="ribbon">
+  <a class="ribbon-left" href="/" style="color:var(--text);">
+    <img src="/logo.svg" alt="MoneroUSD" />
+    <span>MoneroUSD &middot; <span style="color:var(--orange)">Whitepaper V2</span></span>
+  </a>
+  <div class="ribbon-right">
+    <a class="ribbon-btn" href="/whitepaper.html">Full whitepaper</a>
+    <a class="ribbon-btn solid" href="javascript:window.print()" title="Print or save to PDF">Print &middot; PDF</a>
+  </div>
+</nav>
+
+<article class="sheet">
+
+  <header class="title">
+    <h1>Monero<span>USD</span> Protocol &mdash; Whitepaper V2</h1>
+    <div class="sub">True digital cash — a USD-pegged stablecoin on the first post-quantum private zk-DAG</div>
+    <div class="meta">Whitepaper V2 &nbsp;&middot;&nbsp; May 2026 &nbsp;&middot;&nbsp; Protocol v1.2.225</div>
+  </header>
+
+  <div class="abstract">
+    <span class="label">Abstract</span>
+    Every USDm in circulation starts at a <strong>150%</strong> floor of BTC and XMR reserves under threshold custody and is designed to grow toward <strong>400%+</strong> over time as protocol fees, mint bonds, and sovereign-site fees accumulate into the reserve. No single key controls the float. Every transaction uses <strong>FCMP++</strong>, the next-generation Monero privacy proof whose anonymity set is the entire UTXO set. Every protocol parameter that affects users is governed by on-chain consensus across both validators and miners. There is no admin key, no founder backdoor, no operator with custodial authority. This page is a feature-by-feature summary. The full technical specification is at <a href="/whitepaper.html">monerousd.org/whitepaper.html</a>.
+  </div>
+
+  <div class="body">
+
+    <h2><span class="num">1</span>Protocol Core</h2>
+    <ul class="features">
+      <li><b>FCMP++ Privacy</b>Full-chain membership proofs. Anonymity set equals the entire UTXO set &mdash; not 16 ring decoys. <code>ring_size = 1</code> enforced at consensus.</li>
+      <li><b>Growing Overcollateralization</b>Starts at a 150% floor and is designed to grow toward 400%+ as protocol fees, mint bonds, and sovereign-site publish fees accumulate into the reserve over time.</li>
+      <li><b>Adaptive Fees</b>Fees scale from 1&times; to 100&times; with reserve utilization. Drain attacks become economically self-defeating before they reach the reserve.</li>
+      <li><b>Adaptive Mining Emission</b>Block reward proportional to chain activity. Idle chain accrues; busy chain rewards miners. No fixed-supply auctioning.</li>
+      <li><b>Post-Quantum Proof-of-Useful-Work</b>A novel Poseidon2-based PoW where the mining hardware is the proving hardware — the energy that secures the chain also produces its zero-knowledge proofs. CPU-friendly and ASIC-resistant; mining stays in the hands of users with normal hardware.</li>
+      <li><b>Local-First Wallet</b>Private keys never leave the user's machine. The desktop wallet is a peer of the network &mdash; no relay servers, no session tokens.</li>
+    </ul>
+
+    <h2><span class="num">2</span>Privacy Infrastructure</h2>
+    <ul class="features">
+      <li><b>Light Wallet Server</b>Sub-second cross-device wallet restore via an encrypted scope-tag index. The server stores ciphertext only; the spend key never leaves the wallet.</li>
+      <li><b>PIR-Protected Queries</b>Restore queries are routed through a SimplePIR layer over an FCMP++-anchored side-index. The operator cannot learn which addresses your wallet is reading.</li>
+      <li><b>WHIR Range Proofs</b>Post-quantum zero-knowledge range proofs for confidential amounts. Every Poseidon-committed value the protocol emits is range-bounded inside the transaction's own WHIR proof — quantum-safe, constant-size, verified by consensus.</li>
+      <li><b>Sender-Side Scope Tags</b>Senders embed encrypted hints in the transaction's tx_extra. The daemon indexes deposits at block time; no operator backfill required.</li>
+      <li><b>Stealth Subaddresses</b>Every receive is a one-time address. No address reuse, no on-chain linkability between sends to the same payee.</li>
+      <li><b>All-Asset Restore</b>USDm and every wrapped or custom token visible in a single restore query. No second slow scan for non-USDm balances.</li>
+    </ul>
+
+    <h2><span class="num">3</span>Node &amp; Validator Privacy</h2>
+    <ul class="features">
+      <li><b>Onion-Routed Daemon RPC</b>USDmd daemons can serve over Tor as a hidden service. Wallets connect through the bundled Tor supervisor; the daemon host never sees the wallet's IP.</li>
+      <li><b>Loopback-Only Sensitive Surfaces</b>Wallet-RPC, dApp-auth proxy, sovereign-server, and bundled Tor all bind <code>127.0.0.1</code> only. OS-level socket bindings, not application-level checks.</li>
+      <li><b>Mining Without Identity</b>Stratum-over-Tor for miner submission; payouts to FCMP++ stealth subaddresses. No KYC, no IP-to-payout linkage at any layer.</li>
+      <li><b>Pseudonymous Validators</b>Becoming a bridge validator requires only a USDm bond and a libp2p PeerID. No KYC, no jurisdiction binding, no real-identity disclosure.</li>
+      <li><b>Noise-Encrypted FROST Mesh</b>FROST rounds and DKG ceremonies run over a libp2p Noise-XX mesh. Validators identify each other by 32-byte derived PeerIDs &mdash; no central registry to subpoena.</li>
+      <li><b>Transport-Agnostic Signers</b>Validator signer daemons can run over Tor, I2P, or any libp2p transport. A signer behind .onion is cryptographically indistinguishable from one on residential IP.</li>
+    </ul>
+
+    <h2><span class="num">4</span>Bridge Custody &amp; Cross-Chain</h2>
+    <ul class="features">
+      <li><b>FROST Threshold Signatures</b>BIP-340 Schnorr signatures aggregated across <code>t-of-n</code> validators. No single host can move reserves; the threshold scales as <code>floor(2n/3) + 1</code> &mdash; pure Byzantine fault tolerance.</li>
+      <li><b>Multi-Host Distribution</b>Reserve keys are split across independent validator hosts and grow toward a community-operated set over time. Adding validators strengthens custody automatically.</li>
+      <li><b>Per-Validator Sign Policy</b>Each validator daemon independently policy-checks every sign request. A compromised coordinator can ask but cannot bypass any validator's local check.</li>
+      <li><b>HTLC-Locked Deposits</b>Buy USDm deposits land in BIP-341 Taproot HTLCs. Protocol claims via the threshold quorum after confirmation; users refund via script-path after timeout.</li>
+      <li><b>Atomic Swap Bridges</b>Peer-to-peer trustless cross-chain swaps using Schnorr adaptor signatures. No central operator records user-to-mint mappings.</li>
+      <li><b>LP Offer Mesh</b>Signed LP offers published on chain. The operator cannot alter offer parameters or learn user-LP linkages beyond what is already public on both chains.</li>
+    </ul>
+
+    <h2><span class="num">5</span>Programmable Privacy</h2>
+    <ul class="features">
+      <li><b>Dark Contracts (DSOL)</b>Smart contracts with private state via Pedersen commitments. Per-call step and memory limits prevent any contract from monopolizing the chain.</li>
+      <li><b>Commit&ndash;Reveal Privacy</b>Any private-slot write or batch entry requires a commit followed by reveal within 16 blocks. Mempool front-running becomes impossible.</li>
+      <li><b>Deterministic DarkVM</b>1M instructions and 256 KB memory per call. No I/O, no random clocks, no <code>Math.random</code>. Every operator computes byte-identical state.</li>
+      <li><b>MoneroUSD IDE</b>Browser-based editor, compiler, local DarkVM preview, and on-chain deploy. No private keys in the IDE &mdash; chain-touching calls flow through the wallet's approval modal.</li>
+      <li><b>Nullifier Uniqueness</b>Every spend produces a unique nullifier. Double-spend becomes physically impossible at the indexer layer.</li>
+      <li><b>Governed Bytecode Upgrade</b>Dark Contract code can be replaced in place &mdash; but only after a validator-quorum vote. The contract id stays stable; only the bytecode rotates.</li>
+    </ul>
+
+    <h2><span class="num">6</span>Sovereignty &amp; Censorship Resistance</h2>
+    <ul class="features">
+      <li><b>Sovereign Web Hosting</b>Every official frontend is mirrored on chain via <code>SITE_PUBLISH</code>. Every installed wallet serves byte-identical bundles locally if DNS is dark.</li>
+      <li><b>Three-Tier Serving Model</b>Bundled in the installer, chain-anchored on the protocol, or developer-mode. The wallet falls through tiers automatically; verified bytes always win.</li>
+      <li><b>Hash-Verified Bundles</b>Served bytes are streamed through SHA-256 verification against the on-chain anchor. Any mismatch returns 503 and falls back to a bundled copy.</li>
+      <li><b>Publish Fees to Reserve</b>100% of sovereign-site registration and update fees route into the protocol reserve. Every developer who publishes strengthens the peg.</li>
+      <li><b>Trusted Node Architecture</b>One-click local USDmd daemon. The wallet operates over a local RPC; remote daemon is optional, not required for anything.</li>
+      <li><b>Sovereign Binary Updates</b>Wallet upgrades are also served from a sovereign site, with SHA-256 chain-anchored manifests. DNS-blocking the update channel cannot ship a forged binary.</li>
+    </ul>
+
+    <h2><span class="num">7</span>Self-Upgrading Ecosystem</h2>
+    <ul class="features">
+      <li><b>On-Chain Constitution</b>A small set of core invariants are protected by defense in depth across four independent layers. Everything else is governed by on-chain proposals with bonded participation.</li>
+      <li><b>Bicameral Governance</b>Every enacting proposal requires both a validator quorum and a miner-hashpower quorum. Neither branch alone can pass a state mutation.</li>
+      <li><b>Six Proposal Namespaces</b>Idea, Mimir, Upgrade, DSOLUpgrade, Rollback, Constitutional, and EmergencyCancel &mdash; each with its own quorum, time-to-live, and bond appropriate to its risk profile.</li>
+      <li><b>Sybil-Resistant Bonds</b>Validator bond scales quadratically with set size. A thousand fake validators cost roughly 333&times; a single bond &mdash; mass Sybil is economically unviable.</li>
+      <li><b>EmergencyCancel Veto</b>A 1-day, low-quorum cancellation namespace that lets the community kill a pending malicious proposal before it enacts. Status-quo-preserving by design.</li>
+      <li><b>DaemonFork Activation Window</b>Consensus binary upgrades require 4n/5 validator and 2n/3 miner consent, plus a 60-day activation window. Rented-hashpower attacks face sustained 60-day visibility.</li>
+    </ul>
+
+    <h2><span class="num">8</span>Ion Swap DEX &amp; DeFi</h2>
+    <ul class="features">
+      <li><b>Commit&ndash;Reveal Batch AMM</b>Orders are encrypted in the mempool and settled in batches. No mempool sniping, no MEV sandwiches, no priority-gas auctions.</li>
+      <li><b>Confidential LP Positions</b>LP shares stored as Pedersen commitments. Amounts are private; nullifiers prevent double-withdraw of the same position.</li>
+      <li><b>Sixteen Wrapped Assets</b>wBTC, wXMR, wETH, wLTC, wDOGE, wBCH, wSOL, wADA, wZEC, wBNB, wUSDT-TRX, wRLUSD, and ETH-network stablecoins. Each chain ships under threshold custody as it matures.</li>
+      <li><b>Dark Pool Orders</b>Off-chain encrypted limit-order book. Orders reveal only on fill; the resting book is invisible to chain analysts.</li>
+      <li><b>Overcollateralized Lending</b>Lending against USDm and wrapped assets. Reserve-aware liquidation curves keep the system solvent under cascading drawdowns.</li>
+      <li><b>Private NFT Marketplace</b>Mint, transfer, and sale with confidential ownership. Royalties are enforced at settlement, not by social convention.</li>
+    </ul>
+
+  </div><!-- /.body -->
+
+  <div class="foot">
+    <div>Free and open. Print this page for a one-sheet reference card.</div>
+    <div class="links">
+      <a href="/whitepaper.html">Full whitepaper</a>
+      <a href="/MoneroUSD_Whitepaper.pdf" download>Download full PDF</a>
+      <a href="https://ide.monerousd.org">Build on it &rarr; IDE</a>
+      <a href="/">monerousd.org</a>
     </div>
   </div>
 
-  <!-- Table of Contents -->
-  <div class="toc">
-    <h2>Contents</h2>
-    <ol>
-      <li><a href="#abstract">Abstract</a></li>
-      <li><a href="#pillars">Design Principles — The Pillars</a></li>
-      <li><a href="#architecture">Architecture Overview</a></li>
-      <li><a href="#privacy">Privacy: PQ-FCMP++, Stealth &amp; Nullifiers</a></li>
-      <li><a href="#pq">Post-Quantum Cryptography</a></li>
-      <li><a href="#dag">The Block-DAG (GHOSTDAG)</a></li>
-      <li><a href="#verify">Constant-Size Verification &amp; Instant Sync</a></li>
-      <li><a href="#confidential">Confidential Amounts, Fees &amp; Soundness</a></li>
-      <li><a href="#finality">Finality Gadget</a></li>
-      <li><a href="#l2">L2 Settlement</a></li>
-      <li><a href="#transport">Onion-Only Transport</a></li>
-      <li><a href="#nodes">Nodes &amp; Economics</a></li>
-      <li><a href="#issuance">Decentralized Issuance &amp; The Peg</a></li>
-      <li><a href="#wallets">Wallets</a></li>
-      <li><a href="#usernames">Usernames — Human-Readable Addresses</a></li>
-      <li><a href="#pay">USDm Pay</a></li>
-      <li><a href="#ionswap">Ion Swap — Post-Quantum DEX</a></li>
-      <li><a href="#tokens">Custom Tokens &amp; Programmable Privacy</a></li>
-      <li><a href="#bridges">Cross-Chain Bridges</a></li>
-      <li><a href="#explorer">Privacy-Preserving Explorer</a></li>
-      <li><a href="#sovereign">Sovereign Web Hosting</a></li>
-      <li><a href="#ide">MoneroUSD IDE</a></li>
-      <li><a href="#governance">Bicameral Governance</a></li>
-      <li><a href="#security">Security &amp; Soundness</a></li>
-      <li><a href="#comparison">Comparison</a></li>
-      <li><a href="#launch">Launch Readiness</a></li>
-      <li><a href="#conclusion">Conclusion</a></li>
-    </ol>
-  </div>
-
-  <!-- Content -->
-  <div class="wp-content">
-
-    <h2 id="abstract">1. Abstract</h2>
-    <p>MoneroUSD (USDm) is a <strong>post-quantum, fully private digital dollar</strong> and the application ecosystem built around it. It pairs a confidential USD-pegged unit of account with a base layer that is private, post-quantum, sound, and fast <em>by construction</em> — every transaction hides its sender, receiver, and amount; every cryptographic primitive resists quantum adversaries; and every node verifies the entire chain from a single constant-size proof rather than replaying history.</p>
-    <p>Privacy comes from post-quantum Full-Chain Membership Proofs (PQ-FCMP++), stealth addressing, and nullifiers, combined with zero-knowledge confidential amounts — never ring signatures, never a transparent ledger. Scale comes from a block-DAG that produces blocks in parallel and a recursive proof system that compresses the whole chain into a proof small enough to verify on a phone. Around this core sits a complete, post-quantum ecosystem: the <strong>Ion Swap private DEX</strong>, human-readable <strong>usernames</strong>, <strong>USDm Pay</strong> for everyday payments, cross-chain bridges, a desktop and browser wallet, a privacy-preserving explorer, sovereign web hosting, and an on-chain IDE — all governed by a bicameral, threshold-controlled process with no single point of control.</p>
-    <div class="wp-note"><strong>What this document describes.</strong> This is the launch specification: every capability below is part of the MoneroUSD ecosystem at 100% completion. It is the picture of what you can do on day one.</div>
-
-    <h2 id="pillars">2. Design Principles — The Pillars</h2>
-    <p>Every layer of MoneroUSD — protocol and apps alike — is held to the same non-negotiable principles. A feature that cannot satisfy all of them is redesigned, never shipped weakened.</p>
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Private</h4><div class="val">By default</div><p>No sender, receiver, amount, or metadata leak at any layer. Witnesses are bound by commitments; proofs run in a hiding (zero-knowledge) configuration.</p></div>
-      <div class="wp-card"><h4>Post-Quantum</h4><div class="val">Base layer</div><p>Membership, stealth, nullifiers, signatures, and recursive verification all use post-quantum primitives. No classical-only crypto in the core.</p></div>
-      <div class="wp-card"><h4>Sound</h4><div class="val">No inflation</div><p>Balance and no-inflation gates are enforced in-circuit. Every mechanism ships with an adversarial test that must reject tampering.</p></div>
-      <div class="wp-card"><h4>Fast &amp; Scalable</h4><div class="val">&le; 1.8 MB</div><p>One constant-size proof verifies the chain. Phone-class memory at any DAG width. Scale by adding nodes, never heavier nodes.</p></div>
-    </div>
-    <p>Two further principles are co-equal: <strong>decentralization at every layer</strong> — every authority is permissionless or a t-of-n threshold, never a single operator (not even the founder) — and <strong>liveness by construction</strong> — the chain cannot halt. The block-DAG produces blocks unconditionally; finality is an overlay that can delay confirmation but never stops block flow. Validation gates fail closed on a bad item only, never on the network's progress.</p>
-
-    <h2 id="architecture">3. Architecture Overview</h2>
-    <p>MoneroUSD is a stack. The base layer settles confidential value; the proof layer compresses it to a constant size; the app layer turns it into a usable, private financial system.</p>
-    <svg class="wp-svg" viewBox="0 0 820 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MoneroUSD architecture stack">
-      <rect width="820" height="430" rx="14" fill="#141414" stroke="#262626"/>
-      <text x="410" y="34" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">MONEROUSD STACK</text>
-      <!-- App layer -->
-      <rect x="40" y="56" width="740" height="92" rx="10" fill="#1b1b1b" stroke="#333"/>
-      <text x="58" y="80" fill="#FF6600" font-family="Outfit, sans-serif" font-size="14" font-weight="700">APPLICATIONS</text>
-      <g font-family="Outfit, sans-serif" font-size="12.5" fill="#eaeaea">
-        <rect x="58" y="92" width="118" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="117" y="119" text-anchor="middle">Ion Swap DEX</text>
-        <rect x="186" y="92" width="110" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="241" y="119" text-anchor="middle">USDm Pay</text>
-        <rect x="306" y="92" width="110" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="361" y="119" text-anchor="middle">Usernames</text>
-        <rect x="426" y="92" width="110" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="481" y="119" text-anchor="middle">Bridges</text>
-        <rect x="546" y="92" width="100" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="596" y="119" text-anchor="middle">Wallets</text>
-        <rect x="656" y="92" width="106" height="44" rx="8" fill="#0f0f0f" stroke="#FF660055"/><text x="709" y="113" text-anchor="middle">Explorer ·</text><text x="709" y="129" text-anchor="middle">IDE · Hosting</text>
-      </g>
-      <!-- Proof layer -->
-      <rect x="40" y="160" width="740" height="78" rx="10" fill="#1b1b1b" stroke="#333"/>
-      <text x="58" y="184" fill="#FF6600" font-family="Outfit, sans-serif" font-size="14" font-weight="700">PROOF LAYER — verify once, discard</text>
-      <g font-family="Outfit, sans-serif" font-size="12.5" fill="#eaeaea">
-        <rect x="58" y="196" width="220" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="168" y="216" text-anchor="middle">IVC fold (per-block O(1))</text>
-        <rect x="288" y="196" width="240" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="408" y="216" text-anchor="middle">Decider &rarr; &le;1.8 MB proof</text>
-        <rect x="538" y="196" width="224" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="650" y="216" text-anchor="middle">Recursive STARK verify</text>
-      </g>
-      <!-- Consensus layer -->
-      <rect x="40" y="250" width="740" height="78" rx="10" fill="#1b1b1b" stroke="#333"/>
-      <text x="58" y="274" fill="#FF6600" font-family="Outfit, sans-serif" font-size="14" font-weight="700">CONSENSUS — confidential &amp; post-quantum</text>
-      <g font-family="Outfit, sans-serif" font-size="12.5" fill="#eaeaea">
-        <rect x="58" y="286" width="210" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="163" y="306" text-anchor="middle">GHOSTDAG (width 32)</text>
-        <rect x="278" y="286" width="236" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="396" y="306" text-anchor="middle">PQ-FCMP++ / stealth / nullifier</text>
-        <rect x="524" y="286" width="238" height="30" rx="8" fill="#0f0f0f" stroke="#444"/><text x="643" y="306" text-anchor="middle">ZK confidential amounts</text>
-      </g>
-      <!-- Transport layer -->
-      <rect x="40" y="340" width="740" height="66" rx="10" fill="#1b1b1b" stroke="#333"/>
-      <text x="58" y="364" fill="#FF6600" font-family="Outfit, sans-serif" font-size="14" font-weight="700">TRANSPORT</text>
-      <g font-family="Outfit, sans-serif" font-size="12.5" fill="#eaeaea">
-        <rect x="58" y="374" width="704" height="24" rx="8" fill="#0f0f0f" stroke="#444"/><text x="410" y="390" text-anchor="middle">libp2p PQ-gossipsub over Tor v3 onion — onion-only, no clearnet, no raw IP</text>
-      </g>
-    </svg>
-
-    <h2 id="privacy">4. Privacy: PQ-FCMP++, Stealth &amp; Nullifiers</h2>
-    <p>MoneroUSD does not use a transparent ledger and does not use ring signatures. Privacy is built on <strong>PQ-FCMP++</strong> — a post-quantum evolution of Full-Chain Membership Proofs — together with stealth addressing and nullifiers. Every unit of value lives as a hidden <em>note</em> committed to the chain. To spend a note, the owner proves three things in zero knowledge, without revealing which note they hold:</p>
-    <ul class="wp-list">
-      <li><strong>Membership (PQ-FCMP++)</strong> — the note exists in the global commitment tree, proven by a post-quantum Full-Chain Membership Proof. The anonymity set is <em>every note ever created</em> — the entire chain, not a small ring.</li>
-      <li><strong>Ownership &amp; stealth</strong> — the spender controls the note's one-time stealth key, derived so that no two payments to the same recipient are linkable on-chain.</li>
-      <li><strong>Nullifier</strong> — a unique, unlinkable tag that marks the note spent exactly once, preventing double-spends without revealing the note.</li>
-    </ul>
-    <p>Amounts are hidden as commitments and proven in range, so balances are confidential end-to-end. All of this is bound together by Poseidon digests and proven in a hiding (zero-knowledge) configuration: the witness — your keys, your note, your amount — never appears in the public proof.</p>
-    <svg class="wp-svg" viewBox="0 0 820 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Confidential spend flow">
-      <rect width="820" height="250" rx="14" fill="#141414" stroke="#262626"/>
-      <text x="410" y="32" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">CONFIDENTIAL SPEND</text>
-      <g font-family="Outfit, sans-serif" font-size="12.5">
-        <rect x="40" y="60" width="150" height="120" rx="10" fill="#0f0f0f" stroke="#444"/>
-        <text x="115" y="88" text-anchor="middle" fill="#eaeaea" font-weight="700">Your note</text>
-        <text x="115" y="112" text-anchor="middle" fill="#888" font-size="11">value (hidden)</text>
-        <text x="115" y="130" text-anchor="middle" fill="#888" font-size="11">stealth key</text>
-        <text x="115" y="148" text-anchor="middle" fill="#888" font-size="11">randomness</text>
-        <rect x="250" y="48" width="230" height="144" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
-        <text x="365" y="74" text-anchor="middle" fill="#FF6600" font-weight="700">ZK proof (hiding)</text>
-        <text x="365" y="100" text-anchor="middle" fill="#eaeaea" font-size="11.5">&#10003; membership in tree</text>
-        <text x="365" y="122" text-anchor="middle" fill="#eaeaea" font-size="11.5">&#10003; ownership / stealth</text>
-        <text x="365" y="144" text-anchor="middle" fill="#eaeaea" font-size="11.5">&#10003; nullifier (spent once)</text>
-        <text x="365" y="166" text-anchor="middle" fill="#eaeaea" font-size="11.5">&#10003; amounts in range</text>
-        <rect x="540" y="60" width="240" height="120" rx="10" fill="#0f0f0f" stroke="#444"/>
-        <text x="660" y="88" text-anchor="middle" fill="#eaeaea" font-weight="700">On chain</text>
-        <text x="660" y="112" text-anchor="middle" fill="#888" font-size="11">nullifier published</text>
-        <text x="660" y="130" text-anchor="middle" fill="#888" font-size="11">new note commitment</text>
-        <text x="660" y="148" text-anchor="middle" fill="#888" font-size="11">no value · no identity</text>
-        <text x="215" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
-        <text x="513" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
-      </g>
-      <text x="410" y="226" text-anchor="middle" fill="#888" font-size="11">The witness never leaves your device. The chain sees only commitments and a verified proof.</text>
-    </svg>
-
-    <h2 id="pq">5. Post-Quantum Cryptography</h2>
-    <p>A digital dollar must outlive the arrival of large quantum computers. MoneroUSD therefore uses post-quantum primitives at the base layer — its privacy and authentication do not rest on elliptic-curve assumptions that a quantum adversary could break. Spend authorization, membership, stealth derivation, and nullifiers are all built on hash-based and lattice-grade constructions and proven with STARKs (hash-based, transparent, no trusted setup).</p>
-    <p>Crucially, verification is <strong>recursive</strong>: a STARK can verify another STARK. That property is what lets the entire chain collapse into one small proof (Section 7) while keeping every guarantee post-quantum. Classical signatures appear only at the edges — for example, when bridging to a non-PQ external chain — never in the MoneroUSD core.</p>
-
-    <h2 id="dag">6. The Block-DAG (GHOSTDAG)</h2>
-    <p>MoneroUSD is not a single-file chain. Blocks form a <strong>directed acyclic graph</strong>: many producers can publish at once, each block referencing several parents. A GHOSTDAG ordering (running at width 32, with a one-second target) gives every block a deterministic position in the total order without forcing producers to wait their turn.</p>
-    <p>This is the source of <strong>unconditional liveness</strong>. Because blocks are produced in parallel, no single producer — and no committee — can stall the network. There is no "longest chain" race to wedge; there is a mergeset that always advances. Optional carriers such as finality certificates or settlements are never required for a block to be produced.</p>
-    <svg class="wp-svg" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Block-DAG width greater than one">
-      <rect width="820" height="220" rx="14" fill="#141414" stroke="#262626"/>
-      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">PARALLEL BLOCK PRODUCTION (width &gt; 1)</text>
-      <g stroke="#444" stroke-width="1.5">
-        <line x1="120" y1="110" x2="250" y2="70"/><line x1="120" y1="110" x2="250" y2="150"/>
-        <line x1="250" y1="70" x2="400" y2="70"/><line x1="250" y1="70" x2="400" y2="150"/>
-        <line x1="250" y1="150" x2="400" y2="150"/><line x1="250" y1="150" x2="400" y2="70"/>
-        <line x1="400" y1="70" x2="560" y2="110"/><line x1="400" y1="150" x2="560" y2="110"/>
-        <line x1="560" y1="110" x2="700" y2="110"/>
-      </g>
-      <g font-family="JetBrains Mono, monospace" font-size="12">
-        <circle cx="120" cy="110" r="26" fill="#0f0f0f" stroke="#FF6600"/><text x="120" y="115" text-anchor="middle" fill="#FF6600">G</text>
-        <circle cx="250" cy="70" r="24" fill="#0f0f0f" stroke="#666"/><text x="250" y="75" text-anchor="middle" fill="#eaeaea">A</text>
-        <circle cx="250" cy="150" r="24" fill="#0f0f0f" stroke="#666"/><text x="250" y="155" text-anchor="middle" fill="#eaeaea">B</text>
-        <circle cx="400" cy="70" r="24" fill="#0f0f0f" stroke="#666"/><text x="400" y="75" text-anchor="middle" fill="#eaeaea">C</text>
-        <circle cx="400" cy="150" r="24" fill="#0f0f0f" stroke="#666"/><text x="400" y="155" text-anchor="middle" fill="#eaeaea">D</text>
-        <circle cx="560" cy="110" r="24" fill="#0f0f0f" stroke="#666"/><text x="560" y="115" text-anchor="middle" fill="#eaeaea">E</text>
-        <circle cx="700" cy="110" r="24" fill="#0f0f0f" stroke="#22c55e"/><text x="700" y="115" text-anchor="middle" fill="#22c55e">tip</text>
-      </g>
-      <text x="410" y="205" text-anchor="middle" fill="#888" font-size="11">Concurrent blocks A&hellip;E are merged into one deterministic order — the network never waits, never halts.</text>
-    </svg>
-
-    <h2 id="verify">7. Constant-Size Verification &amp; Instant Sync</h2>
-    <p>Conventional chains force every node to download and replay all history. MoneroUSD does not. Each block's validity is folded into an <strong>incrementally verifiable computation (IVC)</strong>, and a <strong>decider</strong> turns the running fold into a single proof of <strong>constant size (&le; 1.8 MB)</strong> — no matter how long the chain grows, how many notes exist, or how wide the DAG runs.</p>
-    <p>A new participant <strong>verifies that one proof and is synced</strong>. There is no multi-day catch-up; the proof is verify-once-and-discard. Producing the proof stays within phone-class memory, so the cost of participating does not grow with the network. This is what makes "fast, instant sync" a property of the protocol rather than a promise.</p>
-    <svg class="wp-svg" viewBox="0 0 820 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Constant-size verification">
-      <rect width="820" height="200" rx="14" fill="#141414" stroke="#262626"/>
-      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">WHOLE CHAIN &rarr; ONE SMALL PROOF</text>
-      <g font-family="Outfit, sans-serif" font-size="12">
-        <rect x="40" y="64" width="60" height="70" rx="6" fill="#0f0f0f" stroke="#444"/><text x="70" y="104" text-anchor="middle" fill="#888">blk 1</text>
-        <rect x="110" y="64" width="60" height="70" rx="6" fill="#0f0f0f" stroke="#444"/><text x="140" y="104" text-anchor="middle" fill="#888">blk 2</text>
-        <rect x="180" y="64" width="60" height="70" rx="6" fill="#0f0f0f" stroke="#444"/><text x="210" y="104" text-anchor="middle" fill="#888">&hellip;</text>
-        <rect x="250" y="64" width="60" height="70" rx="6" fill="#0f0f0f" stroke="#444"/><text x="280" y="104" text-anchor="middle" fill="#888">blk N</text>
-        <text x="345" y="104" text-anchor="middle" fill="#FF6600" font-size="24">&#8680;</text>
-        <rect x="380" y="58" width="190" height="82" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
-        <text x="475" y="92" text-anchor="middle" fill="#FF6600" font-weight="700">IVC fold + Decider</text>
-        <text x="475" y="114" text-anchor="middle" fill="#888" font-size="11">constant work per block</text>
-        <text x="600" y="104" text-anchor="middle" fill="#FF6600" font-size="24">&#8680;</text>
-        <rect x="630" y="58" width="150" height="82" rx="10" fill="#0f0f0f" stroke="#22c55e"/>
-        <text x="705" y="90" text-anchor="middle" fill="#22c55e" font-weight="700">&le; 1.8 MB</text>
-        <text x="705" y="112" text-anchor="middle" fill="#eaeaea" font-size="11">verify once &rarr; synced</text>
-      </g>
-      <text x="410" y="182" text-anchor="middle" fill="#888" font-size="11">Proof size is constant in chain length, note count, and DAG width.</text>
-    </svg>
-
-    <h2 id="confidential">8. Confidential Amounts, Fees &amp; Soundness</h2>
-    <p>Confidentiality is meaningless without soundness: a private chain must still be provably honest. MoneroUSD enforces a <strong>no-inflation invariant in-circuit</strong> — the sum of hidden inputs always equals the sum of hidden outputs plus fees, proven without revealing any of those values. No party, including block producers, can create value out of nothing, and the proof that this holds is part of the same constant-size verification every node already runs.</p>
-    <p>Fees themselves are confidential. Peer-to-peer transfers are effectively free (a tiny dust floor deters spam, backed by a lightweight client-side proof-of-work stamp rather than a fee market), and protocol revenue is redistributed rather than extracted per transaction. Every new mechanism added to the protocol ships with an adversarial test that <em>must</em> reject a tampered input — soundness is verified, not assumed.</p>
-
-    <h2 id="finality">9. Finality Gadget</h2>
-    <p>The DAG gives instant, unconditional block flow. A <strong>finality gadget</strong> layers economic finality on top: a threshold of bonded validators co-signs a compact certificate that marks a point in the DAG irreversible. This is strictly an overlay — if validators are offline or slow, blocks keep being produced and confirmed; only the "finalized" marker waits. Finality can delay, but it can never halt. The certificate is itself small and cheap to verify, tracking the tip continuously.</p>
-
-    <h2 id="l2">10. L2 Settlement</h2>
-    <p>For high-volume application flow, MoneroUSD supports a settlement layer that batches activity and commits it back to the base chain as a single confidential, verified state transition. Applications like the DEX settle through this path, inheriting the base layer's privacy and soundness while keeping per-action cost low. Settlement carriers are optional — they never gate ordinary block production.</p>
-
-    <h2 id="transport">11. Onion-Only Transport</h2>
-    <p>Network-level privacy is part of the threat model, not an afterthought. MoneroUSD nodes speak <strong>libp2p PQ-gossipsub exclusively over Tor v3 onion services</strong> — there is no clearnet listener, no raw-IP peering, no legacy block-by-block sync. A node is always addressed by its onion identity, so an observer cannot map the network by IP or correlate a transaction to an origin address. Peer admission is Sybil-resistant by design, and the mixnet-style relay path protects metadata even from the peers that carry it.</p>
-
-    <h2 id="nodes">12. Nodes &amp; Economics</h2>
-    <p>There are two roles, and both are light. <strong>Nodes</strong> verify the constant-size proof and sample data availability — they do not replay history, so a phone can be a full verifier. <strong>Validators</strong> additionally bond capital to co-sign finality. Security is funded without inflation, through a dual-power model:</p>
-    <svg class="wp-svg" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dual-power security model">
-      <rect width="820" height="220" rx="14" fill="#141414" stroke="#262626"/>
-      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">ZERO-EMISSION DUAL POWER</text>
-      <g font-family="Outfit, sans-serif">
-        <rect x="60" y="56" width="320" height="128" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
-        <text x="220" y="84" text-anchor="middle" fill="#FF6600" font-size="14" font-weight="700">Miners (proof-of-useful-work)</text>
-        <text x="220" y="110" text-anchor="middle" fill="#eaeaea" font-size="12">ASIC-resistant, CPU-class &rarr; decentralized</text>
-        <text x="220" y="132" text-anchor="middle" fill="#eaeaea" font-size="12">paid from protocol fees</text>
-        <text x="220" y="154" text-anchor="middle" fill="#888" font-size="11.5">(settlement &amp; proving) — no monetary emission</text>
-        <rect x="440" y="56" width="320" height="128" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
-        <text x="600" y="84" text-anchor="middle" fill="#FF6600" font-size="14" font-weight="700">Bonded validators</text>
-        <text x="600" y="110" text-anchor="middle" fill="#eaeaea" font-size="12">threshold finality &amp; issuance authority</text>
-        <text x="600" y="132" text-anchor="middle" fill="#eaeaea" font-size="12">paid from reserve yield</text>
-        <text x="600" y="154" text-anchor="middle" fill="#888" font-size="11.5">bond scales with value-at-risk</text>
-        <text x="410" y="128" text-anchor="middle" fill="#888" font-size="20">&#8869;</text>
-      </g>
-      <text x="410" y="206" text-anchor="middle" fill="#888" font-size="11">Two independent powers check each other — no inflation, no single security budget to capture.</text>
-    </svg>
-    <p>Validator bonds are sized to the value the network secures (the cost to corrupt always exceeds the value at risk), and the two powers govern bicamerally (Section 23) so neither can capture the protocol.</p>
-
-    <h2 id="issuance">13. Decentralized Issuance &amp; The Peg</h2>
-    <p>USDm holds its dollar peg through an <strong>overcollateralized, confidential reserve</strong>. New units are never issued by a single key. Issuance authority is a <strong>post-quantum threshold (FROST-style)</strong> held across independent parties — no operator, and not the founder, can issue unilaterally. Reserve health is maintained adaptively, and reserve yield funds the validator set rather than diluting holders. The result is a digital dollar whose supply is governed by a distributed quorum and whose backing is provable in aggregate while remaining confidential at the level of any individual position.</p>
-    <div class="wp-note"><strong>No inflation, no hidden lever.</strong> There is no monetary emission schedule and no single-party control over supply. Issuance is threshold-authorized and bound by in-circuit soundness gates.</div>
-
-    <h2 id="wallets">14. Wallets</h2>
-    <p>The wallet is where the ecosystem becomes usable. Every MoneroUSD wallet is <strong>local-first</strong>: keys are generated and used on your device and never transmitted. The lineup at launch:</p>
-    <ul class="wp-list">
-      <li><strong>Desktop wallet</strong> — full post-quantum send/receive of confidential USDm, a built-in dApp browser, and a local provider that lets web apps request payments and actions without ever exposing your keys.</li>
-      <li><strong>Browser extension &amp; dApp provider</strong> — a companion that injects a <code>window.monerousd</code> provider so any site can connect, request a confidential payment, or resolve a username, with per-origin stealth addresses for unlinkability.</li>
-      <li><strong>Light wallet + private lookup</strong> — a server-assisted mode that lets thin clients find their notes without revealing which notes are theirs, using a private-information-retrieval side index.</li>
-      <li><strong>Mobile</strong> — native apps performing all cryptography on-device, matching the desktop's local-first guarantees.</li>
-    </ul>
-
-    <h2 id="usernames">15. Usernames — Human-Readable Addresses</h2>
-    <p>Post-quantum stealth addresses are long and unfriendly. MoneroUSD ships a native <strong>username system</strong>: claim a human-readable name once, on-chain, and have it resolve to your wallet — so people can pay <em>you</em>, not a wall of characters. Names live in a post-quantum, chain-anchored registry; a claim is a confidential carrier that binds the name to your spend authority, and resolution is verifiable against the same chain everyone else verifies.</p>
-    <ul class="wp-list">
-      <li><strong>Own it cryptographically</strong> — a name maps to a key you control; only the owner can update or transfer it, and ownership is provable, not custodial.</li>
-      <li><strong>Privacy preserved</strong> — resolving a name yields a fresh stealth destination, so repeated payments to the same username remain unlinkable on-chain.</li>
-      <li><strong>Ecosystem-wide</strong> — usernames work everywhere: in USDm Pay, in the wallet's send screen, in the dApp provider, and across Ion Swap.</li>
-    </ul>
-    <svg class="wp-svg" viewBox="0 0 820 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Username resolution">
-      <rect width="820" height="170" rx="14" fill="#141414" stroke="#262626"/>
-      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">PAY A NAME, NOT A STRING</text>
-      <g font-family="Outfit, sans-serif" font-size="13">
-        <rect x="50" y="62" width="170" height="56" rx="10" fill="#0f0f0f" stroke="#FF6600"/><text x="135" y="96" text-anchor="middle" fill="#FF6600" font-weight="700">@alice</text>
-        <text x="255" y="96" text-anchor="middle" fill="#888" font-size="22">&#8594;</text>
-        <rect x="300" y="52" width="240" height="76" rx="10" fill="#0f0f0f" stroke="#444"/>
-        <text x="420" y="80" text-anchor="middle" fill="#eaeaea" font-weight="700">on-chain PQ registry</text>
-        <text x="420" y="104" text-anchor="middle" fill="#888" font-size="11">name &rarr; owner key (verifiable)</text>
-        <text x="575" y="96" text-anchor="middle" fill="#888" font-size="22">&#8594;</text>
-        <rect x="620" y="62" width="150" height="56" rx="10" fill="#0f0f0f" stroke="#22c55e"/><text x="695" y="88" text-anchor="middle" fill="#22c55e" font-weight="700">fresh stealth</text><text x="695" y="106" text-anchor="middle" fill="#888" font-size="11">unlinkable each time</text>
-      </g>
-    </svg>
-
-    <h2 id="pay">16. USDm Pay</h2>
-    <p><strong>USDm Pay</strong> is the everyday payments experience built directly into the desktop wallet, on top of the confidential transfer rail. It turns "send a private dollar" into something as simple as sending a message — and extends to real-world spending through a built-in card — for individuals, online stores, and creators alike.</p>
-    <ul class="wp-list">
-      <li><strong>Built-in payment card</strong> — a card integrated into the desktop wallet for spending USDm, so confidential dollars work at checkout and in everyday purchases without leaving your wallet.</li>
-      <li><strong>Pay by username or address</strong> — send confidential USDm to <code>@name</code> or a stealth address; the recipient, sender, and amount stay private by default.</li>
-      <li><strong>Payment requests &amp; links</strong> — generate a request (amount + memo) as a shareable link or QR code; the payer confirms in their wallet and the transfer settles on the PQ rail.</li>
-      <li><strong>Point-of-sale &amp; checkout</strong> — merchants accept USDm through the dApp provider or a hosted checkout, with each request resolving to a fresh stealth destination so a storefront's takings aren't publicly linkable.</li>
-      <li><strong>Confidential by construction</strong> — every payment is a post-quantum confidential transfer; there is no public amount, no public counterparty, and no per-transaction fee extraction.</li>
-    </ul>
-    <p>Because USDm Pay rides the same rail as the rest of the protocol, a payment is final under the same guarantees, verifiable by the same constant-size proof, and private at the same standard as every other action on the network.</p>
-
-    <h2 id="ionswap">17. Ion Swap — Post-Quantum DEX</h2>
-    <p><strong>Ion Swap is a fully post-quantum decentralized exchange.</strong> It is not a transparent AMM bolted onto a private coin — value moves through the same post-quantum confidential transfer rail as the rest of MoneroUSD, and trades are authorized by the same zero-knowledge machinery. You can provide liquidity, create tokens, and swap, all without exposing your balances, your counterparties, or your strategy.</p>
-    <div class="wp-card-grid">
-      <div class="wp-card"><h4>Rail</h4><div class="val">PQ transfers</div><p>Liquidity, swaps, and token actions move via post-quantum confidential carriers — never classical, transparent transfers.</p></div>
-      <div class="wp-card"><h4>Order flow</h4><div class="val">Sealed-bid</div><p>Batched, commit-reveal execution makes front-running and MEV cryptographically impossible.</p></div>
-      <div class="wp-card"><h4>Assets</h4><div class="val">ion1_ tokens</div><p>Permissionless custom tokens and pools, with confidential reserves and balances.</p></div>
-      <div class="wp-card"><h4>Custody</h4><div class="val">Non-custodial</div><p>Keys never leave your wallet; the DEX settles through the chain, not an operator.</p></div>
-    </div>
-    <svg class="wp-svg" viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ion Swap post-quantum DEX flow">
-      <rect width="820" height="230" rx="14" fill="#141414" stroke="#262626"/>
-      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">ION SWAP — CONFIDENTIAL, POST-QUANTUM</text>
-      <g font-family="Outfit, sans-serif" font-size="12">
-        <rect x="40" y="66" width="150" height="110" rx="10" fill="#0f0f0f" stroke="#444"/>
-        <text x="115" y="92" text-anchor="middle" fill="#eaeaea" font-weight="700">Wallet</text>
-        <text x="115" y="116" text-anchor="middle" fill="#888" font-size="11">sign + build</text>
-        <text x="115" y="134" text-anchor="middle" fill="#888" font-size="11">PQ carrier</text>
-        <text x="215" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
-        <rect x="245" y="58" width="200" height="126" rx="10" fill="#0f0f0f" stroke="#FF6600"/>
-        <text x="345" y="84" text-anchor="middle" fill="#FF6600" font-weight="700">Sealed-bid batch</text>
-        <text x="345" y="108" text-anchor="middle" fill="#eaeaea" font-size="11">commit &rarr; reveal &rarr; clear</text>
-        <text x="345" y="128" text-anchor="middle" fill="#eaeaea" font-size="11">no front-running / MEV</text>
-        <text x="345" y="150" text-anchor="middle" fill="#888" font-size="11">confidential pools</text>
-        <text x="470" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
-        <rect x="500" y="66" width="135" height="110" rx="10" fill="#0f0f0f" stroke="#444"/>
-        <text x="567" y="92" text-anchor="middle" fill="#eaeaea" font-weight="700">Settle</text>
-        <text x="567" y="116" text-anchor="middle" fill="#888" font-size="11">on-chain,</text>
-        <text x="567" y="134" text-anchor="middle" fill="#888" font-size="11">confidential</text>
-        <text x="655" y="125" text-anchor="middle" fill="#FF6600" font-size="22">&#8594;</text>
-        <rect x="685" y="66" width="95" height="110" rx="10" fill="#0f0f0f" stroke="#22c55e"/>
-        <text x="732" y="116" text-anchor="middle" fill="#22c55e" font-weight="700">Verified</text>
-        <text x="732" y="134" text-anchor="middle" fill="#888" font-size="10">in the proof</text>
-      </g>
-      <text x="410" y="212" text-anchor="middle" fill="#888" font-size="11">Provide liquidity, create tokens, and swap — balances, counterparties, and order sizes stay private.</text>
-    </svg>
-
-    <h2 id="tokens">18. Custom Tokens &amp; Programmable Privacy</h2>
-    <p>Anyone can create a custom token (<code>ion1_</code>) and liquidity for it, permissionlessly, with confidential supply and balances. Beyond simple tokens, MoneroUSD supports <strong>programmable privacy</strong>: contracts whose state, inputs, and events are hidden by construction. Logic executes deterministically; outputs are committed and proven rather than published; and events are sealed to the recipient's viewing key. Front-running is prevented by commit-reveal, and the execution model is structured so that whole classes of contract exploits are impossible rather than merely discouraged.</p>
-
-    <h2 id="bridges">19. Cross-Chain Bridges</h2>
-    <p>MoneroUSD connects to the outside world without a custodian. Bridging uses a <strong>threshold (FROST-style) custody quorum</strong> — funds on the external side are controlled by a t-of-n signer set, never a single operator — and, where the counterpart chain allows, <strong>atomic swaps</strong> remove custody from the path entirely. Assets bridged in become confidential MoneroUSD-side representations usable across the ecosystem (in Pay, in Ion Swap, in contracts). Classical signatures used to talk to a non-PQ chain are confined to the bridge endpoint; the MoneroUSD side stays post-quantum.</p>
-    <svg class="wp-svg" viewBox="0 0 820 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Threshold bridge custody">
-      <rect width="820" height="180" rx="14" fill="#141414" stroke="#262626"/>
-      <text x="410" y="30" text-anchor="middle" fill="#888" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1">NO SINGLE CUSTODIAN</text>
-      <g font-family="Outfit, sans-serif" font-size="12">
-        <rect x="50" y="64" width="150" height="64" rx="10" fill="#0f0f0f" stroke="#444"/><text x="125" y="92" text-anchor="middle" fill="#eaeaea" font-weight="700">External chain</text><text x="125" y="112" text-anchor="middle" fill="#888" font-size="11">BTC / XMR / &hellip;</text>
-        <text x="220" y="100" text-anchor="middle" fill="#FF6600" font-size="20">&#8596;</text>
-        <rect x="250" y="52" width="240" height="88" rx="10" fill="#0f0f0f" stroke="#FF6600"/><text x="370" y="80" text-anchor="middle" fill="#FF6600" font-weight="700">t-of-n FROST custody</text><text x="370" y="104" text-anchor="middle" fill="#eaeaea" font-size="11">threshold signers &middot; or atomic swap</text><text x="370" y="124" text-anchor="middle" fill="#888" font-size="11">no operator can move funds alone</text>
-        <text x="510" y="100" text-anchor="middle" fill="#FF6600" font-size="20">&#8596;</text>
-        <rect x="540" y="64" width="230" height="64" rx="10" fill="#0f0f0f" stroke="#22c55e"/><text x="655" y="92" text-anchor="middle" fill="#22c55e" font-weight="700">Confidential USDm-side asset</text><text x="655" y="112" text-anchor="middle" fill="#888" font-size="11">usable in Pay, Ion Swap, contracts</text>
-      </g>
-    </svg>
-
-    <h2 id="explorer">20. Privacy-Preserving Explorer</h2>
-    <p>A public explorer lets anyone confirm the network is healthy — block flow, the DAG tip, finality progress, and the constant-size proof — <strong>without</strong> exposing what conventional explorers leak. Because amounts, senders, and receivers are confidential at the protocol level, there is nothing to surveil: the explorer shows that the chain is sound and live, not who paid whom.</p>
-
-    <h2 id="sovereign">21. Sovereign Web Hosting</h2>
-    <p>Censorship resistance is incomplete if the front-end can be taken down. MoneroUSD therefore lets its own sites — the main site, Ion Swap, the explorer, dashboards — be served <strong>peer-to-peer from inside the wallet</strong>, with chain-anchored content addressing. If any domain is removed, every user's wallet keeps serving a byte-identical copy. The interface to the ecosystem is as unstoppable as the ledger underneath it.</p>
-
-    <h2 id="ide">22. MoneroUSD IDE</h2>
-    <p>To build on confidential infrastructure you need confidential-aware tooling. The MoneroUSD IDE provides an environment to write, test, and deploy programmable-privacy contracts and token logic, with the privacy model and soundness gates built into the developer workflow — so "private by construction" extends from the protocol all the way to the apps people build on it.</p>
-
-    <h2 id="governance">23. Bicameral Governance</h2>
-    <p>Upgrades are decided by <strong>two independent houses</strong> — miners and bonded validators — that must agree, so neither stake nor hashpower alone can capture the protocol. Changes are enacted within constitutional bounds by a threshold amendment process, every proposal is publicly auditable, and every enactment is chain-anchored and reversible by the same process. No single party — including the founder — can unilaterally change the rules, move funds, or halt the network.</p>
-
-    <h2 id="security">24. Security &amp; Soundness</h2>
-    <p>MoneroUSD is adversarial by design. Beyond the in-circuit no-inflation and tamper gates, the network assumes a hostile environment at every layer: peer admission resists Sybil attacks; the onion transport resists traffic analysis and flooding; the DAG resists liveness attacks; and bridge custody resists single-signer compromise. Each mechanism carries adversarial tests that must reject the attack, and the trust surface is minimized everywhere — settlement authority is bound to the chain, not to any operator. The guiding standard is simple: ask whether any one party can control, censor, halt, or inflate a layer; if the answer could be yes, it is redesigned until it is no.</p>
-
-    <h2 id="comparison">25. Comparison</h2>
-    <table>
-      <thead><tr><th>Property</th><th>Transparent stablecoins</th><th>Privacy coins</th><th>MoneroUSD</th></tr></thead>
-      <tbody>
-        <tr><td>Confidential amounts</td><td>No</td><td>Often</td><td><strong>Yes, by default</strong></td></tr>
-        <tr><td>USD-pegged</td><td>Yes</td><td>No</td><td><strong>Yes</strong></td></tr>
-        <tr><td>Post-quantum</td><td>No</td><td>Rarely</td><td><strong>Yes, base layer</strong></td></tr>
-        <tr><td>Sync cost</td><td>Full history</td><td>Full history</td><td><strong>One &le;1.8 MB proof</strong></td></tr>
-        <tr><td>Parallel blocks</td><td>No</td><td>No</td><td><strong>Yes (DAG)</strong></td></tr>
-        <tr><td>Private DEX &amp; payments</td><td>No</td><td>Limited</td><td><strong>Ion Swap + USDm Pay</strong></td></tr>
-        <tr><td>Single point of control</td><td>Issuer</td><td>Varies</td><td><strong>None (threshold)</strong></td></tr>
-      </tbody>
-    </table>
-
-    <h2 id="launch">26. Launch Readiness</h2>
-    <p>At 100% completion, MoneroUSD is a complete private financial system, not a single coin:</p>
-    <ul class="wp-list">
-      <li><strong>Protocol:</strong> post-quantum confidential transfers, GHOSTDAG block production, constant-size verification with instant sync, finality gadget, L2 settlement, onion-only transport, no-inflation soundness.</li>
-      <li><strong>Money:</strong> USDm confidential dollar, threshold-issued, overcollateralized; zero-emission dual-power security.</li>
-      <li><strong>Apps:</strong> Ion Swap post-quantum DEX, USDm Pay, usernames, custom tokens &amp; programmable privacy, cross-chain bridges, privacy-preserving explorer, sovereign web hosting, and the IDE.</li>
-      <li><strong>Clients:</strong> desktop, browser dApp provider, light wallet, and mobile — all local-first.</li>
-      <li><strong>Governance:</strong> bicameral, threshold-controlled, fully auditable.</li>
-    </ul>
-
-    <h2 id="conclusion">27. Conclusion</h2>
-    <p>MoneroUSD proves that privacy, stability, post-quantum security, and scale are not a series of trade-offs to be balanced — they can all be true at once, by construction. A confidential dollar you can verify on a phone; a DEX where no one can see your trade; payments as simple as a username; a network no single party can stop. That is the launch vision, and the whole ecosystem is built to deliver it from day one.</p>
-    <p style="text-align: center; color: var(--muted); margin-top: 32px; font-size: 0.92rem;">The MoneroUSD protocol is open source. Verify everything. Trust nothing.</p>
-    <p style="text-align: right; color: var(--muted); margin-top: 24px; font-size: 0.95rem; font-style: italic; padding-right: 28px;">— Cas</p>
-  </div>
-
-  <footer><p>MoneroUSD &copy; 2026 — <a href="/">Home</a> · <a href="/about.html">Details</a> · <a href="/whitepaper.html">Whitepaper</a> · <a href="/whitepaper-quickref.html">Quick Reference</a></p></footer>
-<script>
-(function() {
-  var btn = document.getElementById('navHamburger');
-  var menu = document.getElementById('navMobileMenu');
-  if (!btn || !menu) return;
-  btn.addEventListener('click', function() {
-    var open = menu.classList.toggle('open');
-    btn.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', open);
-  });
-  menu.querySelectorAll('a').forEach(function(a) {
-    a.addEventListener('click', function() {
-      menu.classList.remove('open');
-      btn.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    });
-  });
-})();
-</script>
+</article>
 </body>
 </html>

@@ -1,4 +1,35 @@
 <!DOCTYPE html>
+<!--
+   Copyright (c) 2026, The MoneroUSD Protocol
+   All rights reserved.
+
+   This file is an original work of the MoneroUSD Protocol — a post-quantum,
+   GHOSTDAG block-DAG, zero-knowledge confidential-value protocol. It is NOT part
+   of the Monero Project. It is licensed under the MoneroUSD Protocol License
+   (BSD 3-Clause with a mandatory attribution-and-display clause); see the
+   LICENSE.MoneroUSD-Protocol file distributed with this source.
+
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this
+      list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice, this
+      list of conditions and the following disclaimer in the documentation and/or
+      other materials provided with the distribution.
+   3. Neither the name of the copyright holder nor the names of its contributors may
+      be used to endorse or promote products derived from this software without
+      specific prior written permission.
+   4. ATTRIBUTION AND DISPLAY: any product, fork, service, or derivative work that
+      uses this software or the cryptographic/consensus/transport advances embodied
+      herein must retain and prominently display the MoneroUSD Protocol License and
+      must credit "The MoneroUSD Protocol" as the origin of those advances.
+
+   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+   ANY DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE.
+-->
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -108,7 +139,7 @@
 
   <div class="content">
     <h1>MoneroUSD Details</h1>
-    <p class="subtitle">MoneroUSD (USDm) is built on Monero's battle-tested privacy technology. It extends the Monero ecosystem with stablecoin functionality, bringing USD-pegged value to the same privacy-first principles Monero users trust. Your keys, your coins, your privacy.</p>
+    <p class="subtitle">MoneroUSD (USDm) is a from-scratch, post-quantum private zk-DAG — true digital cash with a USD peg. It carries Monero's privacy-first principles forward into a genuinely new protocol: quantum-safe at every layer, zero metadata revealed, sub-2-second finality. Your keys, your coins, your privacy.</p>
 
     <h2>MoneroUSD vs Monero</h2>
     <table>
@@ -116,16 +147,16 @@
       <tbody>
         <tr><td>Primary Asset</td><td>XMR — volatile cryptocurrency</td><td>USDm — USD-pegged stablecoin</td></tr>
         <tr><td>Purpose</td><td>Private digital cash</td><td>Private, stable-value digital dollar — a complement to XMR</td></tr>
-        <tr><td>Privacy Tech</td><td>Ring signatures, stealth addresses, RingCT</td><td>FCMP++ — full-chain membership proofs across the entire UTXO set</td></tr>
+        <tr><td>Privacy Tech</td><td>Ring signatures, stealth addresses, RingCT</td><td>PQ FCMP++ — post-quantum full-chain membership proofs across the entire note set, plus constant-256 cover on every block</td></tr>
         <tr><td>Collateralization</td><td>Market-driven value</td><td>Over-collateralized by BTC + XMR reserves (150% minimum ratio enforced on-chain)</td></tr>
         <tr><td>Block Time</td><td>~2 minutes</td><td>~2 minutes</td></tr>
         <tr><td>Emission</td><td>Tail emission (0.6 XMR/block)</td><td>Adaptive emission — scales with network activity. Reward = 25% of average block fees, with a floor of 0.00001 USDm and cap of 0.1 USDm per block. Mining never stops — under reserve stress, rewards drop to the floor to protect backing while maintaining chain security</td></tr>
         <tr><td>Swaps</td><td>XMR ↔ BTC (external tools)</td><td>Built-in BTC/XMR ↔ USDm swaps with on-chain burn/mint verification</td></tr>
         <tr><td>Staking</td><td>—</td><td>Tiered APR funded by lending interest: 1.5% (flexible) · 3.0% (30d) · 4.5% (90d) · 6.0% (180d)</td></tr>
         <tr><td>Lending</td><td>—</td><td>Borrow USDm against BTC (60% LTV) or XMR (55% LTV), liquidation at 65%</td></tr>
-        <tr><td>Consensus</td><td>RandomX (CPU mining)</td><td>RandomX (CPU mining) — same algorithm, separate network</td></tr>
+        <tr><td>Consensus</td><td>RandomX (CPU mining)</td><td>Post-quantum Proof-of-Useful-Work (Poseidon2) — the mining hardware is the proving hardware; ~500&nbsp;ms blocks on a GHOSTDAG block-DAG</td></tr>
         <tr><td>Address Prefix</td><td>4 (mainnet)</td><td>M (mainnet)</td></tr>
-        <tr><td>Fork Origin</td><td>Original CryptoNote</td><td>Haven Protocol &#x2192; Monero fork with FCMP++ and stablecoin extensions</td></tr>
+        <tr><td>Origin</td><td>Original CryptoNote</td><td>Greenfield — a from-scratch post-quantum private zk-DAG (no Monero code inherited); Monero's principles, a new protocol</td></tr>
       </tbody>
     </table>
 
@@ -184,10 +215,10 @@
       <div class="card"><h3>Request Deduplication</h3><p>Concurrent price requests from thousands of users are coalesced into a single external API call. Background pre-fetching refreshes prices every 20 seconds, so the cache is always warm.</p></div>
     </div>
 
-    <h2>FCMP++ Privacy</h2>
+    <h2>PQ FCMP++ Privacy</h2>
     <div class="grid">
-      <div class="card"><h3>Monero: Ring Signatures</h3><p>Each transaction includes a ring of 16 decoy outputs. The anonymity set is limited to the ring size. Statistical analysis can narrow down the real spend over time.</p></div>
-      <div class="card"><h3>MoneroUSD: FCMP++</h3><p>Full-Chain Membership Proofs prove a spent output belongs to the <em>entire</em> UTXO set without revealing which one. The anonymity set is the full blockchain — every output is an equally likely candidate. This is the next generation of Monero privacy research.</p></div>
+      <div class="card"><h3>Monero: Ring Signatures</h3><p>Each transaction includes a ring of 16 decoy outputs. The anonymity set is limited to the ring size. Statistical analysis can narrow down the real spend over time — and the classical curves it rests on fall to a quantum computer.</p></div>
+      <div class="card"><h3>MoneroUSD: PQ FCMP++</h3><p>MoneroUSD's own post-quantum Full-Chain Membership Proofs prove a spent note belongs to the <em>entire</em> chain without revealing which one — every note is an equally likely candidate. Built on Poseidon2 commitments and WHIR zero-knowledge proofs, so the privacy survives quantum adversaries, permanently.</p></div>
     </div>
 
     <h2>Swap Protocol</h2>

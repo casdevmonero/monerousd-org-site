@@ -1,4 +1,35 @@
 <!DOCTYPE html>
+<!--
+   Copyright (c) 2026, The MoneroUSD Protocol
+   All rights reserved.
+
+   This file is an original work of the MoneroUSD Protocol — a post-quantum,
+   GHOSTDAG block-DAG, zero-knowledge confidential-value protocol. It is NOT part
+   of the Monero Project. It is licensed under the MoneroUSD Protocol License
+   (BSD 3-Clause with a mandatory attribution-and-display clause); see the
+   LICENSE.MoneroUSD-Protocol file distributed with this source.
+
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this
+      list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice, this
+      list of conditions and the following disclaimer in the documentation and/or
+      other materials provided with the distribution.
+   3. Neither the name of the copyright holder nor the names of its contributors may
+      be used to endorse or promote products derived from this software without
+      specific prior written permission.
+   4. ATTRIBUTION AND DISPLAY: any product, fork, service, or derivative work that
+      uses this software or the cryptographic/consensus/transport advances embodied
+      herein must retain and prominently display the MoneroUSD Protocol License and
+      must credit "The MoneroUSD Protocol" as the origin of those advances.
+
+   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+   ANY DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE.
+-->
+
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -251,7 +282,7 @@
 
   <header class="title">
     <h1>Monero<span>USD</span> Protocol &mdash; Whitepaper V2</h1>
-    <div class="sub">A privacy-preserving USD stablecoin built on Monero technology</div>
+    <div class="sub">True digital cash — a USD-pegged stablecoin on the first post-quantum private zk-DAG</div>
     <div class="meta">Whitepaper V2 &nbsp;&middot;&nbsp; May 2026 &nbsp;&middot;&nbsp; Protocol v1.2.225</div>
   </header>
 
@@ -268,7 +299,7 @@
       <li><b>Growing Overcollateralization</b>Starts at a 150% floor and is designed to grow toward 400%+ as protocol fees, mint bonds, and sovereign-site publish fees accumulate into the reserve over time.</li>
       <li><b>Adaptive Fees</b>Fees scale from 1&times; to 100&times; with reserve utilization. Drain attacks become economically self-defeating before they reach the reserve.</li>
       <li><b>Adaptive Mining Emission</b>Block reward proportional to chain activity. Idle chain accrues; busy chain rewards miners. No fixed-supply auctioning.</li>
-      <li><b>RandomX Proof-of-Work</b>The same CPU-friendly PoW Monero uses. ASIC-resistant. Mining stays in the hands of users with normal hardware.</li>
+      <li><b>Post-Quantum Proof-of-Useful-Work</b>A novel Poseidon2-based PoW where the mining hardware is the proving hardware — the energy that secures the chain also produces its zero-knowledge proofs. CPU-friendly and ASIC-resistant; mining stays in the hands of users with normal hardware.</li>
       <li><b>Local-First Wallet</b>Private keys never leave the user's machine. The desktop wallet is a peer of the network &mdash; no relay servers, no session tokens.</li>
     </ul>
 
@@ -276,7 +307,7 @@
     <ul class="features">
       <li><b>Light Wallet Server</b>Sub-second cross-device wallet restore via an encrypted scope-tag index. The server stores ciphertext only; the spend key never leaves the wallet.</li>
       <li><b>PIR-Protected Queries</b>Restore queries are routed through a SimplePIR layer over an FCMP++-anchored side-index. The operator cannot learn which addresses your wallet is reading.</li>
-      <li><b>Bulletproofs++</b>544-byte range proofs for confidential amounts. Every Pedersen-committed value the protocol emits is range-bounded by a real soundness proof.</li>
+      <li><b>WHIR Range Proofs</b>Post-quantum zero-knowledge range proofs for confidential amounts. Every Poseidon-committed value the protocol emits is range-bounded inside the transaction's own WHIR proof — quantum-safe, constant-size, verified by consensus.</li>
       <li><b>Sender-Side Scope Tags</b>Senders embed encrypted hints in the transaction's tx_extra. The daemon indexes deposits at block time; no operator backfill required.</li>
       <li><b>Stealth Subaddresses</b>Every receive is a one-time address. No address reuse, no on-chain linkability between sends to the same payee.</li>
       <li><b>All-Asset Restore</b>USDm and every wrapped or custom token visible in a single restore query. No second slow scan for non-USDm balances.</li>

@@ -1,4 +1,35 @@
 <!DOCTYPE html>
+<!--
+   Copyright (c) 2026, The MoneroUSD Protocol
+   All rights reserved.
+
+   This file is an original work of the MoneroUSD Protocol — a post-quantum,
+   GHOSTDAG block-DAG, zero-knowledge confidential-value protocol. It is NOT part
+   of the Monero Project. It is licensed under the MoneroUSD Protocol License
+   (BSD 3-Clause with a mandatory attribution-and-display clause); see the
+   LICENSE.MoneroUSD-Protocol file distributed with this source.
+
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this
+      list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice, this
+      list of conditions and the following disclaimer in the documentation and/or
+      other materials provided with the distribution.
+   3. Neither the name of the copyright holder nor the names of its contributors may
+      be used to endorse or promote products derived from this software without
+      specific prior written permission.
+   4. ATTRIBUTION AND DISPLAY: any product, fork, service, or derivative work that
+      uses this software or the cryptographic/consensus/transport advances embodied
+      herein must retain and prominently display the MoneroUSD Protocol License and
+      must credit "The MoneroUSD Protocol" as the origin of those advances.
+
+   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+   ANY DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE.
+-->
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -166,7 +197,7 @@
       <div class="wp-card"><h4>Desktop Wallet</h4><p>Download from <a href="/#download">monerousd.org</a>. Provider is auto-injected into the built-in dApp browser.</p></div>
       <div class="wp-card"><h4>Browser Extension</h4><p>Chrome/Firefox extension injects <code>window.monerousd</code> into any website via a companion auth proxy on port 27751.</p></div>
       <div class="wp-card"><h4>Language</h4><p>JavaScript (frontend). Any language for backend via wallet-rpc JSON-RPC.</p></div>
-      <div class="wp-card"><h4>Privacy</h4><p>FCMP++ at consensus layer. Amounts, senders, recipients, and asset types are all hidden by default.</p></div>
+      <div class="wp-card"><h4>Privacy</h4><p>PQ FCMP++ at consensus layer. Amounts, senders, recipients, and asset types are all hidden by default.</p></div>
     </div>
 
     <h2 id="provider-api">2. Provider API Reference</h2>
@@ -216,8 +247,8 @@
     <table>
       <thead><tr><th>Method</th><th>Returns</th><th>Gate</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>proveOwnership({ assetId, challenge })</code></td><td><code>{ proof }</code></td><td>Spend key</td><td>Generates an FCMP++ membership proof proving you own the asset.</td></tr>
-        <tr><td><code>proveNFTOwnership({ nftId, challenge })</code></td><td><code>{ proof }</code></td><td>Spend key</td><td>Generates an FCMP++ membership proof for a specific NFT.</td></tr>
+        <tr><td><code>proveOwnership({ assetId, challenge })</code></td><td><code>{ proof }</code></td><td>Spend key</td><td>Generates an PQ FCMP++ membership proof proving you own the asset.</td></tr>
+        <tr><td><code>proveNFTOwnership({ nftId, challenge })</code></td><td><code>{ proof }</code></td><td>Spend key</td><td>Generates an PQ FCMP++ membership proof for a specific NFT.</td></tr>
         <tr><td><code>shareViewKey({ scope, id, recipientPubKey })</code></td><td><code>{ encryptedViewKey }</code></td><td>Biometric</td><td>Shares a read-only view key with a specific recipient.</td></tr>
       </tbody>
     </table>
@@ -229,7 +260,7 @@ window.monerousd.on(<span class="str">'addressChanged'</span>, (addr) =&gt; cons
 window.monerousd.on(<span class="str">'chainChanged'</span>, (chain) =&gt; console.log(<span class="str">'Chain:'</span>, chain));</pre>
 
     <h2 id="token-creation">3. Token Creation (USDm-T1)</h2>
-    <p>USDm-T1 tokens are native protocol assets that inherit FCMP++ privacy. They are not smart contracts &mdash; they are processed at the daemon level, making amounts, senders, recipients, and even the token type hidden from observers.</p>
+    <p>USDm-T1 tokens are native protocol assets that inherit PQ FCMP++ privacy. They are not smart contracts &mdash; they are processed at the daemon level, making amounts, senders, recipients, and even the token type hidden from observers.</p>
 
     <h3>Token Addresses (<code>ion1_</code>)</h3>
     <p>Every token is assigned a unique <code>ion1_</code> address at creation &mdash; analogous to a contract address on Ethereum, but privacy-preserving. The address is derived from BLAKE2b-256 (CryptoNote-native) and is 69 characters long.</p>
@@ -303,7 +334,7 @@ console.log(<span class="str">'Bond paid:'</span>, result.bondPaid, <span class=
     <div class="wp-note"><strong>V1 constraint:</strong> All custom token pools must pair against USDm. This forces every trade to route through USDm, concentrating liquidity, maximizing fee capture, and making USDm the settlement layer for the entire ecosystem. <code>TOKEN/TOKEN</code> direct pools will be enabled post-launch once sufficient USDm pool depth exists.</div>
 
     <h2 id="shadow-nfts">4. Shadow NFTs (USDm-N1)</h2>
-    <p>Shadow NFTs are tokens with <code>maxSupply=1, decimals=0</code>. On MoneroUSD, an NFT output is indistinguishable from any other output &mdash; FCMP++ hides the owner, amount, and asset type. There is no <code>ownerOf()</code> function. Ownership is provable only by the holder via an FCMP++ membership proof.</p>
+    <p>Shadow NFTs are tokens with <code>maxSupply=1, decimals=0</code>. On MoneroUSD, an NFT output is indistinguishable from any other output &mdash; PQ FCMP++ hides the owner, amount, and asset type. There is no <code>ownerOf()</code> function. Ownership is provable only by the holder via an PQ FCMP++ membership proof.</p>
 
     <h3>Mint Bond</h3>
     <div class="wp-formula">
@@ -386,10 +417,10 @@ console.log(<span class="str">'NFT ID:'</span>, nft.nftId);
     <table>
       <thead><tr><th>Construct</th><th>Behaviour</th></tr></thead>
       <tbody>
-        <tr><td><code>private</code> field</td><td>Pedersen-committed on every write. Never rendered in plaintext by any public API.</td></tr>
+        <tr><td><code>private</code> field</td><td>Poseidon-committed on every write. Never rendered in plaintext by any serving API.</td></tr>
         <tr><td><code>@batch</code> entry</td><td>Compiler emits a <code>REQUIRE_COMMIT_REVEAL</code> preamble. A direct <code>DC_CALL</code> without a prior commit is rejected with <code>DC_MUST_COMMIT</code>.</td></tr>
         <tr><td><code>emit encrypted</code></td><td>Event payload is AES-256-GCM sealed to <code>HKDF(viewkeyHash, contractId, eventName)</code>. Only the caller decrypts.</td></tr>
-        <tr><td><code>when revealed</code></td><td>Return type compiles to open-and-prove: auto-generated Bulletproofs++ range proof (576 bytes when <code>BPPP_REAL_SOUNDNESS=1</code>), value encrypted to <code>msg.sender</code>.</td></tr>
+        <tr><td><code>when revealed</code></td><td>Return type compiles to open-and-prove: the opened value binds to its Poseidon commitment under the transaction's post-quantum WHIR proof, value encrypted to <code>msg.sender</code>.</td></tr>
       </tbody>
     </table>
 
@@ -509,22 +540,18 @@ console.log(<span class="str">'NFT ID:'</span>, nft.nftId);
       </tbody>
     </table>
 
-    <h3>5.10 Bulletproofs++ verification (v1.2.182)</h3>
-    <p>The <code>VERIFY_RANGE_PROOF_BPPP_V1</code> syscall lets DSOL contracts validate Bulletproofs++ range proofs that prove a committed value lies in <code>[0, 2<sup>64</sup>)</code> without revealing the value. The verifier runs entirely on-chain (consuming the per-call instruction budget) so contracts can gate state transitions on cryptographic range guarantees.</p>
+    <h3>5.10 Range proofs — post-quantum, off-VM</h3>
+    <p>Range validity ("this committed value lies in <code>[0, 2<sup>64</sup>)</code>") is enforced by the transaction's own post-quantum WHIR zero-knowledge proof, verified by the node <em>before</em> any contract code runs — every committed amount a contract can observe has already passed a quantum-safe range check. There is no classical range verifier anywhere in the stack.</p>
 
-    <pre class="code-block"><span class="cmt">// argv: { commitmentHex: "&lt;64-char hex&gt;",</span>
-<span class="cmt">//        proofHex: "&lt;1088-char hex = 544 bytes&gt;",</span>
-<span class="cmt">//        Nd?: 16, Np?: 16,</span>
-<span class="cmt">//        transcriptLabel?: "BPPP-V1-..." }</span>
+    <pre class="code-block"><span class="cmt">// The pre-greenfield in-VM Bulletproofs++ syscall is REMOVED (classical crypto</span>
+<span class="cmt">// is banned protocol-wide). Invoking the old opcode fails closed:</span>
 <span class="cmt">//</span>
-<span class="cmt">// returns: { valid: bool, soundnessMode: "real"|"soft", Nd, Np }</span>
-<span class="kw">let</span> argv = abi.encode({ commitmentHex, proofHex });
-<span class="kw">let</span> result = syscall(VERIFY_RANGE_PROOF_BPPP_V1, argv);
-<span class="kw">require</span>(result.valid, <span class="str">"RANGE_PROOF_INVALID"</span>);</pre>
+<span class="cmt">//   DC_RANGEPROOF_IN_VM_REMOVED: use the off-VM PQ WHIR range proof</span>
+<span class="cmt">//</span>
+<span class="cmt">// Contracts gate on the transaction's proven validity instead — if your entry</span>
+<span class="cmt">// point executes, every committed input amount is already range-proven.</span></pre>
 
-    <p>The proof is 544 bytes for the canonical 64-bit range. Step-cost is fixed at 100,000 (10% of the 1,000,000-instruction per-call budget per DC-2) &mdash; heavy enough to deter contracts that loop on verification, cheap enough that ~10 verifications per call are economically reasonable.</p>
-
-    <p>Activation flag: when <code>BPPP_REAL_SOUNDNESS=1</code> is set in the indexer&apos;s environment, <code>pedersen.js::rangeProof()</code> returns 576 bytes (32 commitment + 544 BP++ proof) instead of the legacy 96-byte SHA-512 placeholder. The wire-shape difference is intentional &mdash; silent soundness downgrade is impossible because consumers immediately fail on length mismatch. Operators flip the flag once they have validated their indexer ships with the real verifier; the live VPS has it set as of v1.2.182.</p>
+    <p>This is stronger, not weaker: the range guarantee is part of consensus itself (a transaction with an out-of-range amount never enters a block), it costs contracts zero instruction budget, and the proof system is the same WHIR verifier that seals every block — post-quantum, constant-size, and impossible to soundness-downgrade silently.</p>
 
     <h2 id="ion-swap">6. Ion Swap Pool Integration</h2>
     <p><a href="https://ion.monerousd.org" target="_blank" rel="noopener noreferrer">Ion Swap</a> is the private batch AMM for MoneroUSD. Every swap goes through a commit-reveal cycle &mdash; no transparent path exists.</p>
@@ -639,9 +666,9 @@ console.log(<span class="str">'NFT ID:'</span>, nft.nftId);
         <p>Every dApp gets a fresh subaddress. Your main account stays hidden. Never reuse addresses across dApps.</p>
       </div>
       <div class="wp-card">
-        <h4>Pedersen Commitments</h4>
+        <h4>Poseidon Commitments</h4>
         <div class="val">Hidden Amounts</div>
-        <p>All amounts are Pedersen-committed with Bulletproofs+ range proofs. Observers see commitments, never values.</p>
+        <p>All amounts are Poseidon-committed and range-proven inside the post-quantum WHIR proof. Observers see commitments, never values.</p>
       </div>
       <div class="wp-card">
         <h4>Commit-Reveal</h4>
@@ -649,7 +676,7 @@ console.log(<span class="str">'NFT ID:'</span>, nft.nftId);
         <p>Every swap is hash-committed before reveal. Front-running is cryptographically impossible.</p>
       </div>
       <div class="wp-card">
-        <h4>FCMP++</h4>
+        <h4>PQ FCMP++</h4>
         <div class="val">Full Chain</div>
         <p>Full-chain membership proofs. Every output in the chain is a decoy &mdash; no ring size limitation.</p>
       </div>

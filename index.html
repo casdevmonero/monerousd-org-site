@@ -1,10 +1,41 @@
 <!DOCTYPE html>
+<!--
+   Copyright (c) 2026, The MoneroUSD Protocol
+   All rights reserved.
+
+   This file is an original work of the MoneroUSD Protocol — a post-quantum,
+   GHOSTDAG block-DAG, zero-knowledge confidential-value protocol. It is NOT part
+   of the Monero Project. It is licensed under the MoneroUSD Protocol License
+   (BSD 3-Clause with a mandatory attribution-and-display clause); see the
+   LICENSE.MoneroUSD-Protocol file distributed with this source.
+
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this
+      list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice, this
+      list of conditions and the following disclaimer in the documentation and/or
+      other materials provided with the distribution.
+   3. Neither the name of the copyright holder nor the names of its contributors may
+      be used to endorse or promote products derived from this software without
+      specific prior written permission.
+   4. ATTRIBUTION AND DISPLAY: any product, fork, service, or derivative work that
+      uses this software or the cryptographic/consensus/transport advances embodied
+      herein must retain and prominently display the MoneroUSD Protocol License and
+      must credit "The MoneroUSD Protocol" as the origin of those advances.
+
+   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+   ANY DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE.
+-->
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MoneroUSD — Private USD Stablecoin</title>
-  <meta name="description" content="MoneroUSD (USDm) is a privacy-preserving USD stablecoin built on Monero technology with FCMP++ enhanced privacy." />
+  <title>MoneroUSD — The First Post-Quantum Private Money</title>
+  <meta name="description" content="MoneroUSD (USDm) is true digital cash — the first post-quantum private zk-DAG. A dollar-pegged stablecoin with PQ FCMP++ privacy, ~500ms blocks, sub-2s finality, and a complete private DeFi ecosystem." />
   <style>
     @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('/fonts/outfit-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
@@ -437,6 +468,184 @@
       .fcmp-comparison { grid-template-columns: 1fr; }
     }
 
+    /* ── 3D MoneroUSD coin (hero centerpiece, modeled on logo.svg) ───────── */
+    .coin-stage {
+      width: 200px; height: 200px;
+      margin: 0 auto 34px;
+      perspective: 1000px;
+      position: relative;
+    }
+    .coin-stage::after { /* floor glow that breathes with the spin */
+      content: '';
+      position: absolute; left: 50%; bottom: -36px;
+      width: 150px; height: 26px;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse at center, rgba(255,102,0,0.35) 0%, rgba(255,102,0,0.08) 55%, transparent 78%);
+      filter: blur(6px);
+      animation: coin-glow 7s linear infinite;
+      pointer-events: none;
+    }
+    .coin {
+      position: absolute; inset: 0;
+      transform-style: preserve-3d;
+      animation: coin-spin 7s linear infinite;
+    }
+    .coin-face {
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      backface-visibility: hidden;
+      transform: translateZ(10px);
+    }
+    .coin-face svg { display: block; width: 100%; height: 100%; }
+    .coin-back { transform: rotateY(180deg) translateZ(10px); }
+    .coin-edge { position: absolute; inset: 0; transform-style: preserve-3d; }
+    .coin-edge span { /* reeded rim segments — sized + placed by JS */
+      position: absolute; top: 50%; left: 50%;
+      background: linear-gradient(180deg, #6a6a6a 0%, #474747 45%, #383838 100%);
+    }
+    .coin-edge span:nth-child(odd) {
+      background: linear-gradient(180deg, #585858 0%, #3d3d3d 50%, #303030 100%);
+    }
+    @keyframes coin-spin {
+      from { transform: rotateX(10deg) rotateY(0deg); }
+      to   { transform: rotateX(10deg) rotateY(360deg); }
+    }
+    @keyframes coin-glow {
+      0%, 50%, 100% { opacity: 0.75; transform: translateX(-50%) scaleX(1); }
+      25%, 75%      { opacity: 1;    transform: translateX(-50%) scaleX(0.7); }
+    }
+
+    /* ── scroll-reveal + card motion ─────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+    .feature, .fcmp-card, .dl-card { transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; }
+    .feature:hover, .fcmp-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,102,0,0.45);
+      box-shadow: 0 14px 44px rgba(0,0,0,0.5), 0 0 24px rgba(255,102,0,0.12);
+    }
+
+    /* ── animated diagrams (zk-DAG live view + payment pipeline) ─────────── */
+    .diagram-panel {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 18px 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .diagram-panel::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,102,0,0.05) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .dag-svg, .pipe-svg { display: block; width: 100%; height: auto; }
+    .diagram-legend {
+      display: flex; flex-wrap: wrap; gap: 8px 22px;
+      justify-content: center;
+      padding: 10px 6px 6px;
+      color: var(--muted); font-size: 0.8rem;
+    }
+    .diagram-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 7px; vertical-align: -1px; }
+    .lg-block { background: rgba(255,102,0,0.25); border: 1px solid rgba(255,102,0,0.8); }
+    .lg-edge  { background: transparent; border-top: 2px solid rgba(255,255,255,0.35); height: 0 !important; border-radius: 0; margin-top: 5px; }
+    .lg-proof { background: rgba(46,204,113,0.2); border: 1px solid rgba(46,204,113,0.8); border-radius: 50%; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .coin { animation: none; transform: rotateX(10deg) rotateY(24deg); }
+      .coin-stage::after { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+    @media (max-width: 480px) { .coin-stage { width: 160px; height: 160px; } }
+
+    /* ── "A List of Firsts" showcase — alternating rows on a glowing spine, each
+       first gets its own LIVE diagram (no box-grid; real editorial layout). ── */
+    .fx-spine { position: relative; margin-top: 30px; }
+    .fx-spine::before {
+      content: ''; position: absolute; top: 0; bottom: 0; left: 50%;
+      width: 2px; transform: translateX(-50%);
+      background: linear-gradient(180deg, transparent 0%, rgba(255,102,0,0.35) 6%, rgba(255,102,0,0.35) 94%, transparent 100%);
+    }
+    .fx-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+      align-items: center; padding: 46px 0; position: relative;
+    }
+    .fx-dot {
+      position: absolute; left: 50%; top: 50%;
+      width: 14px; height: 14px; border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--orange);
+      box-shadow: 0 0 0 4px rgba(255,102,0,0.16), 0 0 18px rgba(255,102,0,0.8);
+    }
+    .fx-copy { position: relative; padding: 0 8px; }
+    .fx-num {
+      position: absolute; top: -48px; left: -6px;
+      font-size: 4.6rem; font-weight: 800; line-height: 1;
+      color: rgba(255,102,0,0.13); letter-spacing: -2px;
+      user-select: none;
+    }
+    .fx-copy h3 {
+      font-size: 1.75rem; font-weight: 800; margin-bottom: 12px; line-height: 1.22;
+      background: linear-gradient(100deg, #ffffff 30%, #ffb26b 78%, var(--orange) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .fx-copy p { color: var(--muted); line-height: 1.75; font-size: 1rem; }
+    .fx-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .fx-tags span {
+      font-size: 0.74rem; font-weight: 600; letter-spacing: 0.4px;
+      color: #ffb26b; padding: 5px 11px; border-radius: 999px;
+      border: 1px solid rgba(255,102,0,0.35); background: rgba(255,102,0,0.06);
+    }
+    .fx-visual { position: relative; display: flex; align-items: center; justify-content: center; min-height: 240px; }
+    .fx-visual::before {
+      content: ''; position: absolute; inset: -8%;
+      background: radial-gradient(ellipse at center, rgba(255,102,0,0.07) 0%, transparent 62%);
+      pointer-events: none;
+    }
+    .fx-visual svg { width: 100%; max-width: 480px; height: auto; display: block; position: relative; }
+    .fx-row.fx-flip .fx-visual { order: -1; }
+    .fx-pillars {
+      display: flex; flex-wrap: wrap; gap: 12px 18px; justify-content: center;
+      margin-top: 46px; padding-top: 32px;
+      border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .fx-pillars .pill {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 0.86rem; color: #cfcfcf;
+      padding: 10px 16px; border-radius: 12px;
+      border: 1px solid var(--border); background: rgba(10,10,10,0.78);
+    }
+    .fx-pillars .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 10px rgba(255,102,0,0.8); flex-shrink: 0; }
+    @media (max-width: 900px) {
+      .fx-spine::before { left: 8px; }
+      .fx-dot { left: 8px; }
+      .fx-row { grid-template-columns: 1fr; gap: 26px; padding: 30px 0 30px 34px; }
+      .fx-row.fx-flip .fx-visual { order: 0; }
+      .fx-num { position: static; display: block; margin-bottom: 6px; font-size: 3rem; }
+    }
+
+    /* ── ecosystem: borderless rows with icon chips — a directory, not a box-grid ── */
+    .eco-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 44px; margin-top: 12px; }
+    .eco-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 18px 12px; border-radius: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .eco-item:hover { background: rgba(255,102,0,0.05); transform: translateX(6px); }
+    .eco-ico {
+      width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+      background: linear-gradient(160deg, rgba(255,102,0,0.18), rgba(255,102,0,0.05));
+      border: 1px solid rgba(255,102,0,0.3);
+    }
+    .eco-item h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: 4px; }
+    .eco-item p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+    @media (max-width: 800px) { .eco-list { grid-template-columns: 1fr; } }
+
     /* CTA */
     .cta {
       text-align: center;
@@ -515,6 +724,8 @@
     }
   </style>
   <!-- sov-offline-cache-installed -->
+  <!-- node-first wallet bridge: framed-in-wallet apps route every /api|/v1|/rpc call to the user's node (zero VPS). -->
+  <script src="lib/wallet-bridge.js?v=1"></script>
   <script src="js/offline-cache.js"></script>
 </head>
 <body>
@@ -526,7 +737,7 @@
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-logo">
-        <img src="/logo.svg" alt="MoneroUSD" />
+        <img src="logo.svg" alt="MoneroUSD" />
         MoneroUSD
       </a>
       <div class="nav-links">
@@ -559,59 +770,208 @@
 
   <section class="hero">
     <div class="hero-inner">
-      <img src="/logo.svg" alt="MoneroUSD" class="hero-logo" />
-      <h1>The <span class="accent">Private</span> Dollar</h1>
-      <p class="tagline">USDm is a privacy-preserving stablecoin pegged 1:1 to USD. Built on Monero with FCMP++ cryptography — your money, your privacy.</p>
-      <div class="hero-actions">
-        <a href="#download" class="btn-main btn-primary">Download Wallet</a>
+      <div class="coin-stage" id="coinStage" role="img" aria-label="A spinning 3D MoneroUSD coin — the orange M logo on the front, one dollar USDm on the back">
+        <div class="coin" id="heroCoin">
+          <div class="coin-face coin-front">
+            <!-- FRONT: the MoneroUSD logo, byte-faithful geometry from logo.svg -->
+            <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="rimOuterF" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#888"/><stop offset="20%" stop-color="#6a6a6a"/><stop offset="50%" stop-color="#555"/><stop offset="80%" stop-color="#444"/><stop offset="100%" stop-color="#3a3a3a"/>
+                </linearGradient>
+                <linearGradient id="rimInnerF" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#707070"/><stop offset="50%" stop-color="#505050"/><stop offset="100%" stop-color="#404040"/>
+                </linearGradient>
+                <radialGradient id="coinFaceF" cx="50%" cy="38%" r="55%">
+                  <stop offset="0%" stop-color="#4d4d4d"/><stop offset="100%" stop-color="#2a2a2a"/>
+                </radialGradient>
+                <linearGradient id="mGradF" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#f7941d"/><stop offset="50%" stop-color="#f5851a"/><stop offset="100%" stop-color="#e07517"/>
+                </linearGradient>
+              </defs>
+              <circle cx="128" cy="128" r="122" fill="url(#rimOuterF)" stroke="#333" stroke-width="2"/>
+              <circle cx="128" cy="128" r="112" fill="url(#rimInnerF)"/>
+              <circle cx="128" cy="128" r="102" fill="url(#coinFaceF)"/>
+              <circle cx="128" cy="128" r="102" fill="none" stroke="#3a3a3a" stroke-width="1.5"/>
+              <polygon points="62,178 62,88 128,154 194,88 194,178 176,178 176,118 128,166 80,118 80,178" fill="url(#mGradF)"/>
+              <rect x="42" y="162" width="38" height="16" rx="2" fill="url(#mGradF)"/>
+              <rect x="176" y="162" width="38" height="16" rx="2" fill="url(#mGradF)"/>
+            </svg>
+          </div>
+          <div class="coin-face coin-back">
+            <!-- BACK: the denomination side — same rims/face language as the logo -->
+            <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="rimOuterB" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#888"/><stop offset="20%" stop-color="#6a6a6a"/><stop offset="50%" stop-color="#555"/><stop offset="80%" stop-color="#444"/><stop offset="100%" stop-color="#3a3a3a"/>
+                </linearGradient>
+                <linearGradient id="rimInnerB" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#707070"/><stop offset="50%" stop-color="#505050"/><stop offset="100%" stop-color="#404040"/>
+                </linearGradient>
+                <radialGradient id="coinFaceB" cx="50%" cy="38%" r="55%">
+                  <stop offset="0%" stop-color="#4d4d4d"/><stop offset="100%" stop-color="#2a2a2a"/>
+                </radialGradient>
+                <linearGradient id="mGradB" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#f7941d"/><stop offset="50%" stop-color="#f5851a"/><stop offset="100%" stop-color="#e07517"/>
+                </linearGradient>
+              </defs>
+              <circle cx="128" cy="128" r="122" fill="url(#rimOuterB)" stroke="#333" stroke-width="2"/>
+              <circle cx="128" cy="128" r="112" fill="url(#rimInnerB)"/>
+              <circle cx="128" cy="128" r="102" fill="url(#coinFaceB)"/>
+              <circle cx="128" cy="128" r="88" fill="none" stroke="url(#mGradB)" stroke-width="2" opacity="0.55"/>
+              <text x="128" y="74" text-anchor="middle" font-size="13" letter-spacing="3" fill="#9a9a9a" font-weight="600">POST-QUANTUM</text>
+              <text x="128" y="152" text-anchor="middle" font-size="86" font-weight="800" fill="url(#mGradB)">$1</text>
+              <text x="128" y="190" text-anchor="middle" font-size="21" letter-spacing="8" fill="#b5b5b5" font-weight="600">USDm</text>
+            </svg>
+          </div>
+          <div class="coin-edge" id="coinEdge" aria-hidden="true"></div>
+        </div>
       </div>
-      <p class="hero-sub"><span>$</span> 1 USDm = 1 USD &mdash; protocol enforced</p>
+      <h1>The First <span class="accent">Post-Quantum</span> Private Money</h1>
+      <p class="tagline">MoneroUSD (USDm) is true digital cash — a dollar-pegged stablecoin on the world's first private, zero-knowledge block-DAG. Every payment is untraceable and quantum-proof, and settles in under two seconds. It's also the foundation of a complete post-quantum DeFi ecosystem: swap, message, pay, build, and explore — all with zero metadata revealed.</p>
+      <div class="hero-actions">
+        <a href="#ecosystem" class="btn-main btn-primary">Explore the Ecosystem</a>
+        <a href="#download" class="btn-main btn-ghost">Download Wallet</a>
+      </div>
+      <p class="hero-sub"><span>$</span> 1 USDm = 1 USD &mdash; protocol-enforced &middot; post-quantum &middot; zero metadata</p>
     </div>
   </section>
 
   <div class="stats-bar">
     <div class="stats-grid">
       <div><div class="stat-val">$1.00</div><div class="stat-label">Protocol Peg</div></div>
-      <div><div class="stat-val">FCMP++</div><div class="stat-label">Privacy Tech</div></div>
+      <div><div class="stat-val">~500ms</div><div class="stat-label">Block Time</div></div>
+      <div><div class="stat-val">&lt;2s</div><div class="stat-label">Absolute Finality</div></div>
       <div><div class="stat-val">150%+</div><div class="stat-label">Min Reserve Ratio</div></div>
-      <div><div class="stat-val">120s</div><div class="stat-label">Block Time</div></div>
     </div>
   </div>
 
   <section id="features">
     <div class="section-inner">
-      <h2 class="section-title">Why MoneroUSD</h2>
-      <p class="section-subtitle">Private, stable, and decentralized. The stablecoin that doesn't compromise.</p>
-      <div class="features-grid">
-        <div class="feature">
-          <div class="feature-icon">&#128274;</div>
-          <h3>Full-Chain Membership Proofs</h3>
-          <p>FCMP++ proves your transaction is valid without revealing which coins you spent. Every transaction references the entire blockchain, making analysis impossible.</p>
+      <h2 class="section-title">A List of Firsts</h2>
+      <p class="section-subtitle">Not an iteration of anything — a genuinely new kind of money. Watch each breakthrough actually work.</p>
+      <div class="fx-spine">
+
+        <div class="fx-row">
+          <div class="fx-copy">
+            <div class="fx-num">01</div>
+            <h3>The First Private zk-DAG</h3>
+            <p>Every other private coin runs a single-file chain. MoneroUSD is a GHOSTDAG block-DAG — blocks confirm in parallel lanes and link to many parents, so the ledger is fast and leaderless. Each block seals itself with its own zero-knowledge proof and carries the identical constant-256 cover, so the graph you're watching reveals nothing about who paid whom.</p>
+            <div class="fx-tags"><span>GHOSTDAG width &gt; 1</span><span>per-block WHIR proof</span><span>constant-256 cover</span></div>
+          </div>
+          <div class="fx-visual"><svg id="fxDag" viewBox="0 0 480 300" role="img" aria-label="Live diagram: blocks confirm in parallel lanes, link to multiple parents, and each receives a green verified-proof check"></svg></div>
+          <div class="fx-dot" aria-hidden="true"></div>
         </div>
-        <div class="feature">
-          <div class="feature-icon">&#128176;</div>
-          <h3>USD-Pegged Stability</h3>
-          <p>1 USDm always equals $1 at the protocol level. On-chain conversions enforce the peg through consensus rules — no centralized issuer, no counterparty risk.</p>
+
+        <div class="fx-row fx-flip">
+          <div class="fx-copy">
+            <div class="fx-num">02</div>
+            <h3>Post-Quantum at Every Layer</h3>
+            <p>ML-KEM-768 encryption, ML-DSA-65 signatures, Poseidon2 hashing, WHIR proofs — and not a single elliptic curve anywhere. A quantum computer can't unwind today's transactions tomorrow: harvest-now-decrypt-later simply bounces off. The first money built to outlive the quantum era.</p>
+            <div class="fx-tags"><span>ML-KEM-768</span><span>ML-DSA-65</span><span>Poseidon2</span><span>WHIR</span></div>
+          </div>
+          <div class="fx-visual"><svg id="fxShield" viewBox="0 0 480 300" role="img" aria-label="Animated shield with orbiting post-quantum primitives; incoming quantum attacks fizzle at the boundary"></svg></div>
+          <div class="fx-dot" aria-hidden="true"></div>
         </div>
-        <div class="feature">
-          <div class="feature-icon">&#128256;</div>
-          <h3>Overcollateralized Swaps</h3>
-          <p>Deposit $150 of BTC or XMR — receive 100 USDm. The 1.5:1 mint ratio means every USDm is backed by $1.50 from day one. The reserve can only grow beyond the 150% floor.</p>
+
+        <div class="fx-row">
+          <div class="fx-copy">
+            <div class="fx-num">03</div>
+            <h3>True Digital Cash</h3>
+            <p>Every block records exactly 256 notes and 256 spend tags — real payments hidden among byte-indistinguishable cover, shuffled to random positions. Scan the chain as any node, indexer, or global adversary: count, volume, timing, amounts, identities — all invisible. One note is one dollar bill.</p>
+            <div class="fx-tags"><span>zero metadata</span><span>constant shape every block</span><span>indistinguishable cover</span></div>
+          </div>
+          <div class="fx-visual"><svg id="fxCover" viewBox="0 0 480 300" role="img" aria-label="A 256-cell block grid where every cell looks identical while a scanner sweeps and finds nothing"></svg></div>
+          <div class="fx-dot" aria-hidden="true"></div>
         </div>
-        <div class="feature">
-          <div class="feature-icon">&#9935;</div>
-          <h3>CPU Mining &amp; Staking</h3>
-          <p>Mine USDm with one click using RandomX. Stake for yield: 1.5% APR (no lock), 3% (30d), 4.5% (90d), 6% (180d). Yield is funded entirely by lending interest — not by inflating supply.</p>
+
+        <div class="fx-row fx-flip">
+          <div class="fx-copy">
+            <div class="fx-num">04</div>
+            <h3>PQ FCMP++ Membership</h3>
+            <p>MoneroUSD's own post-quantum Full-Chain Membership Proofs. A spend proves it references a real, unspent note somewhere in the entire chain — millions of candidates — without ever pointing at one. No decoy rings, no heuristics to attack: the proof closes and not a single note lights up.</p>
+            <div class="fx-tags"><span>anonymity set: the whole chain</span><span>no decoy selection</span><span>quantum-safe ZK</span></div>
+          </div>
+          <div class="fx-visual"><svg id="fxRing" viewBox="0 0 480 300" role="img" aria-label="A ring of identical notes; a proof sweep completes with a green check while no individual note is ever highlighted"></svg></div>
+          <div class="fx-dot" aria-hidden="true"></div>
         </div>
-        <div class="feature">
-          <div class="feature-icon">&#128737;</div>
-          <h3>Biometric Security</h3>
-          <p>Optional Face ID and Touch ID protect sensitive operations. Your biometric binds to your wallet seed — nobody else can authorize transactions.</p>
+
+        <div class="fx-row">
+          <div class="fx-copy">
+            <div class="fx-num">05</div>
+            <h3>O(1) at Any Height</h3>
+            <p>The chain grows forever; the node doesn't grow at all. State, RAM, and proof size stay constant at any height — notes are stored nowhere and regenerated on demand. A phone verifies the whole chain from a single proof of at most 1.8&nbsp;MB, whether the chain is a day or a decade old.</p>
+            <div class="fx-tags"><span>&le;1.8 MB whole-chain proof</span><span>instant sync</span><span>phone-class RAM</span></div>
+          </div>
+          <div class="fx-visual"><svg id="fxO1" viewBox="0 0 480 300" role="img" aria-label="Blocks stream past forever while the node-state bar stays perfectly flat at 1.8 megabytes"></svg></div>
+          <div class="fx-dot" aria-hidden="true"></div>
         </div>
-        <div class="feature">
-          <div class="feature-icon">&#127760;</div>
-          <h3>Browser &amp; Desktop</h3>
-          <p>Download the native app for macOS, Windows, and Linux. Your keys never leave your device.</p>
+
+        <div class="fx-row fx-flip">
+          <div class="fx-copy">
+            <div class="fx-num">06</div>
+            <h3>Absolute Finality, Under 2s</h3>
+            <p>Blocks land about every 500 milliseconds, and a post-quantum finality certificate makes settlement <em>absolute</em> in under two seconds — card-swipe fast with cash finality. No probabilistic waiting, no rollback window, no "wait for six confirmations."</p>
+            <div class="fx-tags"><span>~500 ms blocks</span><span>PQ finality certificate</span><span>no rollback</span></div>
+          </div>
+          <div class="fx-visual"><svg id="fxTimer" viewBox="0 0 480 300" role="img" aria-label="A stopwatch ring fills and flashes green at 1.8 seconds — absolute finality"></svg></div>
+          <div class="fx-dot" aria-hidden="true"></div>
+        </div>
+
+      </div>
+
+      <div class="fx-pillars">
+        <div class="pill"><span class="dot"></span>Trustless by construction — no trusted party for soundness or liveness</div>
+        <div class="pill"><span class="dot"></span>Useful-work mining — the mining hardware <em>is</em> the proving hardware</div>
+        <div class="pill" id="porCard"><span class="dot"></span><span id="porStatus">Checking the chain's live confidential-solvency attestation…</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ecosystem">
+    <div class="section-inner">
+      <h2 class="section-title">One Ecosystem, Fully Private</h2>
+      <p class="section-subtitle">Everything you can do with money — reimagined post-quantum, node-first, and metadata-free.</p>
+      <div class="eco-list">
+        <div class="eco-item">
+          <div class="eco-ico">&#128179;</div>
+          <div><h3>USDm Wallet</h3>
+          <p>The first post-quantum private desktop &amp; mobile wallet. Sub-second sends, a live mirror of your own node, and a built-in browser that opens every ecosystem app.</p></div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-ico">&#128260;</div>
+          <div><h3>Ion Swap</h3>
+          <p>A fully private DeFi exchange — swaps, liquidity pools, one-click token launches, DCA, yield, and NFTs — running entirely on your node, with no order-flow or balances leaked.</p></div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-ico">&#9993;&#65039;</div>
+          <div><h3>Letter</h3>
+          <p>Private messaging that works like sending a sealed letter: ML-KEM-768 handshake, ML-DSA-65 authentication, onion transport, and a metadata-blind relay. Nobody can see who wrote to whom.</p></div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-ico">&#128188;</div>
+          <div><h3>USDm Pay</h3>
+          <p>A private, self-custodial bank in your pocket — pay by @username, tap-to-pay at the register, and a spend-bounded card key. The privacy of cash with the convenience of a card.</p></div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-ico">&#128302;</div>
+          <div><h3>Explorer</h3>
+          <p>A novel private block explorer: real proving power and TPS, with a constant 256 transactions shown for every block — because a true-cash chain must never reveal how many payments really happened.</p></div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-ico">&#128187;</div>
+          <div><h3>MonerousD IDE &amp; DSOL</h3>
+          <p>Write and deploy smart contracts on DSOL — a post-quantum contract VM — straight from an in-browser IDE. Programmable money that keeps every layer quantum-safe and private.</p></div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-ico">&#128421;&#65039;</div>
+          <div><h3>Run a Node</h3>
+          <p>The chain is the backend, so anyone can host it. One click runs a full post-quantum node — O(1) state, instant sync, onion transport — that produces, verifies, and serves the whole ecosystem.</p></div>
+        </div>
+        <div class="eco-item">
+          <div class="eco-ico">&#127760;</div>
+          <div><h3>Sovereign Hosting</h3>
+          <p>Every app here is served by the chain itself — the node is the backend. No cloud, no VPS, no single point to censor or take down. The network hosts the network.</p></div>
         </div>
       </div>
     </div>
@@ -626,22 +986,30 @@
           <div class="step-num">1</div>
           <div class="step-content">
             <h3>Create Your Wallet</h3>
-            <p>Generate a 25-word seed phrase. That's your only credential — no accounts, no email, no identity verification. Write it down and you control your money forever.</p>
+            <p>Generate a recovery seed. That's your only credential — no accounts, no email, no identity verification. Your seed alone restores your full balance and spendability from the chain, at any height, forever.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-content">
             <h3>Fund with Crypto</h3>
-            <p>Swap BTC or XMR for USDm at live market rates. The protocol mints at a 1.5:1 ratio — deposit $150 of crypto to receive 100 USDm. This keeps every USDm overcollateralized from the moment it exists.</p>
+            <p>Swap BTC or XMR for USDm at live market rates, backed at 150% — deposit $150 of crypto to receive 100 USDm. Every USDm is overcollateralized from the moment it exists, so the reserve can only grow.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-content">
             <h3>Spend Privately</h3>
-            <p>Send USDm to anyone. FCMP++ full-chain membership proofs make every transaction completely untraceable — your balance, your history, and your identity stay private.</p>
+            <p>Send USDm to anyone in under two seconds. PQ FCMP++ membership proofs plus constant cover traffic make every payment untraceable — your balance, your history, your identity, and even how often you pay stay private.</p>
           </div>
+        </div>
+      </div>
+
+      <div class="diagram-panel" style="margin-top:36px">
+        <svg id="pipeSvg" class="pipe-svg" viewBox="0 0 900 200" role="img" aria-label="Animated payment pipeline: a confidential note is sealed with ML-KEM-768, routed through onion hops, folded into the DAG with the constant 256 cover, and reaches absolute finality in under two seconds"></svg>
+        <div class="diagram-legend">
+          <span><i class="lg lg-block"></i>one payment, end to end</span>
+          <span><i class="lg lg-proof"></i>every stage post-quantum + zero-metadata</span>
         </div>
       </div>
     </div>
@@ -688,24 +1056,24 @@
 
   <section class="fcmp-section" id="fcmp">
     <div class="section-inner">
-      <h2 class="section-title">FCMP++ Deep Dive</h2>
-      <p class="section-subtitle">Full Chain Membership Proofs — the next generation of transaction privacy.</p>
+      <h2 class="section-title">PQ FCMP++ — Privacy That Survives Quantum</h2>
+      <p class="section-subtitle">MoneroUSD's own post-quantum Full-Chain Membership Proofs — the strongest transaction privacy ever shipped, and the only kind a quantum computer can't unwind.</p>
       <div class="fcmp-grid">
         <div class="fcmp-card">
-          <h3>What is FCMP++?</h3>
-          <p>FCMP++ (<span class="highlight">Full Chain Membership Proofs</span>) is a cryptographic upgrade that allows every transaction to reference the <span class="highlight">entire blockchain</span> as its anonymity set. Instead of selecting a small ring of decoys, your transaction proves membership across all outputs ever created — without revealing which one you spent.</p>
+          <h3>What is PQ FCMP++?</h3>
+          <p>PQ FCMP++ (<span class="highlight">post-quantum Full-Chain Membership Proofs</span>) lets every spend prove it references a real, unspent note from the <span class="highlight">entire chain</span> — without revealing which one. Instead of a small ring of decoys, your anonymity set is every note ever created.</p>
         </div>
         <div class="fcmp-card">
           <h3>Why It Matters</h3>
-          <p>Traditional ring signatures use 11-16 decoys, giving statistical heuristics a foothold. With FCMP++, the anonymity set is <span class="highlight">every output on-chain</span> — millions of possibilities. Blockchain analysis becomes cryptographically impossible, not just statistically difficult.</p>
+          <p>Ring signatures use 11–16 decoys, giving statistical heuristics a foothold. With PQ FCMP++ the anonymity set is <span class="highlight">millions of notes</span>, so chain analysis is cryptographically impossible — and because it's post-quantum, it stays that way even against a future quantum adversary harvesting today's chain.</p>
         </div>
         <div class="fcmp-card">
           <h3>How It Works</h3>
-          <p>FCMP++ uses a <span class="highlight">Curve Trees</span> construction — a tree of elliptic curve points representing all on-chain outputs. A zero-knowledge proof demonstrates your output exists somewhere in this tree without revealing its position. The proof is compact, fast to verify, and computationally sound.</p>
+          <p>Membership is proven against a <span class="highlight">post-quantum commitment tree</span> using Poseidon2 hashing and a WHIR zero-knowledge proof — no elliptic curves anywhere. Spends are gated by an O(1) nullifier accumulator, so double-spends are impossible while the note you spent stays unlinkable.</p>
         </div>
         <div class="fcmp-card">
           <h3>Performance</h3>
-          <p>Despite referencing the entire chain, FCMP++ proofs are <span class="highlight">smaller than current ring signatures</span>. Transaction verification is fast, keeping block validation efficient. The privacy upgrade comes with no cost to scalability.</p>
+          <p>Despite covering the whole chain, the proof is a <span class="highlight">constant &le;1.8&nbsp;MB</span> and verifies in milliseconds on phone-class hardware — at any chain height. Privacy and scalability, with no trade-off.</p>
         </div>
       </div>
 
@@ -713,18 +1081,18 @@
         <div class="compare-col">
           <h4>Ring Signatures (Legacy)</h4>
           <ul>
-            <li>11-16 decoy outputs per input</li>
+            <li>11–16 decoy outputs per input</li>
             <li>Statistical analysis can narrow candidates</li>
-            <li>Decoy selection heuristics exploitable</li>
+            <li>Classical curves — breakable by a quantum computer</li>
             <li>Privacy degrades over time with chain analysis</li>
           </ul>
         </div>
         <div class="compare-col better">
-          <h4>FCMP++ (MoneroUSD)</h4>
+          <h4>PQ FCMP++ (MoneroUSD)</h4>
           <ul>
-            <li>Every output on-chain is a candidate</li>
+            <li>Every note on-chain is a candidate — millions</li>
             <li>Zero-knowledge proof — no information leakage</li>
-            <li>No decoy selection — no heuristic attacks</li>
+            <li>Post-quantum — safe against quantum adversaries</li>
             <li>Privacy is cryptographic, not statistical</li>
           </ul>
         </div>
@@ -739,19 +1107,19 @@
       <div class="faq-list">
         <div class="faq-item">
           <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is MoneroUSD (USDm)?<span class="faq-arrow">+</span></button>
-          <div class="faq-a">USDm is a privacy-preserving stablecoin pegged 1:1 to the US dollar. It's built on Monero technology with FCMP++ cryptography, giving you the stability of a dollar with the privacy guarantees of Monero. There's no centralized issuer — the peg is enforced at the protocol level through consensus rules.</div>
+          <div class="faq-a">USDm is true digital cash — a stablecoin pegged 1:1 to the US dollar on the first-ever post-quantum private zero-knowledge block-DAG. It gives you the privacy of physical cash (zero value, identity, or metadata revealed) with the stability of a dollar. There's no centralized issuer — the peg is enforced at the protocol level through consensus rules, and every cryptographic layer is quantum-safe.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">How is the $1 peg maintained?<span class="faq-arrow">+</span></button>
           <div class="faq-a">Every USDm is backed by at least $1.50 of BTC or XMR held in the protocol's reserve wallets. Swaps mint at a 1.5:1 ratio (deposit $150 → receive 100 USDm), so the reserve grows with every entry. Auto-mining is gated by reserve health and halts if the ratio would drop below 150%. Staking yield is funded only by loan interest — reserves are never drawn down to pay yields.</div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">What makes FCMP++ better than ring signatures?<span class="faq-arrow">+</span></button>
-          <div class="faq-a">Ring signatures hide your transaction among 11-16 decoys, but statistical analysis can narrow down candidates over time. FCMP++ references every output on the entire blockchain as a potential source, using zero-knowledge proofs to verify without revealing which output is yours. The anonymity set goes from ~16 to millions.</div>
+          <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">What makes PQ FCMP++ better than ring signatures?<span class="faq-arrow">+</span></button>
+          <div class="faq-a">Ring signatures hide your transaction among 11–16 decoys, but statistical analysis can narrow the candidates over time. PQ FCMP++ references every note on the entire chain, using a post-quantum zero-knowledge proof to verify without revealing which note is yours — so the anonymity set goes from ~16 to millions, and it can't be unwound by a quantum computer.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I mine USDm?<span class="faq-arrow">+</span></button>
-          <div class="faq-a">Yes. MoneroUSD uses RandomX proof-of-work, which is designed to run efficiently on consumer CPUs and resist ASIC/GPU optimization. You can start mining directly from the wallet app with one click — no external software needed.</div>
+          <div class="faq-a">Yes. MoneroUSD uses a novel post-quantum Proof-of-Useful-Work built on the Poseidon2 hash — the same hardware that mines also produces the chain's zero-knowledge proofs, so mining energy does double duty. It runs efficiently on consumer CPUs; start with one click from the wallet, no external software needed.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my seed phrase stored anywhere?<span class="faq-arrow">+</span></button>
@@ -786,6 +1154,504 @@
   </footer>
 
 </div>
+
+<script>
+/* ── Motion engine: 3D coin edge, scroll-reveal, live zk-DAG + payment-pipeline diagrams ──
+   Self-contained (no external libs), rAF loops run only while on-screen + tab visible,
+   and everything honors prefers-reduced-motion. */
+(function () {
+  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(n, attrs) { var e = document.createElementNS(NS, n); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  /* 1 ── Coin edge: reeded rim segments forming the cylinder between the two faces. */
+  var edge = document.getElementById('coinEdge');
+  var stage = document.getElementById('coinStage');
+  if (edge && stage) {
+    var R = stage.clientWidth / 2 || 100;
+    var N = 48, T = 20; // segment count, coin thickness (matches faces at translateZ ±10px)
+    var W = Math.ceil(2 * R * Math.sin(Math.PI / N)) + 1;
+    for (var i = 0; i < N; i++) {
+      var s = document.createElement('span');
+      s.style.width = W + 'px';
+      s.style.height = T + 'px';
+      s.style.margin = (-T / 2) + 'px 0 0 ' + (-W / 2) + 'px';
+      s.style.transform = 'rotateZ(' + (i * 360 / N) + 'deg) translateY(' + (-R) + 'px) rotateX(90deg)';
+      edge.appendChild(s);
+    }
+  }
+
+  /* 2 ── Scroll-reveal with per-sibling stagger. */
+  var toReveal = [].slice.call(document.querySelectorAll(
+    '.feature, .step, .fcmp-card, .dl-card, .diagram-panel, .compare-col, .stats-grid > div'));
+  toReveal.forEach(function (n) { n.classList.add('reveal'); });
+  if (!reduced && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (ents) {
+      ents.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var n = e.target;
+        var sibs = n.parentElement ? [].slice.call(n.parentElement.children) : [n];
+        n.style.transitionDelay = ((Math.max(0, sibs.indexOf(n)) % 8) * 70) + 'ms';
+        n.classList.add('in');
+        io.unobserve(n);
+      });
+    }, { threshold: 0.15 });
+    toReveal.forEach(function (n) { io.observe(n); });
+  } else {
+    toReveal.forEach(function (n) { n.classList.add('in'); });
+  }
+
+  /* Helper: run an rAF loop only while `svg` is in the viewport and the tab is visible. */
+  function gateLoop(svg, step) {
+    var running = false, last = 0;
+    function frame(ts) {
+      if (!running) return;
+      if (!last) last = ts;
+      var dt = Math.min(0.05, (ts - last) / 1000);
+      last = ts;
+      step(ts, dt);
+      requestAnimationFrame(frame);
+    }
+    function setRun(v) { if (v && !running) { running = true; last = 0; requestAnimationFrame(frame); } else if (!v) { running = false; } }
+    var vis = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { setRun(e.isIntersecting && !document.hidden); });
+    }, { threshold: 0.05 });
+    vis.observe(svg);
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { setRun(false); return; }
+      var r = svg.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < innerHeight) setRun(true);
+    });
+  }
+
+  /* 3 ── Live zk-DAG: parallel blocks drift left, link to parents, get a proof tick. */
+  var dag = document.getElementById('dagSvg');
+  if (dag) (function () {
+    var Wv = 900, LANES = [62, 160, 258];
+    var SPEED = 50;                       // px/s leftward drift
+    var nodes = [], edges = [], spawnAt = 0, tclock = 0;
+    var edgeLayer = el('g', {}), nodeLayer = el('g', {});
+    dag.appendChild(edgeLayer); dag.appendChild(nodeLayer);
+
+    function spawnColumn(now) {
+      var count = 1 + Math.floor(Math.random() * 3); // GHOSTDAG width>1: 1–3 blocks per wave
+      var lanes = [0, 1, 2].sort(function () { return Math.random() - 0.5; }).slice(0, count);
+      lanes.forEach(function (li) {
+        var g = el('g', { opacity: '0' });
+        g.appendChild(el('rect', { x: -34, y: -22, width: 68, height: 44, rx: 9,
+          fill: 'rgba(255,102,0,0.10)', stroke: 'rgba(255,102,0,0.75)', 'stroke-width': '1.5' }));
+        var t = el('text', { x: 0, y: -1, 'text-anchor': 'middle', 'font-size': '13.5', 'font-weight': '700', fill: '#ffb26b' });
+        t.textContent = '256';
+        var sub = el('text', { x: 0, y: 14, 'text-anchor': 'middle', 'font-size': '9.5', fill: '#8f8f8f' });
+        sub.textContent = 'COVER';
+        var tick = el('g', { opacity: '0' });
+        tick.appendChild(el('circle', { cx: 25, cy: -15, r: 8.5, fill: 'rgba(46,204,113,0.16)', stroke: 'rgba(46,204,113,0.9)', 'stroke-width': '1.2' }));
+        tick.appendChild(el('path', { d: 'M21.4 -15 l2.6 2.8 l4.8 -5.6', fill: 'none', stroke: '#2ecc71', 'stroke-width': '1.7', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+        g.appendChild(t); g.appendChild(sub); g.appendChild(tick);
+        nodeLayer.appendChild(g);
+        var node = { g: g, tick: tick, x: Wv + 40, y: LANES[li], born: now };
+        // Link to up to 2 parents from earlier waves (never the same column).
+        nodes.slice(-5).filter(function (p) { return p.x < node.x - 70; }).slice(-2).forEach(function (p) {
+          var ln = el('line', { stroke: 'rgba(255,255,255,0.22)', 'stroke-width': '1.4',
+            'stroke-dasharray': '200', 'stroke-dashoffset': '200' });
+          edgeLayer.appendChild(ln);
+          edges.push({ line: ln, a: node, b: p, born: now });
+        });
+        nodes.push(node);
+      });
+    }
+
+    function render(now) {
+      for (var i = nodes.length - 1; i >= 0; i--) {
+        var n = nodes[i], age = (now - n.born) / 1000;
+        var op = Math.min(1, age * 2.4);
+        if (n.x < 60) op = Math.min(op, Math.max(0, (n.x + 40) / 100));
+        n.g.setAttribute('transform', 'translate(' + n.x.toFixed(1) + ',' + n.y + ')');
+        n.g.setAttribute('opacity', op.toFixed(2));
+        n.tick.setAttribute('opacity', age > 0.8 ? Math.min(1, (age - 0.8) * 3).toFixed(2) : '0');
+        if (n.x < -50) { nodeLayer.removeChild(n.g); nodes.splice(i, 1); }
+      }
+      for (var j = edges.length - 1; j >= 0; j--) {
+        var ed = edges[j];
+        if (!ed.a.g.parentNode || !ed.b.g.parentNode) {
+          if (ed.line.parentNode) edgeLayer.removeChild(ed.line);
+          edges.splice(j, 1); continue;
+        }
+        ed.line.setAttribute('x1', (ed.a.x - 34).toFixed(1)); ed.line.setAttribute('y1', ed.a.y);
+        ed.line.setAttribute('x2', (ed.b.x + 34).toFixed(1)); ed.line.setAttribute('y2', ed.b.y);
+        ed.line.setAttribute('stroke-dashoffset', Math.max(0, 200 - ((now - ed.born) / 1000) * 320).toFixed(0));
+      }
+    }
+
+    // Seed some history so the panel never starts empty.
+    (function () {
+      var t0 = performance.now();
+      for (var k = 5; k >= 1; k--) {
+        spawnColumn(t0 - 3000);
+        nodes.forEach(function (n) { if (n.x > Wv) n.x = Wv - 40 - (k - 1) * 155 - Math.random() * 10; });
+      }
+      render(t0);
+    })();
+
+    if (reduced) {
+      nodes.forEach(function (n) { n.born -= 5000; });
+      edges.forEach(function (ed) { ed.born -= 5000; });
+      render(performance.now()); // one static, fully-drawn frame
+    } else {
+      gateLoop(dag, function (ts, dt) {
+        nodes.forEach(function (n) { n.x -= SPEED * dt; });
+        tclock += dt;
+        if (ts >= spawnAt) { spawnColumn(ts); spawnAt = ts + 1900 + Math.random() * 700; }
+        render(ts);
+      });
+    }
+  })();
+
+  /* 4 ── Payment pipeline: note → ML-KEM seal → onion hops → DAG fold → <2s finality. */
+  var pipe = document.getElementById('pipeSvg');
+  if (pipe) (function () {
+    var stages = [
+      { x: 80,  label: 'NOTE',  sub: 'confidential'  },
+      { x: 265, label: 'SEAL',  sub: 'ML-KEM-768'    },
+      { x: 450, label: 'ONION', sub: '3-hop private' },
+      { x: 635, label: 'DAG',   sub: 'zk-fold · 256' },
+      { x: 820, label: 'FINAL', sub: '&lt;2s absolute'  }
+    ];
+    var Y = 118;
+    pipe.appendChild(el('line', { x1: 80, y1: Y, x2: 820, y2: Y, stroke: 'rgba(255,255,255,0.12)', 'stroke-width': '2' }));
+    var prog = el('line', { x1: 80, y1: Y, x2: 80, y2: Y, stroke: 'rgba(255,102,0,0.65)', 'stroke-width': '2' });
+    pipe.appendChild(prog);
+    var dots = [];
+    stages.forEach(function (st) {
+      var g = el('g', {});
+      g.appendChild(el('circle', { cx: st.x, cy: Y, r: 16, fill: 'rgba(20,20,20,0.9)', stroke: 'rgba(255,102,0,0.8)', 'stroke-width': '1.6' }));
+      var done = el('circle', { cx: st.x, cy: Y, r: 6, fill: '#2ecc71', opacity: '0' });
+      g.appendChild(done);
+      var lb = el('text', { x: st.x, y: Y - 34, 'text-anchor': 'middle', 'font-size': '12.5', 'font-weight': '700', fill: '#d6d6d6', 'letter-spacing': '1' });
+      lb.textContent = st.label;
+      var sb = el('text', { x: st.x, y: Y + 44, 'text-anchor': 'middle', 'font-size': '10', fill: '#8a8a8a' });
+      sb.innerHTML = st.sub;
+      g.appendChild(lb); g.appendChild(sb);
+      pipe.appendChild(g);
+      dots.push(done);
+    });
+    var halo = el('circle', { cx: 80, cy: Y, r: 13, fill: 'rgba(255,102,0,0.22)' });
+    var pulse = el('circle', { cx: 80, cy: Y, r: 7, fill: '#ff6600' });
+    pipe.appendChild(halo); pipe.appendChild(pulse);
+    var timer = el('text', { x: 450, y: 42, 'text-anchor': 'middle', 'font-size': '13.5', 'font-weight': '700', fill: '#ffb26b' });
+    timer.textContent = 'settling… 0.00s';
+    pipe.appendChild(timer);
+
+    var X0 = 80, X1 = 820, TRAVEL = 1.8, HOLD = 1.0, t = 0;
+    function ease(u) { return u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2; }
+    function frame(ts, dt) {
+      t += dt;
+      var cyc = TRAVEL + HOLD;
+      if (t >= cyc) t -= cyc;
+      var u = Math.min(1, t / TRAVEL);
+      var x = X0 + (X1 - X0) * ease(u);
+      pulse.setAttribute('cx', x.toFixed(1)); halo.setAttribute('cx', x.toFixed(1));
+      halo.setAttribute('r', (13 + Math.sin(t * 12) * 2.5).toFixed(1));
+      prog.setAttribute('x2', x.toFixed(1));
+      dots.forEach(function (d, i) { d.setAttribute('opacity', x >= stages[i].x - 1 ? '1' : '0'); });
+      if (u >= 1) {
+        timer.textContent = 'absolute finality ✓ 1.8s';
+        timer.setAttribute('fill', '#2ecc71');
+      } else {
+        timer.textContent = 'settling… ' + (u * TRAVEL).toFixed(2) + 's';
+        timer.setAttribute('fill', '#ffb26b');
+      }
+    }
+    if (reduced) { frame(0, TRAVEL); pulse.setAttribute('cx', X1); halo.setAttribute('cx', X1); prog.setAttribute('x2', X1); dots.forEach(function (d) { d.setAttribute('opacity', '1'); }); timer.textContent = 'absolute finality ✓ 1.8s'; timer.setAttribute('fill', '#2ecc71'); }
+    else gateLoop(pipe, frame);
+  })();
+
+  /* 5 ── Row 01: compact live zk-DAG (parallel lanes, parent links, proof ticks). */
+  var fxd = document.getElementById('fxDag');
+  if (fxd) (function () {
+    var Wv = 480, LANES = [60, 150, 240], SPEED = 42;
+    var nodes = [], edges = [], spawnAt = 0;
+    var eL = el('g', {}), nL = el('g', {});
+    fxd.appendChild(eL); fxd.appendChild(nL);
+    function spawn(now) {
+      var lanes = [0, 1, 2].sort(function () { return Math.random() - 0.5; }).slice(0, 1 + Math.floor(Math.random() * 3));
+      lanes.forEach(function (li) {
+        var g = el('g', { opacity: '0' });
+        g.appendChild(el('rect', { x: -30, y: -20, width: 60, height: 40, rx: 8,
+          fill: 'rgba(255,102,0,0.10)', stroke: 'rgba(255,102,0,0.75)', 'stroke-width': '1.4' }));
+        var t = el('text', { x: 0, y: -1, 'text-anchor': 'middle', 'font-size': '12.5', 'font-weight': '700', fill: '#ffb26b' });
+        t.textContent = '256';
+        var s = el('text', { x: 0, y: 12.5, 'text-anchor': 'middle', 'font-size': '9.5', fill: '#8f8f8f' });
+        s.textContent = 'COVER';
+        var tick = el('g', { opacity: '0' });
+        tick.appendChild(el('circle', { cx: 22, cy: -13, r: 7.5, fill: 'rgba(46,204,113,0.16)', stroke: 'rgba(46,204,113,0.9)', 'stroke-width': '1.1' }));
+        tick.appendChild(el('path', { d: 'M18.8 -13 l2.3 2.5 l4.2 -5', fill: 'none', stroke: '#2ecc71', 'stroke-width': '1.5', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+        g.appendChild(t); g.appendChild(s); g.appendChild(tick);
+        nL.appendChild(g);
+        var node = { g: g, tick: tick, x: Wv + 36, y: LANES[li], born: now };
+        nodes.slice(-5).filter(function (p) { return p.x < node.x - 64; }).slice(-2).forEach(function (p) {
+          var ln = el('line', { stroke: 'rgba(255,255,255,0.22)', 'stroke-width': '1.3', 'stroke-dasharray': '150', 'stroke-dashoffset': '150' });
+          eL.appendChild(ln);
+          edges.push({ line: ln, a: node, b: p, born: now });
+        });
+        nodes.push(node);
+      });
+    }
+    function render(now) {
+      for (var i = nodes.length - 1; i >= 0; i--) {
+        var n = nodes[i], age = (now - n.born) / 1000;
+        var op = Math.min(1, age * 2.4);
+        if (n.x < 52) op = Math.min(op, Math.max(0, (n.x + 32) / 84));
+        n.g.setAttribute('transform', 'translate(' + n.x.toFixed(1) + ',' + n.y + ')');
+        n.g.setAttribute('opacity', op.toFixed(2));
+        n.tick.setAttribute('opacity', age > 0.8 ? Math.min(1, (age - 0.8) * 3).toFixed(2) : '0');
+        if (n.x < -40) { nL.removeChild(n.g); nodes.splice(i, 1); }
+      }
+      for (var j = edges.length - 1; j >= 0; j--) {
+        var ed = edges[j];
+        if (!ed.a.g.parentNode || !ed.b.g.parentNode) { if (ed.line.parentNode) eL.removeChild(ed.line); edges.splice(j, 1); continue; }
+        ed.line.setAttribute('x1', (ed.a.x - 30).toFixed(1)); ed.line.setAttribute('y1', ed.a.y);
+        ed.line.setAttribute('x2', (ed.b.x + 30).toFixed(1)); ed.line.setAttribute('y2', ed.b.y);
+        ed.line.setAttribute('stroke-dashoffset', Math.max(0, 150 - ((now - ed.born) / 1000) * 300).toFixed(0));
+      }
+    }
+    (function () {
+      var t0 = performance.now();
+      for (var k = 4; k >= 1; k--) {
+        spawn(t0 - 3000);
+        nodes.forEach(function (n) { if (n.x > Wv) n.x = Wv - 30 - (k - 1) * 118 - Math.random() * 8; });
+      }
+      render(t0);
+    })();
+    if (reduced) { nodes.forEach(function (n) { n.born -= 5000; }); edges.forEach(function (e2) { e2.born -= 5000; }); render(performance.now()); }
+    else gateLoop(fxd, function (ts, dt) {
+      nodes.forEach(function (n) { n.x -= SPEED * dt; });
+      if (ts >= spawnAt) { spawn(ts); spawnAt = ts + 1700 + Math.random() * 600; }
+      render(ts);
+    });
+  })();
+
+  /* 6 ── Row 02: PQ shield — orbiting primitives, quantum bolts fizzle at the boundary. */
+  var fxs = document.getElementById('fxShield');
+  if (fxs) (function () {
+    var CX = 240, CY = 152;
+    fxs.appendChild(el('ellipse', { cx: CX, cy: CY, rx: 176, ry: 58, fill: 'none', stroke: 'rgba(255,255,255,0.10)', 'stroke-width': '1' }));
+    fxs.appendChild(el('ellipse', { cx: CX, cy: CY, rx: 132, ry: 94, fill: 'none', stroke: 'rgba(255,255,255,0.07)', 'stroke-width': '1' }));
+    var shield = el('path', { d: 'M240,64 L316,94 V172 C316,222 240,252 240,252 C240,252 164,222 164,172 V94 Z',
+      fill: 'rgba(20,20,20,0.92)', stroke: 'rgba(255,102,0,0.8)', 'stroke-width': '2' });
+    fxs.appendChild(shield);
+    var mTxt = el('text', { x: CX, y: CY + 24, 'text-anchor': 'middle', 'font-size': '64', 'font-weight': '800', fill: '#f5851a' });
+    mTxt.textContent = 'M';
+    fxs.appendChild(mTxt);
+    var orbiters = [
+      { label: 'ML-KEM-768', rx: 176, ry: 58, ph: 0 },
+      { label: 'ML-DSA-65',  rx: 176, ry: 58, ph: Math.PI },
+      { label: 'Poseidon2',  rx: 132, ry: 94, ph: Math.PI / 2 },
+      { label: 'WHIR',       rx: 132, ry: 94, ph: -Math.PI / 2 }
+    ];
+    orbiters.forEach(function (o) {
+      o.g = el('g', {});
+      o.dot = el('circle', { r: 4, fill: '#ff6600' });
+      o.txt = el('text', { y: -9, 'text-anchor': 'middle', 'font-size': '11.5', 'font-weight': '600', fill: '#e0e0e0' });
+      o.txt.textContent = o.label;
+      o.g.appendChild(o.dot); o.g.appendChild(o.txt);
+      fxs.appendChild(o.g);
+    });
+    var bolts = [], t = 0, boltAt = 0.8;
+    function frame(ts, dt) {
+      t += dt;
+      orbiters.forEach(function (o) {
+        var a = t * 0.55 + o.ph;
+        var x = CX + o.rx * Math.cos(a), y = CY + o.ry * Math.sin(a);
+        var depth = (Math.sin(a) + 1) / 2;               // 0=back, 1=front
+        o.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ') scale(' + (0.8 + depth * 0.3).toFixed(2) + ')');
+        o.g.setAttribute('opacity', (0.4 + depth * 0.6).toFixed(2));
+      });
+      if (t >= boltAt) {
+        boltAt = t + 1.3 + Math.random() * 0.9;
+        var a2 = Math.random() * Math.PI * 2;
+        var sx = CX + 250 * Math.cos(a2), sy = CY + 160 * Math.sin(a2);
+        var ex = CX + 96 * Math.cos(a2), ey = CY + 96 * Math.sin(a2) * 0.9;
+        var ln = el('line', { x1: sx, y1: sy, x2: ex, y2: ey, stroke: 'rgba(255,80,70,0.85)', 'stroke-width': '1.6', 'stroke-dasharray': '5 4' });
+        var spark = el('circle', { cx: ex, cy: ey, r: 3, fill: '#ff5046' });
+        fxs.appendChild(ln); fxs.appendChild(spark);
+        bolts.push({ ln: ln, spark: spark, born: t });
+      }
+      for (var i = bolts.length - 1; i >= 0; i--) {
+        var b = bolts[i], age = t - b.born;
+        var op = Math.max(0, 1 - age / 0.5);
+        b.ln.setAttribute('opacity', op.toFixed(2));
+        b.spark.setAttribute('opacity', op.toFixed(2));
+        b.spark.setAttribute('r', (3 + age * 8).toFixed(1));
+        if (op <= 0) { fxs.removeChild(b.ln); fxs.removeChild(b.spark); bolts.splice(i, 1); }
+      }
+      shield.setAttribute('stroke-opacity', (0.65 + 0.35 * Math.sin(t * 2)).toFixed(2));
+    }
+    if (reduced) frame(0, 0);
+    else gateLoop(fxs, frame);
+  })();
+
+  /* 7 ── Row 03: the 256-cover block — every cell identical; the scanner finds nothing. */
+  var fxc = document.getElementById('fxCover');
+  if (fxc) (function () {
+    var X0 = 122, Y0 = 26, PITCH = 15, SIZE = 11, N = 16;
+    var cells = [];
+    for (var j = 0; j < N; j++) for (var i = 0; i < N; i++) {
+      var r = el('rect', { x: X0 + i * PITCH, y: Y0 + j * PITCH, width: SIZE, height: SIZE, rx: 2.5, fill: 'rgba(255,102,0,0.12)' });
+      fxc.appendChild(r);
+      cells.push({ r: r, cx: X0 + i * PITCH + SIZE / 2, ph: ((i * 7 + j * 13) % 97) / 97 * 6.283 });
+    }
+    var scan = el('line', { x1: X0 - 5, y1: Y0 - 6, x2: X0 - 5, y2: Y0 + N * PITCH - 4 + 6, stroke: 'rgba(255,178,107,0.85)', 'stroke-width': '2' });
+    var scanGlow = el('line', { x1: X0 - 5, y1: Y0 - 6, x2: X0 - 5, y2: Y0 + N * PITCH - 4 + 6, stroke: 'rgba(255,102,0,0.25)', 'stroke-width': '10' });
+    fxc.appendChild(scanGlow); fxc.appendChild(scan);
+    var cap = el('text', { x: 240, y: 292, 'text-anchor': 'middle', 'font-size': '11.5', fill: '#8f8f8f' });
+    cap.textContent = '256 / 256 identical — the scanner learns nothing';
+    fxc.appendChild(cap);
+    var t = 0;
+    function frame(ts, dt) {
+      t += dt;
+      var sx = X0 - 5 + ((t % 3.2) / 3.2) * (N * PITCH + 6);
+      scan.setAttribute('x1', sx.toFixed(1)); scan.setAttribute('x2', sx.toFixed(1));
+      scanGlow.setAttribute('x1', sx.toFixed(1)); scanGlow.setAttribute('x2', sx.toFixed(1));
+      cells.forEach(function (c) {
+        var a = 0.10 + 0.05 * Math.sin(t * 1.6 + c.ph);
+        if (Math.abs(c.cx - sx) < 12) a += 0.2;          // a uniform brighten — no cell is special
+        c.r.setAttribute('fill', 'rgba(255,102,0,' + a.toFixed(3) + ')');
+      });
+    }
+    if (reduced) frame(0, 0.0001);
+    else gateLoop(fxc, frame);
+  })();
+
+  /* 8 ── Row 04: PQ FCMP++ — proof completes; no note ever lights up. */
+  var fxr = document.getElementById('fxRing');
+  if (fxr) (function () {
+    var CX = 240, CY = 146, R = 100;
+    var dots = [];
+    for (var i = 0; i < 40; i++) {
+      var a = i / 40 * 6.283;
+      var d = el('circle', { cx: CX + R * Math.cos(a), cy: CY + R * Math.sin(a), r: 4, fill: 'rgba(255,178,107,0.5)' });
+      fxr.appendChild(d);
+      dots.push({ d: d, ph: i * 0.37 });
+    }
+    var arc = el('circle', { cx: CX, cy: CY, r: R, fill: 'none', stroke: 'rgba(255,102,0,0.85)', 'stroke-width': '2', 'stroke-dasharray': '76 552', 'stroke-linecap': 'round' });
+    fxr.appendChild(arc);
+    var pulse = el('circle', { cx: CX, cy: CY, r: 34, fill: 'none', stroke: 'rgba(46,204,113,0.7)', 'stroke-width': '2', opacity: '0' });
+    fxr.appendChild(pulse);
+    fxr.appendChild(el('circle', { cx: CX, cy: CY, r: 30, fill: 'rgba(18,18,18,0.95)', stroke: 'rgba(255,102,0,0.8)', 'stroke-width': '1.8' }));
+    var zk = el('text', { x: CX, y: CY + 5, 'text-anchor': 'middle', 'font-size': '14', 'font-weight': '800', fill: '#ffb26b' });
+    zk.textContent = 'ZK';
+    fxr.appendChild(zk);
+    var chk = el('path', { d: 'M228 146 l8 9 l16 -18', fill: 'none', stroke: '#2ecc71', 'stroke-width': '3.4', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', opacity: '0' });
+    fxr.appendChild(chk);
+    var cap = el('text', { x: 240, y: 288, 'text-anchor': 'middle', 'font-size': '11.5', fill: '#8f8f8f' });
+    cap.textContent = 'membership proven over millions — which note? never revealed';
+    fxr.appendChild(cap);
+    var t = 0, off = 0;
+    function frame(ts, dt) {
+      t += dt; off -= dt * 130;
+      arc.setAttribute('stroke-dashoffset', off.toFixed(0));
+      dots.forEach(function (d2) { d2.d.setAttribute('opacity', (0.4 + 0.22 * Math.sin(t * 1.8 + d2.ph)).toFixed(2)); });
+      var cyc = t % 2.6;
+      if (cyc > 1.9) {
+        var u = (cyc - 1.9) / 0.7;
+        pulse.setAttribute('opacity', (0.6 * (1 - u)).toFixed(2));
+        pulse.setAttribute('r', (34 + u * 84).toFixed(1));
+        chk.setAttribute('opacity', u < 0.75 ? '1' : ((1 - (u - 0.75) / 0.25)).toFixed(2));
+        zk.setAttribute('opacity', '0');
+      } else {
+        pulse.setAttribute('opacity', '0');
+        chk.setAttribute('opacity', '0');
+        zk.setAttribute('opacity', '1');
+      }
+    }
+    if (reduced) { frame(0, 0.0001); chk.setAttribute('opacity', '1'); zk.setAttribute('opacity', '0'); }
+    else gateLoop(fxr, frame);
+  })();
+
+  /* 9 ── Row 05: blocks stream forever; the node-state bar never moves. */
+  var fxo = document.getElementById('fxO1');
+  if (fxo) (function () {
+    var LANE_Y = 108, blocks = [], height = 1024000 + Math.floor(Math.random() * 9000);
+    var hTxt = el('text', { x: 240, y: 54, 'text-anchor': 'middle', 'font-size': '15.5', 'font-weight': '700', fill: '#e6e6e6' });
+    fxo.appendChild(hTxt);
+    var hSub = el('text', { x: 240, y: 74, 'text-anchor': 'middle', 'font-size': '10.5', fill: '#8a8a8a' });
+    hSub.textContent = 'the chain keeps growing →';
+    fxo.appendChild(hSub);
+    var barGlow = el('line', { x1: 60, y1: 210, x2: 420, y2: 210, stroke: 'rgba(255,102,0,0.25)', 'stroke-width': '11' });
+    var bar = el('line', { x1: 60, y1: 210, x2: 420, y2: 210, stroke: '#ff6600', 'stroke-width': '3' });
+    fxo.appendChild(barGlow); fxo.appendChild(bar);
+    var bl = el('text', { x: 240, y: 196, 'text-anchor': 'middle', 'font-size': '11.5', 'font-weight': '700', fill: '#ffb26b' });
+    bl.textContent = 'node state — constant ≤ 1.8 MB';
+    fxo.appendChild(bl);
+    var bs = el('text', { x: 240, y: 232, 'text-anchor': 'middle', 'font-size': '10.5', fill: '#8a8a8a' });
+    bs.textContent = 'state · RAM · proof size: flat at any height';
+    fxo.appendChild(bs);
+    for (var x = 40; x < 480; x += 32) {
+      var r = el('rect', { x: 0, y: LANE_Y - 10, width: 20, height: 20, rx: 4, fill: 'rgba(255,102,0,0.16)', stroke: 'rgba(255,102,0,0.6)', 'stroke-width': '1' });
+      fxo.appendChild(r);
+      blocks.push({ r: r, x: x });
+    }
+    var t = 0, hAcc = 0;
+    function frame(ts, dt) {
+      t += dt; hAcc += dt;
+      while (hAcc >= 0.5) { hAcc -= 0.5; height++; }    // ~500ms per block
+      hTxt.textContent = 'height ' + height.toLocaleString();
+      blocks.forEach(function (b) {
+        b.x -= 55 * dt;
+        if (b.x < -24) b.x += 480 + 16;
+        b.r.setAttribute('x', b.x.toFixed(1));
+      });
+      barGlow.setAttribute('opacity', (0.6 + 0.4 * Math.sin(t * 2.2)).toFixed(2));
+    }
+    if (reduced) frame(0, 0.0001);
+    else gateLoop(fxo, frame);
+  })();
+
+  /* 10 ── Row 06: the finality stopwatch — fills to 1.8s, flashes green, repeats. */
+  var fxt = document.getElementById('fxTimer');
+  if (fxt) (function () {
+    var CX = 240, CY = 146, R = 88, C = 2 * Math.PI * R;
+    fxt.appendChild(el('circle', { cx: CX, cy: CY, r: R, fill: 'none', stroke: 'rgba(255,255,255,0.09)', 'stroke-width': '12' }));
+    var prog = el('circle', { cx: CX, cy: CY, r: R, fill: 'none', stroke: '#ff6600', 'stroke-width': '12', 'stroke-linecap': 'round',
+      'stroke-dasharray': C.toFixed(1), 'stroke-dashoffset': C.toFixed(1), transform: 'rotate(-90 ' + CX + ' ' + CY + ')' });
+    fxt.appendChild(prog);
+    var pulse = el('circle', { cx: CX, cy: CY, r: R, fill: 'none', stroke: 'rgba(46,204,113,0.7)', 'stroke-width': '3', opacity: '0' });
+    fxt.appendChild(pulse);
+    var big = el('text', { x: CX, y: CY + 10, 'text-anchor': 'middle', 'font-size': '34', 'font-weight': '800', fill: '#ffffff' });
+    big.textContent = '0.00s';
+    fxt.appendChild(big);
+    var sub = el('text', { x: CX, y: CY + 34, 'text-anchor': 'middle', 'font-size': '11.5', fill: '#8a8a8a' });
+    sub.textContent = 'absolute finality';
+    fxt.appendChild(sub);
+    var cap = el('text', { x: 240, y: 285, 'text-anchor': 'middle', 'font-size': '11.5', fill: '#8f8f8f' });
+    cap.textContent = '~500 ms blocks · PQ certificate · settled for good';
+    fxt.appendChild(cap);
+    var t = 0, T = 1.8, HOLD = 1.0;
+    function frame(ts, dt) {
+      t += dt;
+      var cyc = t % (T + HOLD);
+      var u = Math.min(1, cyc / T);
+      prog.setAttribute('stroke-dashoffset', (C * (1 - u)).toFixed(1));
+      if (u >= 1) {
+        var v = (cyc - T) / HOLD;
+        prog.setAttribute('stroke', '#2ecc71');
+        big.textContent = '1.8s ✓';
+        big.setAttribute('fill', '#2ecc71');
+        pulse.setAttribute('opacity', (0.6 * Math.max(0, 1 - v * 1.6)).toFixed(2));
+        pulse.setAttribute('r', (R + v * 40).toFixed(1));
+      } else {
+        prog.setAttribute('stroke', '#ff6600');
+        big.textContent = (u * T).toFixed(2) + 's';
+        big.setAttribute('fill', '#ffffff');
+        pulse.setAttribute('opacity', '0');
+      }
+    }
+    if (reduced) { frame(0, 0.0001); prog.setAttribute('stroke-dashoffset', '0'); prog.setAttribute('stroke', '#2ecc71'); big.textContent = '1.8s ✓'; big.setAttribute('fill', '#2ecc71'); }
+    else gateLoop(fxt, frame);
+  })();
+})();
+</script>
 
 <script>
 (function() {
@@ -966,5 +1832,24 @@
 })();
 </script>
 
+<script>
+// LIVE confidential proof-of-reserves. Reads the node's /api/reserves attestation — value-hiding commitments
+// + the proven backing ratio. NO amount is ever revealed (the digital-cash pillar's killer property): the
+// site proves >=150% backing without a dollar figure. Framed in the wallet, this fetch rides the node bridge.
+(function () {
+  var el = document.getElementById('porStatus');
+  if (!el) return;
+  fetch('/api/reserves').then(function (r) { return r.json(); }).then(function (d) {
+    if (d && d.backed === true) {
+      var pct = (d.ratio_bps / 100).toFixed(0);
+      el.innerHTML = '✅ <strong>Proven backed ≥' + pct + '%</strong> — verified against the chain right now. '
+        + 'Amounts are <strong>hidden</strong> (zero-knowledge): the reserve backs every USDm at the policy ratio, '
+        + 'never revealing how much. Proof anchor <code>' + String(d.reserve_commit || '').slice(0, 12) + '…</code>.';
+    } else {
+      el.textContent = 'Reserve attestation unavailable right now (node unreachable).';
+    }
+  }).catch(function () { el.textContent = 'Reserve attestation unavailable right now (node unreachable).'; });
+})();
+</script>
 </body>
 </html>
