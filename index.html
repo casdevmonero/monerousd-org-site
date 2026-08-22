@@ -862,7 +862,7 @@
       <div><div class="stat-val">$1.00</div><div class="stat-label">Protocol Peg</div></div>
       <div><div class="stat-val">~500ms</div><div class="stat-label">Block Time</div></div>
       <div><div class="stat-val">&lt;2s</div><div class="stat-label">Absolute Finality</div></div>
-      <div><div class="stat-val">~45&nbsp;KB</div><div class="stat-label">Whole-Chain WHIR Proof</div></div>
+      <div><div class="stat-val">~9&nbsp;KB</div><div class="stat-label">Whole-Chain WHIR Proof</div></div>
       <div><div class="stat-val">32</div><div class="stat-label">DAG Width — Absorbs Tor Latency</div></div>
       <div><div class="stat-val">150%+</div><div class="stat-label">Min Reserve Ratio</div></div>
     </div>
@@ -922,8 +922,8 @@
           <div class="fx-copy">
             <div class="fx-num">05</div>
             <h3>O(1) at Any Height</h3>
-            <p>The chain grows forever; the node doesn't grow at all. State, RAM, and proof size stay constant at any height — notes are stored nowhere and regenerated on demand. A phone verifies the whole chain from a single WHIR proof of about 45&nbsp;kilobytes — the megabyte-scale STARK it replaces is retired — whether the chain is a day or a decade old.</p>
-            <div class="fx-tags"><span>~45 KB whole-chain WHIR proof</span><span>instant sync</span><span>phone-class RAM</span></div>
+            <p>The chain grows forever; the node doesn't grow at all. State, RAM, and proof size stay constant at any height — notes are stored nowhere and regenerated on demand. A phone verifies the whole chain from a single WHIR proof of about 9&nbsp;kilobytes (measured: 8.7&nbsp;KB) — the megabyte-scale STARK it replaces is retired — whether the chain is a day or a decade old.</p>
+            <div class="fx-tags"><span>~9 KB whole-chain WHIR proof</span><span>instant sync</span><span>phone-class RAM</span></div>
           </div>
           <div class="fx-visual"><svg id="fxO1" viewBox="0 0 480 300" role="img" aria-label="Blocks stream past forever while the node-state bar stays perfectly flat at kilobyte scale"></svg></div>
           <div class="fx-dot" aria-hidden="true"></div>
@@ -1146,7 +1146,7 @@
         </div>
         <div class="faq-item">
           <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my seed phrase stored anywhere?<span class="faq-arrow">+</span></button>
-          <div class="faq-a">No. Your 25-word seed phrase is generated locally on your device and never transmitted to any server. It is the sole key to your wallet — if you lose it, your funds cannot be recovered. Write it down on paper and store it securely.</div>
+          <div class="faq-a">No. Your 24-word seed phrase is generated locally on your device and never transmitted to any server. It is the sole key to your wallet — if you lose it, your funds cannot be recovered. Write it down on paper and store it securely.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why does macOS block the app?<span class="faq-arrow">+</span></button>
@@ -1605,7 +1605,7 @@
     var bar = el('line', { x1: 60, y1: 210, x2: 420, y2: 210, stroke: '#ff6600', 'stroke-width': '3' });
     fxo.appendChild(barGlow); fxo.appendChild(bar);
     var bl = el('text', { x: 240, y: 196, 'text-anchor': 'middle', 'font-size': '11.5', 'font-weight': '700', fill: '#ffb26b' });
-    bl.textContent = 'node state — constant · WHIR proof ~45 KB';
+    bl.textContent = 'node state — constant · WHIR proof ~9 KB';
     fxo.appendChild(bl);
     var bs = el('text', { x: 240, y: 232, 'text-anchor': 'middle', 'font-size': '10.5', fill: '#8a8a8a' });
     bs.textContent = 'state · RAM · proof: kilobytes at any height';
