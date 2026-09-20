@@ -656,6 +656,20 @@
 
     /* ── the payment pipeline, unboxed — free-floating with a glow field ── */
     .pipe-wrap { position: relative; margin-top: 42px; }
+    /* ── reserve + peg-privacy sections (liquidation re-mark, private peg legs) ── */
+    .rsv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; max-width: 1060px; margin: 0 auto 38px; }
+    @media (max-width: 860px) { .rsv-grid { grid-template-columns: 1fr; gap: 20px; } }
+    .rsv-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 22px 20px; }
+    .rsv-card h3 { font-size: 15px; margin: 0 0 8px; color: #e8e8e8; letter-spacing: 0.2px; }
+    .rsv-card p { font-size: 13.5px; line-height: 1.62; color: #9a9a9a; margin: 0; }
+    .rsv-card .rsv-tag { display: inline-block; font-size: 10.5px; letter-spacing: 1.2px; font-weight: 700;
+      color: var(--orange); background: var(--orange-dim); border-radius: 5px; padding: 3px 8px; margin-bottom: 11px; }
+    .honest-note { max-width: 1060px; margin: 30px auto 0; background: rgba(255,102,0,0.05);
+      border: 1px solid rgba(255,102,0,0.28); border-left: 3px solid var(--orange); border-radius: 12px; padding: 20px 24px; }
+    .honest-note h4 { margin: 0 0 8px; font-size: 13px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--orange); }
+    .honest-note p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.68; color: #b6b6b6; }
+    .honest-note p:last-child { margin-bottom: 0; }
+
     .pipe-wrap::before { content: ''; position: absolute; inset: -6% 0; background: radial-gradient(ellipse at 50% 50%, rgba(255,102,0,0.06) 0%, transparent 65%); pointer-events: none; }
 
     /* ── ecosystem constellation hub ── */
@@ -763,6 +777,8 @@
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#how-it-works">How It Works</a>
+        <a href="#reserve">Reserve</a>
+        <a href="#private-pegs">Private Pegs</a>
         <a href="#download">Download</a>
         <a href="/about.html">Details</a>
         <a href="/whitepaper.html">Whitepaper</a>
@@ -778,6 +794,8 @@
     <div class="nav-mobile-menu" id="navMobileMenu">
       <a href="#features">Features</a>
       <a href="#how-it-works">How It Works</a>
+      <a href="#reserve">Reserve</a>
+      <a href="#private-pegs">Private Pegs</a>
       <a href="#download">Download</a>
       <a href="/about.html">Details</a>
         <a href="/whitepaper.html">Whitepaper</a>
@@ -1045,6 +1063,85 @@
     </div>
   </section>
 
+  <section id="reserve">
+    <div class="section-inner">
+      <h2 class="section-title">The Reserve, and What Liquidation Actually Does</h2>
+      <p class="section-subtitle">Every USDm is born over-collateralized. Liquidation is how the reserve stays honest when collateral falls — and here is exactly what it can and cannot do.</p>
+
+      <div class="rsv-grid">
+        <div class="rsv-card">
+          <span class="rsv-tag">MINT AT 150%</span>
+          <h3>The buffer exists before the coin does</h3>
+          <p>Deposit $150 of BTC or XMR, receive 100 USDm. The 150% ratio is a consensus parameter checked in-circuit on every mint, so no USDm has ever existed without its buffer already in the reserve.</p>
+        </div>
+        <div class="rsv-card">
+          <span class="rsv-tag">DOWN-MARK ONLY</span>
+          <h3>A re-mark can never invent collateral</h3>
+          <p>When collateral falls, a liquidation re-marks the committed reserve downward. The circuit enforces <code>hwm &ge; new_reserve</code> against the reserve's high-water mark, so the committed figure can only move DOWN — never above collateral that was really deposited.</p>
+        </div>
+        <div class="rsv-card">
+          <span class="rsv-tag">2/3 BONDED + WHIR</span>
+          <h3>No single party can re-mark anything</h3>
+          <p>A re-mark needs a &ge;2/3 bonded ML-DSA-65 threshold over a domain-separated, commitment-binding message, plus a WHIR carrier that verifies against each node's own persisted commitments. One re-mark per event, replay-guarded. Any rejection changes nothing.</p>
+        </div>
+      </div>
+
+      <div class="pipe-wrap">
+        <svg id="liqSvg" class="pipe-svg" viewBox="0 0 900 300" role="img" aria-label="Animated reserve diagram: collateral is deposited at 150 percent, its market value falls, a two-thirds bonded quorum re-marks the committed reserve downward but never above the high-water mark, and the rising withdraw fee refills the buffer"></svg>
+        <div class="diagram-legend">
+          <span><i class="lg lg-block"></i>committed reserve &mdash; an opaque digest, never a readable total</span>
+          <span><i class="lg lg-proof"></i>the high-water mark is the ceiling a re-mark can never cross</span>
+        </div>
+      </div>
+
+      <div class="honest-note">
+        <h4>The honest residual</h4>
+        <p>The re-mark proves <strong>no conservation</strong>, and we would rather say so than let you find out later. There is no delta to conserve: a re-mark changes the <em>value</em> of collateral already held, not a quantity of units moving. So the <strong>price is the one input no circuit constrains</strong>.</p>
+        <p>What stands behind it instead is named and finite: the in-circuit <code>[0, HWM]</code> bound, the &ge;2/3 bonded attestation, and the validators' external bond backing it. That is the whole of it &mdash; there is no fourth thing we are not telling you.</p>
+        <p>The buffer is also self-healing in the direction that matters. Redemptions may draw backing down to the 100% floor, never below it, and the withdraw fee <em>rises</em> as backing falls. The fee stays in the reserve, so the pressure that drains the buffer is the same pressure that refills it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-section" id="private-pegs">
+    <div class="section-inner">
+      <h2 class="section-title">Private Peg-In and Peg-Out</h2>
+      <p class="section-subtitle">Bitcoin is a transparent chain. We cannot hide a Bitcoin payment &mdash; nobody can. What we can do is make sure it names nobody.</p>
+
+      <div class="rsv-grid">
+        <div class="rsv-card">
+          <span class="rsv-tag">THE MIDDLE IS FREE</span>
+          <h3>USDm is already shielded</h3>
+          <p>Between a mint and a burn there is nothing to link: confidential notes, post-quantum nullifiers, zero-knowledge amounts. MonerousD is itself the pool &mdash; no mixer needed for the part that lives on our chain.</p>
+        </div>
+        <div class="rsv-card">
+          <span class="rsv-tag">NO ADDRESS ON CHAIN</span>
+          <h3>The destination never travels</h3>
+          <p>A redeem carries <code>redeem_commit = H(address, blind)</code> &mdash; a fixed 32 bytes. The address itself rides only in an ML-KEM-768 envelope sealed to each custodian. No relaying node and no chain reader learns where a burn pays, and the column's width no longer names the foreign chain either.</p>
+        </div>
+        <div class="rsv-card">
+          <span class="rsv-tag">PAID IN A CROWD</span>
+          <h3>One transaction, many redeemers</h3>
+          <p>Payouts settle in fixed ladder denominations, batched so one custody transaction pays several redeemers with identical outputs. An observer picking which output was yours is guessing 1-in-B, and the batch order is derived from each burn's own nullifier &mdash; so first-to-burn is not first-to-be-paid.</p>
+        </div>
+      </div>
+
+      <div class="pipe-wrap">
+        <svg id="pegSvg" class="pipe-svg" viewBox="0 0 900 320" role="img" aria-label="Animated peg privacy diagram: several redeemers burn USDm privately, their destinations travel only inside sealed envelopes, and one batched Bitcoin transaction pays them all with identical outputs so no output can be tied to a burn"></svg>
+        <div class="diagram-legend">
+          <span><i class="lg lg-block"></i>sealed to custodians only &mdash; never to the chain</span>
+          <span><i class="lg lg-proof"></i>identical outputs, derived order, 1-in-B guess</span>
+        </div>
+      </div>
+
+      <div class="honest-note">
+        <h4>What this does not do</h4>
+        <p>A Bitcoin payment is public by construction, and no cryptography on our side changes that. Batching makes it <em>ambiguous</em>, not invisible: <strong>your privacy equals the size of the crowd you are paid in</strong>, exactly as it does for any mixer. A batch of one is no privacy at all, which is why the protocol refuses to pay one rather than quietly paying it alone.</p>
+        <p>Monero never faces this problem because it has no native peg-out to a transparent chain. Every BTC bridge does, ours included &mdash; so we bound it, measure it, and tell you the number instead of claiming it away.</p>
+      </div>
+    </div>
+  </section>
+
   <section id="download">
     <div class="section-inner">
       <h2 class="section-title">Download</h2>
@@ -1247,88 +1344,6 @@
     });
   }
 
-  /* 3 ── Live zk-DAG: parallel blocks drift left, link to parents, get a proof tick. */
-  var dag = document.getElementById('dagSvg');
-  if (dag) (function () {
-    var Wv = 900, LANES = [62, 160, 258];
-    var SPEED = 50;                       // px/s leftward drift
-    var nodes = [], edges = [], spawnAt = 0, tclock = 0;
-    var edgeLayer = el('g', {}), nodeLayer = el('g', {});
-    dag.appendChild(edgeLayer); dag.appendChild(nodeLayer);
-
-    function spawnColumn(now) {
-      var count = 1 + Math.floor(Math.random() * 3); // GHOSTDAG width>1: 1–3 blocks per wave
-      var lanes = [0, 1, 2].sort(function () { return Math.random() - 0.5; }).slice(0, count);
-      lanes.forEach(function (li) {
-        var g = el('g', { opacity: '0' });
-        g.appendChild(el('rect', { x: -34, y: -22, width: 68, height: 44, rx: 9,
-          fill: 'rgba(255,102,0,0.10)', stroke: 'rgba(255,102,0,0.75)', 'stroke-width': '1.5' }));
-        var t = el('text', { x: 0, y: -1, 'text-anchor': 'middle', 'font-size': '13.5', 'font-weight': '700', fill: '#ffb26b' });
-        t.textContent = '256';
-        var sub = el('text', { x: 0, y: 14, 'text-anchor': 'middle', 'font-size': '9.5', fill: '#8f8f8f' });
-        sub.textContent = 'COVER';
-        var tick = el('g', { opacity: '0' });
-        tick.appendChild(el('circle', { cx: 25, cy: -15, r: 8.5, fill: 'rgba(46,204,113,0.16)', stroke: 'rgba(46,204,113,0.9)', 'stroke-width': '1.2' }));
-        tick.appendChild(el('path', { d: 'M21.4 -15 l2.6 2.8 l4.8 -5.6', fill: 'none', stroke: '#2ecc71', 'stroke-width': '1.7', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
-        g.appendChild(t); g.appendChild(sub); g.appendChild(tick);
-        nodeLayer.appendChild(g);
-        var node = { g: g, tick: tick, x: Wv + 40, y: LANES[li], born: now };
-        // Link to up to 2 parents from earlier waves (never the same column).
-        nodes.slice(-5).filter(function (p) { return p.x < node.x - 70; }).slice(-2).forEach(function (p) {
-          var ln = el('line', { stroke: 'rgba(255,255,255,0.22)', 'stroke-width': '1.4',
-            'stroke-dasharray': '200', 'stroke-dashoffset': '200' });
-          edgeLayer.appendChild(ln);
-          edges.push({ line: ln, a: node, b: p, born: now });
-        });
-        nodes.push(node);
-      });
-    }
-
-    function render(now) {
-      for (var i = nodes.length - 1; i >= 0; i--) {
-        var n = nodes[i], age = (now - n.born) / 1000;
-        var op = Math.min(1, age * 2.4);
-        if (n.x < 60) op = Math.min(op, Math.max(0, (n.x + 40) / 100));
-        n.g.setAttribute('transform', 'translate(' + n.x.toFixed(1) + ',' + n.y + ')');
-        n.g.setAttribute('opacity', op.toFixed(2));
-        n.tick.setAttribute('opacity', age > 0.8 ? Math.min(1, (age - 0.8) * 3).toFixed(2) : '0');
-        if (n.x < -50) { nodeLayer.removeChild(n.g); nodes.splice(i, 1); }
-      }
-      for (var j = edges.length - 1; j >= 0; j--) {
-        var ed = edges[j];
-        if (!ed.a.g.parentNode || !ed.b.g.parentNode) {
-          if (ed.line.parentNode) edgeLayer.removeChild(ed.line);
-          edges.splice(j, 1); continue;
-        }
-        ed.line.setAttribute('x1', (ed.a.x - 34).toFixed(1)); ed.line.setAttribute('y1', ed.a.y);
-        ed.line.setAttribute('x2', (ed.b.x + 34).toFixed(1)); ed.line.setAttribute('y2', ed.b.y);
-        ed.line.setAttribute('stroke-dashoffset', Math.max(0, 200 - ((now - ed.born) / 1000) * 320).toFixed(0));
-      }
-    }
-
-    // Seed some history so the panel never starts empty.
-    (function () {
-      var t0 = performance.now();
-      for (var k = 5; k >= 1; k--) {
-        spawnColumn(t0 - 3000);
-        nodes.forEach(function (n) { if (n.x > Wv) n.x = Wv - 40 - (k - 1) * 155 - Math.random() * 10; });
-      }
-      render(t0);
-    })();
-
-    if (reduced) {
-      nodes.forEach(function (n) { n.born -= 5000; });
-      edges.forEach(function (ed) { ed.born -= 5000; });
-      render(performance.now()); // one static, fully-drawn frame
-    } else {
-      gateLoop(dag, function (ts, dt) {
-        nodes.forEach(function (n) { n.x -= SPEED * dt; });
-        tclock += dt;
-        if (ts >= spawnAt) { spawnColumn(ts); spawnAt = ts + 1900 + Math.random() * 700; }
-        render(ts);
-      });
-    }
-  })();
 
   /* 4 ── Payment pipeline: note → ML-KEM seal → onion hops → DAG fold → <2s finality. */
   var pipe = document.getElementById('pipeSvg');
@@ -1387,6 +1402,216 @@
     }
     if (reduced) { frame(0, TRAVEL); pulse.setAttribute('cx', X1); halo.setAttribute('cx', X1); prog.setAttribute('x2', X1); dots.forEach(function (d) { d.setAttribute('opacity', '1'); }); timer.textContent = 'absolute finality ✓ 1.8s'; timer.setAttribute('fill', '#2ecc71'); }
     else gateLoop(pipe, frame);
+  })();
+
+  /* 4b ── Reserve + liquidation: deposit at 150%, price falls, 2/3 quorum re-marks DOWN
+     (never above the high-water mark), withdraw fee refills the buffer. */
+  var liq = document.getElementById('liqSvg');
+  if (liq) (function () {
+    var X0 = 130, X1 = 770, BASE = 250, HWM_Y = 92, FULL = BASE - HWM_Y;
+    var grid = el('g', {});
+    liq.appendChild(grid);
+    grid.appendChild(el('line', { x1: X0 - 40, y1: BASE, x2: X1 + 40, y2: BASE, stroke: 'rgba(255,255,255,0.14)', 'stroke-width': '2' }));
+
+    // the high-water mark — the ceiling a re-mark can never cross
+    var hwm = el('line', { x1: X0 - 20, y1: HWM_Y, x2: X1 + 20, y2: HWM_Y,
+      stroke: 'rgba(46,204,113,0.75)', 'stroke-width': '1.8', 'stroke-dasharray': '7 6' });
+    liq.appendChild(hwm);
+    var hwmLb = el('text', { x: X1 + 26, y: HWM_Y + 4, 'font-size': '10.5', 'font-weight': '700', fill: '#2ecc71' });
+    hwmLb.textContent = 'HIGH-WATER MARK';
+    liq.appendChild(hwmLb);
+
+    // the 100% floor — redemptions may draw here, never below
+    var floorY = BASE - FULL * (100 / 150);
+    liq.appendChild(el('line', { x1: X0 - 20, y1: floorY, x2: X1 + 20, y2: floorY,
+      stroke: 'rgba(255,255,255,0.22)', 'stroke-width': '1.4', 'stroke-dasharray': '3 7' }));
+    var flLb = el('text', { x: X1 + 26, y: floorY + 4, 'font-size': '10.5', fill: '#8a8a8a' });
+    flLb.textContent = '100% FLOOR';
+    liq.appendChild(flLb);
+
+    // the committed reserve bar (an opaque digest — the height is illustrative, never a readable total)
+    var barW = 150;
+    var bar = el('rect', { x: X0, y: HWM_Y, width: barW, height: FULL, rx: 8,
+      fill: 'rgba(255,102,0,0.16)', stroke: 'rgba(255,102,0,0.8)', 'stroke-width': '1.6' });
+    liq.appendChild(bar);
+    var barLb = el('text', { x: X0 + barW / 2, y: BASE + 24, 'text-anchor': 'middle', 'font-size': '11', 'font-weight': '700', fill: '#d6d6d6' });
+    barLb.textContent = 'COMMITTED RESERVE';
+    liq.appendChild(barLb);
+    var ratio = el('text', { x: X0 + barW / 2, y: BASE + 40, 'text-anchor': 'middle', 'font-size': '10', fill: '#8a8a8a' });
+    ratio.textContent = 'opaque digest';
+    liq.appendChild(ratio);
+    var pct = el('text', { x: X0 + barW / 2, y: HWM_Y - 14, 'text-anchor': 'middle', 'font-size': '15', 'font-weight': '700', fill: '#ffb26b' });
+    pct.textContent = '150%';
+    liq.appendChild(pct);
+
+    // stage caption + the quorum badge that lights when the re-mark is attested
+    var cap = el('text', { x: 450, y: 34, 'text-anchor': 'middle', 'font-size': '13.5', 'font-weight': '700', fill: '#ffb26b' });
+    cap.textContent = 'minted at 150% — the buffer exists before the coin does';
+    liq.appendChild(cap);
+
+    var qg = el('g', { opacity: '0' });
+    qg.appendChild(el('rect', { x: 560, y: 152, width: 210, height: 46, rx: 10,
+      fill: 'rgba(46,204,113,0.10)', stroke: 'rgba(46,204,113,0.75)', 'stroke-width': '1.4' }));
+    var qt = el('text', { x: 665, y: 172, 'text-anchor': 'middle', 'font-size': '11.5', 'font-weight': '700', fill: '#2ecc71' });
+    qt.textContent = '≥2/3 BONDED · WHIR CARRIER';
+    var qs = el('text', { x: 665, y: 188, 'text-anchor': 'middle', 'font-size': '9.5', fill: '#7fbf9a' });
+    qs.textContent = 'hwm ≥ new_reserve — down-mark only';
+    qg.appendChild(qt); qg.appendChild(qs);
+    liq.appendChild(qg);
+
+    // the fee arrow that refills the buffer
+    var feeG = el('g', { opacity: '0' });
+    feeG.appendChild(el('path', { d: 'M470 268 L470 224 M462 232 L470 222 L478 232',
+      fill: 'none', stroke: '#ff6600', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    var feeT = el('text', { x: 470, y: 286, 'text-anchor': 'middle', 'font-size': '10.5', 'font-weight': '700', fill: '#ff6600' });
+    feeT.textContent = 'withdraw fee → reserve';
+    feeG.appendChild(feeT);
+    liq.appendChild(feeG);
+
+    // phases: hold 150 · price falls · quorum re-marks DOWN · fee refills · settle
+    var PH = [
+      { t: 2.0, from: 150, to: 150, cap: 'minted at 150% — the buffer exists before the coin does', q: 0, fee: 0 },
+      { t: 2.4, from: 150, to: 108, cap: 'collateral falls — the committed figure is now stale', q: 0, fee: 0 },
+      { t: 2.2, from: 108, to: 108, cap: 're-mark attested: ≥2/3 bonded, verified against each node’s own commitments', q: 1, fee: 0 },
+      { t: 2.2, from: 108, to: 108, cap: 'the ceiling holds — a re-mark can only move DOWN, never above the HWM', q: 1, fee: 0 },
+      { t: 2.4, from: 108, to: 127, cap: 'the withdraw fee rises as backing falls, and stays in the reserve', q: 0, fee: 1 }
+    ];
+    var pi = 0, pt = 0;
+    function ease(u) { return u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2; }
+    function paint(v, q, fee, capText) {
+      var h = FULL * (v / 150);
+      if (h > FULL) h = FULL;                       // the HWM is a hard ceiling in the drawing too
+      bar.setAttribute('y', (BASE - h).toFixed(1));
+      bar.setAttribute('height', h.toFixed(1));
+      pct.setAttribute('y', (BASE - h - 14).toFixed(1));
+      pct.textContent = Math.round(v) + '%';
+      var low = v < 120;
+      bar.setAttribute('fill', low ? 'rgba(255,102,0,0.10)' : 'rgba(255,102,0,0.16)');
+      pct.setAttribute('fill', low ? '#ff8c42' : '#ffb26b');
+      qg.setAttribute('opacity', q.toFixed(2));
+      feeG.setAttribute('opacity', fee.toFixed(2));
+      cap.textContent = capText;
+    }
+    function frame(ts, dt) {
+      pt += dt;
+      var ph = PH[pi];
+      if (pt >= ph.t) { pt = 0; pi = (pi + 1) % PH.length; ph = PH[pi]; }
+      var u = ease(Math.min(1, pt / ph.t));
+      paint(ph.from + (ph.to - ph.from) * u, ph.q ? Math.min(1, pt / 0.5) : Math.max(0, 1 - pt / 0.4),
+            ph.fee ? Math.min(1, pt / 0.5) : Math.max(0, 1 - pt / 0.4), ph.cap);
+    }
+    if (reduced) paint(127, 1, 1, 'a re-mark moves the committed reserve DOWN only, never above the high-water mark');
+    else gateLoop(liq, frame);
+  })();
+
+  /* 4c ── Private pegs: burns are shielded, destinations ride sealed envelopes,
+     one batched payout pays B redeemers with identical outputs. */
+  var pegd = document.getElementById('pegSvg');
+  if (pegd) (function () {
+    var N = 4, LY = [70, 124, 178, 232], BX = 392, TX = 690;
+    var names = ['burn', 'burn', 'burn', 'burn'];
+
+    var cap = el('text', { x: 450, y: 30, 'text-anchor': 'middle', 'font-size': '13.5', 'font-weight': '700', fill: '#ffb26b' });
+    cap.textContent = 'four redeemers burn USDm — privately, on our chain';
+    pegd.appendChild(cap);
+
+    // left: the shielded burns
+    var lefts = [], seals = [], paths = [];
+    for (var i = 0; i < N; i++) {
+      var g = el('g', {});
+      g.appendChild(el('rect', { x: 92, y: LY[i] - 17, width: 116, height: 34, rx: 9,
+        fill: 'rgba(255,102,0,0.10)', stroke: 'rgba(255,102,0,0.7)', 'stroke-width': '1.3' }));
+      var t = el('text', { x: 150, y: LY[i] + 5, 'text-anchor': 'middle', 'font-size': '11.5', 'font-weight': '700', fill: '#ffb26b' });
+      t.textContent = names[i].toUpperCase() + ' ' + (i + 1);
+      g.appendChild(t);
+      pegd.appendChild(g);
+      lefts.push(g);
+
+      // the sealed envelope carrying the address — to custodians only
+      var sg = el('g', { opacity: '0' });
+      sg.appendChild(el('rect', { x: 232, y: LY[i] - 13, width: 128, height: 26, rx: 7,
+        fill: 'rgba(46,204,113,0.08)', stroke: 'rgba(46,204,113,0.6)', 'stroke-width': '1.1' }));
+      var st = el('text', { x: 296, y: LY[i] + 4, 'text-anchor': 'middle', 'font-size': '9.5', fill: '#7fbf9a' });
+      st.textContent = 'ML-KEM SEALED';
+      sg.appendChild(st);
+      pegd.appendChild(sg);
+      seals.push(sg);
+
+      var pth = el('path', { d: 'M360 ' + LY[i] + ' C 400 ' + LY[i] + ', 420 151, ' + BX + ' 151',
+        fill: 'none', stroke: 'rgba(255,255,255,0.14)', 'stroke-width': '1.4' });
+      pegd.appendChild(pth);
+      paths.push(pth);
+    }
+
+    // the batch box
+    var box = el('g', {});
+    box.appendChild(el('rect', { x: BX, y: 106, width: 150, height: 90, rx: 12,
+      fill: 'rgba(255,102,0,0.07)', stroke: 'rgba(255,102,0,0.8)', 'stroke-width': '1.6' }));
+    var bt = el('text', { x: BX + 75, y: 138, 'text-anchor': 'middle', 'font-size': '12', 'font-weight': '700', fill: '#ffb26b' });
+    bt.textContent = 'ONE PAYOUT';
+    var bs = el('text', { x: BX + 75, y: 156, 'text-anchor': 'middle', 'font-size': '9.5', fill: '#8f8f8f' });
+    bs.textContent = 'derived order';
+    var bs2 = el('text', { x: BX + 75, y: 172, 'text-anchor': 'middle', 'font-size': '9.5', fill: '#8f8f8f' });
+    bs2.textContent = 'identical outputs';
+    box.appendChild(bt); box.appendChild(bs); box.appendChild(bs2);
+    pegd.appendChild(box);
+
+    // right: the identical Bitcoin outputs
+    var outs = [];
+    for (var j = 0; j < N; j++) {
+      var og = el('g', { opacity: '0.25' });
+      og.appendChild(el('rect', { x: TX, y: LY[j] - 15, width: 132, height: 30, rx: 8,
+        fill: 'rgba(255,255,255,0.03)', stroke: 'rgba(255,255,255,0.3)', 'stroke-width': '1.2' }));
+      var ot = el('text', { x: TX + 66, y: LY[j] + 4, 'text-anchor': 'middle', 'font-size': '10.5', 'font-weight': '700', fill: '#cfcfcf' });
+      ot.textContent = '0.01 BTC';
+      og.appendChild(ot);
+      pegd.appendChild(og);
+      outs.push(og);
+      pegd.appendChild(el('path', { d: 'M' + (BX + 150) + ' 151 C ' + (BX + 190) + ' 151, ' + (TX - 40) + ' ' + LY[j] + ', ' + TX + ' ' + LY[j],
+        fill: 'none', stroke: 'rgba(255,255,255,0.12)', 'stroke-width': '1.3' }));
+    }
+
+    var guess = el('text', { x: 756, y: 288, 'text-anchor': 'middle', 'font-size': '12', 'font-weight': '700', fill: '#2ecc71', opacity: '0' });
+    guess.textContent = 'observer: 1-in-4';
+    pegd.appendChild(guess);
+    var never = el('text', { x: 296, y: 288, 'text-anchor': 'middle', 'font-size': '10.5', fill: '#7fbf9a', opacity: '0' });
+    never.textContent = 'address never touches the chain';
+    pegd.appendChild(never);
+
+    var PH = [
+      { t: 2.0, cap: 'four redeemers burn USDm — privately, on our chain' },
+      { t: 2.4, cap: 'each destination rides an ML-KEM envelope sealed to the custodians' },
+      { t: 2.2, cap: 'the chain carries only H(address, blind) — a fixed 32 bytes' },
+      { t: 2.6, cap: 'one Bitcoin transaction, four identical outputs, order derived from each nullifier' },
+      { t: 2.4, cap: 'which output was yours? the best guess is 1-in-4' }
+    ];
+    var pi = 0, pt = 0;
+    function frame(ts, dt) {
+      pt += dt;
+      if (pt >= PH[pi].t) { pt = 0; pi = (pi + 1) % PH.length; }
+      cap.textContent = PH[pi].cap;
+      var sealOn = pi >= 1 ? 1 : 0;
+      seals.forEach(function (sg, k) {
+        var d = Math.max(0, Math.min(1, (pt - k * 0.12) / 0.45));
+        sg.setAttribute('opacity', (sealOn ? d : Math.max(0, 1 - pt / 0.4)).toFixed(2));
+      });
+      never.setAttribute('opacity', (pi >= 2 ? 1 : 0).toFixed(2));
+      var payOn = pi >= 3;
+      outs.forEach(function (og, k) {
+        var d = payOn ? Math.max(0.25, Math.min(1, (pt - k * 0.1) / 0.5)) : 0.25;
+        og.setAttribute('opacity', d.toFixed(2));
+      });
+      paths.forEach(function (pp) {
+        pp.setAttribute('stroke', pi >= 3 ? 'rgba(255,102,0,0.45)' : 'rgba(255,255,255,0.14)');
+      });
+      guess.setAttribute('opacity', (pi === 4 ? Math.min(1, pt / 0.6) : 0).toFixed(2));
+    }
+    if (reduced) {
+      cap.textContent = 'one Bitcoin transaction, four identical outputs — the best guess is 1-in-4';
+      seals.forEach(function (sg) { sg.setAttribute('opacity', '1'); });
+      outs.forEach(function (og) { og.setAttribute('opacity', '1'); });
+      guess.setAttribute('opacity', '1'); never.setAttribute('opacity', '1');
+    } else gateLoop(pegd, frame);
   })();
 
   /* 5 ── Row 01: compact live zk-DAG (parallel lanes, parent links, proof ticks). */
