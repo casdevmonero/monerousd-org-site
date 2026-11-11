@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>SAT Tokenomics — Supply, Emission, Bonds &amp; Fees | MoneroUSD</title>
+<meta name="description" content="SAT tokenomics: 21M max supply, 19M by block rewards halving every ~4 years, a ≤2M set-aside proven at genesis, validator bonds, fee sharing and BTC/XMR pools.">
+<link rel="canonical" href="https://monerousd.org/sat">
+<meta name="theme-color" content="#060607">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<meta property="og:type" content="article"><meta property="og:site_name" content="MoneroUSD">
+<meta property="og:title" content="SAT tokenomics — the reward asset of MoneroUSD">
+<meta property="og:description" content="21M max · 19M by block reward, halving every ~4 years · ≤2M developer set-aside proven at genesis · validator bonds · fee sharing · direct BTC and XMR pools.">
+<meta property="og:url" content="https://monerousd.org/sat"><meta property="og:image" content="https://monerousd.org/assets/og-sat.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://monerousd.org/assets/og-sat.png">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Article","headline":"SAT tokenomics — the reward asset of MoneroUSD","datePublished":"2026-11-07","author":{"@type":"Organization","name":"MoneroUSD","url":"https://monerousd.org/"},"publisher":{"@type":"Organization","name":"MoneroUSD","logo":{"@type":"ImageObject","url":"https://monerousd.org/logo.svg"}},"mainEntityOfPage":"https://monerousd.org/sat","image":"https://monerousd.org/assets/og-sat.png"},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MoneroUSD","item":"https://monerousd.org/"},{"@type":"ListItem","position":2,"name":"SAT tokenomics","item":"https://monerousd.org/sat"}]},
+ {"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"What is the maximum supply of SAT?","acceptedAnswer":{"@type":"Answer","text":"21,000,000 SAT, enforced by consensus. 19,000,000 are issued only as block rewards; a developer set-aside is capped at 2,000,000 and proven at genesis, with the exact amount kept private."}},
+  {"@type":"Question","name":"How often does the SAT block reward halve?","acceptedAnswer":{"@type":"Answer","text":"Every 252,460,800 blocks, which is about four years at the 500 ms block-time target. Half of the block-reward supply is issued in the first era."}},
+  {"@type":"Question","name":"What is SAT used for?","acceptedAnswer":{"@type":"Answer","text":"Validators bond SAT to secure custody and finality, bonders receive SAT bought with a share of network fees, and SAT trades directly against Bitcoin and Monero."}}
+ ]}
+]}
+</script>
+  <script src="lib/wallet-nav.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
+  <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat" aria-current="page">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li></ul>
+  <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
+    <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
+</div></nav>
+
+<main id="main">
+<header class="ph"><div class="wrap">
+  <div class="kick">SAT tokenomics</div>
+  <h1>Satoshi (SAT): <span class="or">the reward asset of MoneroUSD.</span></h1>
+  <p class="lead">USDm is what you pay with. SAT is what secures the network: it is mined by the nodes that run the chain, bonded by the validators that guard custody and finality, and paid a share of every fee.</p>
+  <div class="grid4" style="margin-top:36px">
+    <div class="card stat"><b>21,000,000</b><span>hard cap, enforced at every fold of the chain</span></div>
+    <div class="card stat"><b>19,000,000</b><span>issued only by block rewards</span></div>
+    <div class="card stat"><b>≤ 2,000,000</b><span>developer set-aside, proven at genesis</span></div>
+    <div class="card stat"><b>~4 years</b><span>between halvings</span></div>
+  </div>
+</div></header>
+
+<section class="s"><div class="wrap split">
+  <div class="rv prose">
+    <div class="kick">Supply</div>
+    <h2 style="margin-top:12px">Fixed, provable, and private where it should be.</h2>
+    <p>No SAT can exist outside three doors: a block reward, the genesis set-aside, or an ordinary spend of SAT that already exists. Consensus refuses any reward that would push the issued total past the cap, and no other mint can create SAT.</p>
+    <p><b>The developer set-aside is disclosed.</b> Up to 2,000,000 SAT (9.5% of the cap) is set aside at genesis. Genesis carries a fixed number of confidential SAT notes and one proof that their sum is at most 2,000,000. Whatever part of the 2M is not used is simply never created. You can verify the bound; nobody can read the exact amount — the same privacy every holder gets.</p>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="Supply split: 19 million by block reward, up to 2 million set-aside, under a 21 million cap">
+    <svg viewBox="0 0 600 380">
+      <g transform="translate(200 190)">
+        <circle r="130" fill="none" stroke="#1e1e24" stroke-width="44"/>
+        <circle r="130" fill="none" stroke="#ff7a00" stroke-width="44" stroke-dasharray="739 78" transform="rotate(-90)"/>
+        <circle r="130" fill="none" stroke="#a9b4ff" stroke-width="44" stroke-dasharray="77.8 739" stroke-dashoffset="-739" transform="rotate(-90)" class="seq d3"/>
+        <text y="-6" text-anchor="middle" fill="#f4f1ee" font-size="30" font-weight="700">21M</text>
+        <text y="22" text-anchor="middle" fill="#8b8b95" font-size="17">maximum supply</text>
+      </g>
+      <g class="seq d2"><rect x="380" y="130" width="16" height="16" rx="4" fill="#ff7a00"/><text x="406" y="143" fill="#f4f1ee" font-size="18" font-weight="600">19M · block rewards</text><text x="406" y="164" fill="#8b8b95" font-size="16">mined over ~84 years</text></g>
+      <g class="seq d3"><rect x="380" y="200" width="16" height="16" rx="4" fill="#a9b4ff"/><text x="406" y="213" fill="#f4f1ee" font-size="18" font-weight="600">≤ 2M · set-aside</text><text x="406" y="234" fill="#8b8b95" font-size="16">bound proven at genesis</text></g>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap split rev">
+  <div class="rv prose">
+    <div class="kick">Emission</div>
+    <h2 style="margin-top:12px">A Bitcoin-style halving, counted in blocks.</h2>
+    <p>The reward for a block is <code>R₀ &gt;&gt; (height ÷ 252,460,800)</code>: it starts at <b>0.0376296 SAT</b> per block and halves every 252,460,800 blocks — four years at the network's 500 ms block-time target. Half of the 19M is issued in the first era, a quarter in the second, and so on, ending after about 21 eras.</p>
+    <p>The reward amount is public, because it follows from the schedule. <b>Who received it is private:</b> each reward lands as a confidential note only the miner's wallet can find, and every later transfer hides amount, sender and receiver.</p>
+  </div>
+  <div class="rv">
+    <div class="diagram anim" role="img" aria-label="Rewards issued per era: 9.5M, 4.75M, 2.375M, 1.19M, then smaller">
+      <svg viewBox="0 0 600 330">
+        <g font-family="JBM,monospace" font-size="15" fill="#8b8b95">
+          <text x="70" y="306" text-anchor="middle">era 1</text><text x="170" y="306" text-anchor="middle">era 2</text><text x="270" y="306" text-anchor="middle">era 3</text><text x="370" y="306" text-anchor="middle">era 4</text><text x="470" y="306" text-anchor="middle">era 5</text><text x="560" y="306" text-anchor="middle">6+</text>
+        </g>
+        <line x1="20" y1="286" x2="590" y2="286" stroke="rgba(255,255,255,.2)"/>
+        <g fill="#ff7a00">
+          <rect x="35" y="36" width="70" height="250" rx="6" class="seq d1"/><rect x="135" y="161" width="70" height="125" rx="6" class="seq d2" opacity=".85"/><rect x="235" y="224" width="70" height="62" rx="6" class="seq d3" opacity=".7"/><rect x="335" y="255" width="70" height="31" rx="6" class="seq d4" opacity=".6"/><rect x="435" y="270" width="70" height="16" rx="5" class="seq d5" opacity=".5"/><rect x="535" y="278" width="50" height="8" rx="4" class="seq d6" opacity=".4"/>
+        </g>
+        <g fill="#f4f1ee" font-size="17" font-weight="600" text-anchor="middle"><text x="70" y="26" class="seq d1">9.5M</text><text x="170" y="151" class="seq d2">4.75M</text><text x="270" y="214" class="seq d3">2.375M</text><text x="370" y="245" class="seq d4">1.19M</text><text x="470" y="260" class="seq d5">0.59M</text></g>
+      </svg>
+    </div>
+    <div class="tscroll" style="margin-top:18px"><table class="t">
+      <thead><tr><th>Era</th><th>Years*</th><th>Reward / block</th><th>Issued in era</th><th>Total rewards</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>0–4</td><td>0.0376296</td><td>9,500,000</td><td>9,500,000</td></tr>
+        <tr><td>2</td><td>4–8</td><td>0.0188148</td><td>4,750,000</td><td>14,250,000</td></tr>
+        <tr><td>3</td><td>8–12</td><td>0.0094074</td><td>2,375,000</td><td>16,625,000</td></tr>
+        <tr><td>4</td><td>12–16</td><td>0.0047037</td><td>1,187,500</td><td>17,812,500</td></tr>
+        <tr><td>5–21</td><td>16–84</td><td>halving</td><td>~1,187,500</td><td>→ 19,000,000</td></tr>
+      </tbody>
+    </table></div>
+    <p class="muted" style="font-size:13px;margin-top:8px">*Years assume the 500 ms block-time target. Halvings happen at fixed block counts, so real dates follow the real block rate.</p>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="rv center"><div class="kick">Utility</div><h2>What SAT does.</h2></div>
+  <div class="grid4 rv" style="margin-top:34px">
+    <div class="card"><h3>Secures the chain</h3><p>Validators bond SAT — only SAT — to guard Bitcoin and Monero custody and to finalize blocks. By design, a validator that signs a theft loses its bond to the victims.</p></div>
+    <div class="card"><h3>Earns fees</h3><p>A quarter of every network fee buys SAT for bonders. Any holder can delegate SAT to a validator in one tap; holding stays the default.</p></div>
+    <div class="card"><h3>Rewards mining</h3><p>The nodes that produce blocks earn SAT, and later a share of fees from the miner pool, so security doesn't end when rewards do.</p></div>
+    <div class="card"><h3>Trades directly</h3><p>SAT/BTC and SAT/XMR pools let anyone buy or sell at any time and be paid in BTC or XMR — no order book, no waiting.</p></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap split">
+  <div class="rv prose">
+    <div class="kick">Fees</div>
+    <h2 style="margin-top:12px">Every fee goes back to the network.</h2>
+    <p>Each transaction pays a flat <b>$0.001</b> network fee in USDm. It's the same for everyone, so the fee itself reveals nothing about the amount. Fees are pooled in chain state, paid out quarterly and split four ways. <b>There is no founder share in protocol fees.</b></p>
+    <ul>
+      <li><b>40%</b> to USDm stakers</li>
+      <li><b>25%</b> buys SAT for validators' bonds</li>
+      <li><b>25%</b> to the surplus buffer that backs USDm</li>
+      <li><b>10%</b> to the miner pool — rising to 15% in era 2 and 20% from era 3, taken from the stakers' share</li>
+    </ul>
+    <p>Apps may add their own interface fee, shown in dollars before you act. The first-party wallet charges 0.25% on swaps, 0.10% to cash in or out, and 0.5% to merchants on its POS. Doing the same thing through another front end pays only the network fee.</p>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="Fee split: 40 percent stakers, 25 percent SAT for bonders, 25 percent surplus buffer, 10 percent miner pool">
+    <svg viewBox="0 0 600 330">
+      <text x="300" y="34" text-anchor="middle" fill="#f4f1ee" font-size="19" font-weight="700">$0.001 per transaction →</text>
+      <g font-size="17">
+        <g class="seq d1"><text x="40" y="92" fill="#c4beb8">USDm stakers</text><rect x="210" y="74" width="300" height="26" rx="6" fill="#1e1e24"/><rect x="210" y="74" width="300" height="26" rx="6" fill="#ff7a00"/><text x="560" y="93" text-anchor="end" fill="#f4f1ee" font-weight="700">40%</text></g>
+        <g class="seq d2"><text x="40" y="152" fill="#c4beb8">SAT for bonders</text><rect x="210" y="134" width="300" height="26" rx="6" fill="#1e1e24"/><rect x="210" y="134" width="188" height="26" rx="6" fill="#ffab4d"/><text x="560" y="153" text-anchor="end" fill="#f4f1ee" font-weight="700">25%</text></g>
+        <g class="seq d3"><text x="40" y="212" fill="#c4beb8">Surplus buffer</text><rect x="210" y="194" width="300" height="26" rx="6" fill="#1e1e24"/><rect x="210" y="194" width="188" height="26" rx="6" fill="#a9b4ff"/><text x="560" y="213" text-anchor="end" fill="#f4f1ee" font-weight="700">25%</text></g>
+        <g class="seq d4"><text x="40" y="272" fill="#c4beb8">Miner pool</text><rect x="210" y="254" width="300" height="26" rx="6" fill="#1e1e24"/><rect x="210" y="254" width="75" height="26" rx="6" fill="#39d98a"/><text x="560" y="273" text-anchor="end" fill="#f4f1ee" font-weight="700">10%</text></g>
+      </g>
+      <text x="300" y="318" text-anchor="middle" fill="#8b8b95" font-size="15">Miner share rises to 15% (era 2) and 20% (era 3+), from the stakers' share.</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap prose">
+  <div class="kick">Trading SAT</div>
+  <h2 style="margin-top:12px">Direct pools, private batches.</h2>
+  <p>At launch, SAT opens at <b>$1</b> in two direct pools: SAT/BTC and SAT/XMR. Buy SAT by depositing Bitcoin or Monero; sell it and be paid in whichever coin you choose. Orders are cleared in sealed batches: the chain publishes one clearing price per pair per batch, and nothing else — no volume, no depth, no positions, no fills.</p>
+  <p>Each order can carry a maximum price to protect the buyer; it bounds that one order, never the market.</p>
+  <div class="note">SAT is part of the MoneroUSD design and is being tested on real nodes. It is not available to buy today, and nothing on this site is financial advice. Final parameters are fixed in the launch release.</div>
+</div></section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">MoneroUSD</a><p style="margin-top:12px;max-width:360px">Private, post-quantum digital cash. Not affiliated with the Monero Project. Nothing here is financial advice.</p></div>
+    <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
+    <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

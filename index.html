@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>MoneroUSD — Private, Post-Quantum Digital Cash | USDm &amp; SAT</title>
+<meta name="description" content="Private digital cash built to survive quantum computers. Hidden amounts, senders and receivers, a private dollar (USDm), tap-to-pay, and the SAT reward asset.">
+<link rel="canonical" href="https://monerousd.org/">
+<meta name="theme-color" content="#060607">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MoneroUSD">
+<meta property="og:title" content="MoneroUSD — private, post-quantum digital cash">
+<meta property="og:description" content="Hidden amounts, senders and receivers. Post-quantum from the first byte. A dollar stablecoin, tap-to-pay, private messaging, its own mix network, and SAT.">
+<meta property="og:url" content="https://monerousd.org/">
+<meta property="og:image" content="https://monerousd.org/assets/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:video" content="https://monerousd.org/media/monerousd-film.mp4">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MoneroUSD — private, post-quantum digital cash">
+<meta name="twitter:description" content="Hidden amounts, senders and receivers. Post-quantum from the first byte. Meet USDm, Letter, tap-to-pay, the Veil, Sovereign and SAT.">
+<meta name="twitter:image" content="https://monerousd.org/assets/og.png">
+<link rel="preload" href="/fonts/outfit-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","@id":"https://monerousd.org/#org","name":"MoneroUSD","alternateName":["MonerousD","USDm"],"url":"https://monerousd.org/","logo":"https://monerousd.org/logo.svg","description":"A post-quantum, private block-DAG chain for digital cash.","sameAs":["https://t.me/MoneroUSDofficial","https://x.com/monerousd"]},
+ {"@type":"WebSite","@id":"https://monerousd.org/#site","url":"https://monerousd.org/","name":"MoneroUSD","publisher":{"@id":"https://monerousd.org/#org"}},
+ {"@type":"SoftwareApplication","name":"MoneroUSD Wallet","applicationCategory":"FinanceApplication","operatingSystem":"macOS, Windows, Linux","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Self-custodial post-quantum private wallet: payments, tap-to-pay over Bluetooth LE, Letter messaging, the Sovereign browser and SAT.","publisher":{"@id":"https://monerousd.org/#org"}},
+ {"@type":"VideoObject","name":"MoneroUSD — private digital cash for the post-quantum era","description":"How MoneroUSD keeps payments private, the wallet in action, Letter, tap-to-pay, the Veil, Sovereign, and the SAT reveal.","thumbnailUrl":"https://monerousd.org/media/film-poster.jpg","contentUrl":"https://monerousd.org/media/monerousd-film.mp4","uploadDate":"2026-11-07","duration":"PT5M14S"}
+]}
+</script>
+  <script src="lib/wallet-nav.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
+    <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+    <ul id="menu">
+      <li><a href="/#how">How it works</a></li>
+      <li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li>
+      <li><a href="/defi">DeFi</a></li>
+      <li><a href="/veil">Veil</a></li>
+      <li><a href="/sovereign">Sovereign</a></li>
+      <li><a href="/sat">SAT</a></li>
+      <li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li>
+    </ul>
+    <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
+    <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
+  </div>
+</nav>
+
+<main id="main">
+<header class="hero">
+  <canvas id="dag" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <span class="status st-test">In development · public testnet next</span>
+    <h1>Digital cash that stays private — <span class="or">even against quantum computers.</span></h1>
+    <p class="lead">MoneroUSD is a private, post-quantum block-DAG chain. Anyone can verify every payment. Nobody can see the amount, the sender or the receiver.</p>
+    <div class="ctas">
+      <a class="btn btn-p" href="#film">▶ Watch the film</a>
+      <a class="btn btn-g" href="#how">How it works</a>
+    </div>
+    <div class="pillrow">
+      <span class="pill"><i></i>Hidden amounts &amp; parties</span>
+      <span class="pill"><i></i>ML-KEM · ML-DSA · WHIR</span>
+      <span class="pill"><i></i>USDm dollar &amp; SAT</span>
+      <span class="pill"><i></i>No chargebacks — final</span>
+    </div>
+  </div>
+</header>
+
+<section class="s" id="film">
+  <div class="wrap center rv">
+    <div class="kick">The film</div>
+    <h2>Five minutes. The whole idea.</h2>
+    <p class="lead">The design, the real wallet in action, and the reveal of SAT — what it does and why it matters.</p>
+    <div class="film" data-player data-thumbs="/media/film-thumbs.jpg" data-thumb-every="2" data-thumb-cols="10" data-thumb-w="160" data-thumb-h="90"><video controls preload="metadata" playsinline poster="/media/film-poster.jpg"><source src="/media/monerousd-film.mp4" type="video/mp4"><a href="/media/monerousd-film.mp4">Download the film (MP4)</a></video></div>
+  </div>
+</section>
+
+<section class="s" id="how">
+  <div class="wrap split">
+    <div class="rv">
+      <div class="kick">What the chain sees</div>
+      <h2>A proof the rules were kept. <span class="or">Nothing else.</span></h2>
+      <p>On a public chain, anyone can follow your money. On MoneroUSD, every transaction is a zero-knowledge proof: nodes check that no money was created and nothing was spent twice, without learning who paid whom, or how much.</p>
+      <ul class="ticks">
+        <li>No amounts, no addresses, no links between payments</li>
+        <li>Every block has the same shape, so real activity can't be counted</li>
+        <li>Your scan key never leaves your device — not even to your own node</li>
+      </ul>
+    </div>
+    <div class="diagram anim rv" role="img" aria-label="A public ledger shows names and amounts; MoneroUSD shows only commitments, nullifiers and a valid proof">
+      <svg viewBox="0 0 600 330">
+        <text x="150" y="28" text-anchor="middle" fill="#c4beb8" font-size="18" font-weight="600">A public chain</text>
+        <text x="450" y="28" text-anchor="middle" fill="#ff7a00" font-size="18" font-weight="600">MoneroUSD</text>
+        <g font-family="JBM,monospace" font-size="15">
+          <g><rect x="14" y="46" width="272" height="40" rx="8" fill="#17171c"/><text x="26" y="71" fill="#e6e1dc">alice → bc1q8z</text><text x="276" y="71" text-anchor="end" fill="#ffd37a">1.443 BTC</text></g>
+          <g><rect x="14" y="94" width="272" height="40" rx="8" fill="#17171c"/><text x="26" y="119" fill="#e6e1dc">payroll → bc1qx2</text><text x="276" y="119" text-anchor="end" fill="#ffd37a">0.853 BTC</text></g>
+          <g><rect x="14" y="142" width="272" height="40" rx="8" fill="#17171c"/><text x="26" y="167" fill="#e6e1dc">donor → alice</text><text x="276" y="167" text-anchor="end" fill="#ffd37a">2.269 BTC</text></g>
+          <g><rect x="14" y="190" width="272" height="40" rx="8" fill="#17171c"/><text x="26" y="215" fill="#e6e1dc">bc1q0f → exchange</text><text x="276" y="215" text-anchor="end" fill="#ffd37a">0.050 BTC</text></g>
+          <rect x="14" y="46" width="272" height="40" rx="8" fill="rgba(255,93,108,.22)" class="seq d1"/>
+          <rect x="14" y="142" width="272" height="40" rx="8" fill="rgba(255,93,108,.22)" class="seq d2"/>
+          <path d="M150 86 Q190 114 150 142" stroke="#ff5d6c" stroke-width="2" fill="none" class="seq d3"/>
+          <text x="150" y="262" text-anchor="middle" fill="#ff5d6c" font-size="16" class="seq d3">linked: same person</text>
+          <g><rect x="314" y="46" width="272" height="40" rx="8" fill="#17171c"/><text x="326" y="71" fill="#6c6c75">cm 9f2a… nf 41c0…</text><rect x="512" y="56" width="64" height="20" rx="10" fill="rgba(57,217,138,.14)"/><text x="544" y="71" text-anchor="middle" fill="#39d98a">proof ✓</text></g>
+          <g><rect x="314" y="94" width="272" height="40" rx="8" fill="#17171c"/><text x="326" y="119" fill="#6c6c75">cm 07be… nf d93e…</text><rect x="512" y="104" width="64" height="20" rx="10" fill="rgba(57,217,138,.14)"/><text x="544" y="119" text-anchor="middle" fill="#39d98a">proof ✓</text></g>
+          <g><rect x="314" y="142" width="272" height="40" rx="8" fill="#17171c"/><text x="326" y="167" fill="#6c6c75">cm 5c1d… nf 2b77…</text><rect x="512" y="152" width="64" height="20" rx="10" fill="rgba(57,217,138,.14)"/><text x="544" y="167" text-anchor="middle" fill="#39d98a">proof ✓</text></g>
+          <g><rect x="314" y="190" width="272" height="40" rx="8" fill="#17171c"/><text x="326" y="215" fill="#6c6c75">cm e804… nf 6af1…</text><rect x="512" y="200" width="64" height="20" rx="10" fill="rgba(57,217,138,.14)"/><text x="544" y="215" text-anchor="middle" fill="#39d98a">proof ✓</text></g>
+          <text x="450" y="262" text-anchor="middle" fill="#39d98a" font-size="16" class="pulse">valid · nothing to link</text>
+        </g>
+        <text x="300" y="312" text-anchor="middle" fill="#8b8b95" font-size="16">cm = commitment (a sealed lock) · nf = one-time nullifier · proof = zero-knowledge</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="s">
+  <div class="wrap split rev">
+    <div class="rv">
+      <div class="kick">How a private payment works</div>
+      <h2>Your wallet proves it. <span class="or">The chain checks it.</span></h2>
+      <p>Money lives in <b>notes</b>: sealed commitments only their owner can open. To pay, your wallet builds a zero-knowledge proof on your device. A one-time <b>nullifier</b> marks the old note spent, so the same note can never be spent twice — the spent set refuses it, the way Zcash does.</p>
+      <ul class="ticks">
+        <li>Post-quantum from the first byte: ML-KEM-768, ML-DSA-65, Poseidon2, WHIR, BLAKE3 and SHA-3</li>
+        <li>No elliptic curves anywhere — nothing to harvest now and decrypt later</li>
+        <li>Pay anyone by <b>@username</b>; every cost shown in dollars before you confirm</li>
+      </ul>
+    </div>
+    <div class="diagram anim rv" role="img" aria-label="A note is spent with a proof made on the device; its nullifier enters the spent set and new hidden notes go to the receiver and back as change">
+      <svg viewBox="0 0 600 390">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7a00"/></marker></defs>
+        <g class="seq d1"><rect x="16" y="150" width="150" height="96" rx="14" fill="#16161b" stroke="rgba(255,122,0,.55)" stroke-width="2"/><text x="91" y="184" text-anchor="middle" fill="#f4f1ee" font-size="19" font-weight="700">Your note</text><text x="91" y="208" text-anchor="middle" fill="#9d978f" font-size="15" font-family="JBM,monospace">value · owner hidden</text><text x="91" y="228" text-anchor="middle" fill="#9d978f" font-size="15" font-family="JBM,monospace">C = Poseidon2(…)</text></g>
+        <g class="seq d2"><line x1="168" y1="198" x2="214" y2="198" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ah)"/><rect x="218" y="146" width="160" height="104" rx="14" fill="rgba(255,122,0,.08)" stroke="#ff7a00" stroke-width="2"/><text x="298" y="180" text-anchor="middle" fill="#f4f1ee" font-size="18" font-weight="700">Proof on device</text><text x="298" y="202" text-anchor="middle" fill="#ffab4d" font-size="15" font-family="JBM,monospace">zero-knowledge · WHIR</text><circle cx="298" cy="228" r="10" fill="none" stroke="#ff7a00" stroke-width="3" stroke-dasharray="40 24" class="spin"/></g>
+        <g class="seq d3"><path d="M380 176 C410 150 410 110 424 96" stroke="#ff7a00" stroke-width="2.5" fill="none" class="flow" marker-end="url(#ah)"/><rect x="428" y="24" width="160" height="128" rx="14" fill="#16161b" stroke="rgba(255,255,255,.14)" stroke-width="2"/><text x="508" y="52" text-anchor="middle" fill="#f4f1ee" font-size="17" font-weight="700">Spent set</text>
+          <g fill="#2a2a31"><rect x="444" y="66" width="22" height="24" rx="4"/><rect x="472" y="66" width="22" height="24" rx="4"/><rect x="500" y="66" width="22" height="24" rx="4"/><rect x="528" y="66" width="22" height="24" rx="4"/><rect x="556" y="66" width="22" height="24" rx="4"/><rect x="444" y="98" width="22" height="24" rx="4"/><rect x="472" y="98" width="22" height="24" rx="4"/></g>
+          <rect x="500" y="98" width="22" height="24" rx="4" class="hl"/><rect x="528" y="98" width="22" height="24" rx="4" fill="rgba(255,255,255,.05)"/><rect x="556" y="98" width="22" height="24" rx="4" fill="rgba(255,255,255,.05)"/>
+          <text x="508" y="142" text-anchor="middle" fill="#9d978f" font-size="14" font-family="JBM,monospace">nullifier added</text></g>
+        <g class="seq d4"><text x="508" y="14" text-anchor="middle" fill="#ff5d6c" font-size="15" font-weight="600">spend it twice → refused</text></g>
+        <g class="seq d5"><path d="M380 222 C410 240 410 262 424 270" stroke="#39d98a" stroke-width="2.5" fill="none" class="flow"/><rect x="428" y="232" width="160" height="66" rx="14" fill="#16161b" stroke="rgba(57,217,138,.55)" stroke-width="2"/><text x="508" y="260" text-anchor="middle" fill="#f4f1ee" font-size="17" font-weight="700">To @kai</text><text x="508" y="282" text-anchor="middle" fill="#9d978f" font-size="14" font-family="JBM,monospace">amount hidden</text></g>
+        <g class="seq d6"><path d="M370 250 C400 310 400 330 424 340" stroke="rgba(255,255,255,.4)" stroke-width="2.5" fill="none" class="flow"/><rect x="428" y="310" width="160" height="66" rx="14" fill="#16161b" stroke="rgba(255,255,255,.2)" stroke-width="2"/><text x="508" y="338" text-anchor="middle" fill="#f4f1ee" font-size="17" font-weight="700">Change</text><text x="508" y="360" text-anchor="middle" fill="#9d978f" font-size="14" font-family="JBM,monospace">back to you, hidden</text></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="s">
+  <div class="wrap split">
+    <div class="rv">
+      <div class="kick">Consensus &amp; scale</div>
+      <h2>Parallel blocks, one order. <span class="or">The whole chain in one proof.</span></h2>
+      <p>Blocks are produced in parallel and ordered the same way by every node (GHOSTDAG, as in Kaspa). Each block folds into a recursive proof, so a new node checks one proof and joins at the tip instead of replaying history.</p>
+      <ul class="ticks">
+        <li>Design targets: 500 ms blocks, 32 parallel blocks, a constant proof of at most 1.8 MB</li>
+        <li>Node state stays the same size as the chain grows — built so phones can run full nodes</li>
+        <li>One kind of node: it mines, verifies, proves and relays. No trusted servers.</li>
+      </ul>
+      <p class="muted" style="margin-top:16px;font-size:15px">Targets are tracked on real nodes and published as they are measured.</p>
+    </div>
+    <div class="diagram anim rv" role="img" aria-label="Blocks in parallel lanes link to the blocks before them and fold into one recursive proof">
+      <svg viewBox="0 0 600 340">
+        <g stroke="rgba(255,122,0,.35)" stroke-width="1.6">
+          <line x1="62" y1="170" x2="118" y2="110"/><line x1="62" y1="170" x2="118" y2="230"/><line x1="152" y1="110" x2="208" y2="80"/><line x1="152" y1="110" x2="208" y2="170"/><line x1="152" y1="230" x2="208" y2="170"/><line x1="152" y1="230" x2="208" y2="260"/><line x1="242" y1="80" x2="298" y2="140"/><line x1="242" y1="170" x2="298" y2="140"/><line x1="242" y1="170" x2="298" y2="210"/><line x1="242" y1="260" x2="298" y2="210"/>
+        </g>
+        <g font-family="JBM,monospace" font-size="15" fill="#ffab4d" text-anchor="middle">
+          <g class="seq d1"><rect x="28" y="154" width="34" height="32" rx="6" fill="#141418" stroke="#ff7a00"/><text x="45" y="175">1</text></g>
+          <g class="seq d2"><rect x="118" y="94" width="34" height="32" rx="6" fill="#141418" stroke="#ff7a00"/><text x="135" y="115">2</text><rect x="118" y="214" width="34" height="32" rx="6" fill="#141418" stroke="#ff7a00"/><text x="135" y="235">3</text></g>
+          <g class="seq d3"><rect x="208" y="64" width="34" height="32" rx="6" fill="#141418" stroke="#ff7a00"/><text x="225" y="85">4</text><rect x="208" y="154" width="34" height="32" rx="6" fill="#141418" stroke="#ff7a00"/><text x="225" y="175">5</text><rect x="208" y="244" width="34" height="32" rx="6" fill="#141418" stroke="#ff7a00"/><text x="225" y="265">6</text></g>
+          <g class="seq d4"><rect x="298" y="124" width="34" height="32" rx="6" fill="#141418" stroke="#ff7a00"/><text x="315" y="145">7</text><rect x="298" y="194" width="34" height="32" rx="6" fill="#141418" stroke="#ff7a00"/><text x="315" y="215">8</text></g>
+        </g>
+        <g class="seq d5"><path d="M336 175 L404 175" stroke="#ff7a00" stroke-width="2.5" class="flow"/>
+          <path d="M490 92 L562 134 L562 216 L490 258 L418 216 L418 134 Z" fill="rgba(255,122,0,.1)" stroke="#ff7a00" stroke-width="3"/>
+          <path d="M490 118 L540 147 L540 203 L490 232 L440 203 L440 147 Z" fill="none" stroke="rgba(255,171,77,.45)" stroke-width="1.5" class="pulse"/>
+          <text x="490" y="172" text-anchor="middle" fill="#f4f1ee" font-size="18" font-weight="700">ONE PROOF</text><text x="490" y="194" text-anchor="middle" fill="#ffab4d" font-size="15" font-family="JBM,monospace">≤ 1.8 MB · constant</text></g>
+        <text x="180" y="318" text-anchor="middle" fill="#8b8b95" font-size="16">GHOSTDAG gives every node the same order</text>
+        <text x="490" y="318" text-anchor="middle" fill="#8b8b95" font-size="16" class="seq d6">join at the tip</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="wallet">
+  <div class="wrap split rev">
+    <div class="rv">
+      <div class="kick">The wallet</div>
+      <h2>Feels like a bank app. <span class="or">Works like cash.</span></h2>
+      <p>A seed in one tap, balances read live from your own node, and every cost in dollars before you act. Payments are final: no chargebacks, no reversals, no account to freeze.</p>
+      <ul class="ticks">
+        <li>USDm, the dollar of MoneroUSD — every one minted against a BTC or XMR deposit, over-collateralized</li>
+        <li>Pay by @username, receive to one post-quantum address</li>
+        <li>Buy and sell with Bitcoin or Monero, earn, borrow, vote — all from the wallet</li>
+      </ul>
+      <p style="margin-top:18px"><span class="status st-test">Built · testing on real nodes</span></p>
+    </div>
+    <figure class="rv" style="margin:0">
+      <img src="/media/wallet-pay.jpg" width="1200" height="720" loading="lazy" alt="The MoneroUSD wallet confirming a $25 payment to @kai with the $0.001 network fee and a warning that payments are final" style="border-radius:18px;border:1px solid var(--line2);box-shadow:0 30px 90px rgba(0,0,0,.55)">
+      <figcaption class="muted" style="font-size:13px;margin-top:10px;text-align:center">The real wallet interface, testnet build. Balances shown are demo values.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="s" id="tap">
+  <div class="wrap split">
+    <div class="rv">
+      <div class="kick">Tap to pay · Bluetooth LE</div>
+      <h2>Pay in person. <span class="or">No card network.</span></h2>
+      <p>The merchant keys in the sale and the wallet advertises a signed charge over Bluetooth LE. The customer taps <b>Pay in person</b>, holds the phones together, sees the amount in dollars and approves. Done.</p>
+      <ul class="ticks">
+        <li>The charge is signed with ML-DSA, so its amount and destination can't be altered mid-tap</li>
+        <li>Range-gated to a few centimetres; an ML-KEM handshake means the radio only carries ciphertext</li>
+        <li>A 0.5% fee for merchants on the first-party POS, against 2–3% for cards</li>
+      </ul>
+      <p style="margin-top:18px"><span class="status st-test">Built in the wallet · testing</span></p>
+    </div>
+    <div class="diagram anim rv" role="img" aria-label="A merchant phone advertises a signed charge over Bluetooth; the customer's phone receives it sealed, and pays">
+      <svg viewBox="0 0 600 340">
+        <rect x="70" y="40" width="150" height="260" rx="26" fill="#101014" stroke="rgba(255,255,255,.18)" stroke-width="2.5"/><rect x="82" y="60" width="126" height="220" rx="16" fill="#16161b"/>
+        <text x="145" y="150" text-anchor="middle" fill="#f4f1ee" font-size="20" font-weight="700">Merchant</text><text x="145" y="176" text-anchor="middle" fill="#ffab4d" font-size="24" font-weight="700">$4.50</text><text x="145" y="198" text-anchor="middle" fill="#9d978f" font-size="14" font-family="JBM,monospace">signed charge</text>
+        <circle cx="222" cy="170" r="16" fill="none" stroke="#ff7a00" stroke-width="2.5" class="ring"/><circle cx="222" cy="170" r="16" fill="none" stroke="#ff7a00" stroke-width="2.5" class="ring r2"/><circle cx="222" cy="170" r="16" fill="none" stroke="#ff7a00" stroke-width="2.5" class="ring r3"/>
+        <rect x="380" y="40" width="150" height="260" rx="26" fill="#101014" stroke="rgba(255,255,255,.18)" stroke-width="2.5"/><rect x="392" y="60" width="126" height="220" rx="16" fill="#16161b"/>
+        <text x="455" y="150" text-anchor="middle" fill="#f4f1ee" font-size="20" font-weight="700">You</text>
+        <g class="seq d2"><rect x="278" y="152" width="46" height="34" rx="5" fill="#1c1c22" stroke="#ff7a00" stroke-width="2"/><path d="M278 152 L301 172 L324 152" fill="none" stroke="#ff7a00" stroke-width="2"/><text x="301" y="214" text-anchor="middle" fill="#c4beb8" font-size="14" font-family="JBM,monospace">ML-KEM sealed</text></g>
+        <g class="seq d4"><text x="455" y="182" text-anchor="middle" fill="#9d978f" font-size="15">Approve $4.50?</text></g>
+        <g class="seq d5"><circle cx="455" cy="226" r="22" fill="rgba(57,217,138,.15)" stroke="#39d98a" stroke-width="2"/><path d="M445 226 L452 233 L466 219" stroke="#39d98a" stroke-width="3" fill="none"/><text x="455" y="268" text-anchor="middle" fill="#39d98a" font-size="16" font-weight="600">Paid · final</text></g>
+        <text x="300" y="326" text-anchor="middle" fill="#8b8b95" font-size="16">Bluetooth LE · range-gated · post-quantum</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="letter">
+  <div class="wrap split rev">
+    <div class="rv">
+      <div class="kick">Letter</div>
+      <h2>Private messages, <span class="or">with money inside.</span></h2>
+      <p>Letter is messaging built into the wallet. Each letter is sealed end to end with ML-KEM-768 and signed with ML-DSA-65. There's no phone number, no email and no server — your wallet is your login, and your history restores from your seed.</p>
+      <ul class="ticks">
+        <li>Send USDm inside a conversation</li>
+        <li>Groups, profiles and an optional fee to message you, against spam</li>
+        <li>Nothing about who talks to whom is published</li>
+      </ul>
+      <p style="margin-top:18px"><span class="status st-built">Built · in the wallet</span></p>
+    </div>
+    <div class="diagram anim rv" role="img" aria-label="A conversation in Letter: sealed messages and a payment inside the chat">
+      <svg viewBox="0 0 600 340">
+        <rect x="20" y="20" width="560" height="300" rx="16" fill="#0d0d10" stroke="rgba(255,255,255,.08)"/>
+        <rect x="20" y="20" width="560" height="50" rx="16" fill="#131317"/><circle cx="56" cy="45" r="15" fill="#b53e00"/><text x="82" y="51" fill="#f4f1ee" font-size="18" font-weight="700">Kai</text><text x="560" y="51" text-anchor="end" fill="#39d98a" font-size="15" font-family="JBM,monospace">sealed · ML-KEM-768</text>
+        <g class="seq d1"><rect x="40" y="90" width="300" height="46" rx="14" fill="rgba(255,255,255,.06)"/><text x="58" y="119" fill="#f4f1ee" font-size="17">Launch notes are ready. Review tonight?</text></g>
+        <g class="seq d2"><rect x="300" y="150" width="260" height="46" rx="14" fill="rgba(255,122,0,.22)"/><text x="318" y="179" fill="#fff" font-size="17">Yes — sending the deposit now.</text></g>
+        <g class="seq d3"><rect x="350" y="210" width="210" height="62" rx="14" fill="rgba(255,180,60,.12)" stroke="rgba(255,180,60,.5)"/><text x="368" y="236" fill="#ffb43c" font-size="16" font-weight="600">Payment</text><text x="368" y="259" fill="#f4f1ee" font-size="20" font-weight="700">50.00 USDm</text></g>
+        <g class="seq d4"><rect x="40" y="252" width="140" height="40" rx="14" fill="rgba(255,255,255,.06)"/><text x="58" y="277" fill="#f4f1ee" font-size="17">Got it. Thanks!</text></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="veil">
+  <div class="wrap split">
+    <div class="rv">
+      <div class="kick">MoneroUSD Veil</div>
+      <h2>Who talks to whom <span class="or">stays hidden too.</span></h2>
+      <p>Encryption hides what you say; the network can still see who you talk to. The Veil is MoneroUSD's own mix network: your payment travels through three relays, each peeling one layer, inside constant cover traffic — so a real packet looks like noise.</p>
+      <ul class="ticks">
+        <li>Post-quantum links (ML-KEM-768); no IP addresses on the mix layer</li>
+        <li>Your payment leaves through a random node, never announced by your own</li>
+        <li>Private reads (PIR): a node serves data without learning which item you asked for</li>
+      </ul>
+      <p style="margin-top:18px"><span class="status st-build">Partly built · in testing</span></p>
+      <a class="more" href="/veil">How the Veil works →</a>
+    </div>
+    <div class="diagram anim rv" role="img" aria-label="A packet crosses three relays among constant cover traffic, losing one layer at each hop">
+      <svg viewBox="0 0 600 340">
+        <g stroke="rgba(255,255,255,.08)" stroke-width="1.2" fill="none">
+          <path id="v1" d="M60 170 L200 90 L330 200 L460 110 L550 170"/>
+          <path id="v2" d="M60 170 L200 250 L330 120 L460 230 L550 170"/>
+          <path id="v3" d="M60 170 L200 170 L330 270 L460 170 L550 170"/>
+          <path id="v4" d="M60 170 L200 90 L330 120 L460 230 L550 170"/>
+          <path d="M200 90 L330 270 M200 250 L330 200 M200 170 L330 120 M330 200 L460 230 M330 270 L460 110 M330 120 L460 170"/>
+        </g>
+        <g fill="rgba(200,200,210,.6)">
+          <rect width="7" height="7" x="-3.5" y="-3.5"><animateMotion dur="3.1s" repeatCount="indefinite"><mpath href="#v2"/></animateMotion></rect>
+          <rect width="7" height="7" x="-3.5" y="-3.5"><animateMotion dur="2.7s" begin="-1s" repeatCount="indefinite"><mpath href="#v3"/></animateMotion></rect>
+          <rect width="7" height="7" x="-3.5" y="-3.5"><animateMotion dur="3.4s" begin="-2s" repeatCount="indefinite"><mpath href="#v4"/></animateMotion></rect>
+          <rect width="7" height="7" x="-3.5" y="-3.5"><animateMotion dur="2.9s" begin="-.4s" repeatCount="indefinite"><mpath href="#v1"/></animateMotion></rect>
+          <rect width="7" height="7" x="-3.5" y="-3.5"><animateMotion dur="3.6s" begin="-2.6s" repeatCount="indefinite"><mpath href="#v2"/></animateMotion></rect>
+          <rect width="7" height="7" x="-3.5" y="-3.5"><animateMotion dur="3.3s" begin="-1.5s" repeatCount="indefinite"><mpath href="#v3"/></animateMotion></rect>
+        </g>
+        <g><circle r="15" fill="none" stroke="rgba(255,122,0,.35)" stroke-width="2.5"/><circle r="10" fill="none" stroke="rgba(255,122,0,.6)" stroke-width="2.5"/><rect width="8" height="8" x="-4" y="-4" fill="#ff7a00"/><animateMotion dur="4.2s" repeatCount="indefinite"><mpath href="#v1"/></animateMotion></g>
+        <g fill="#141418" stroke="rgba(255,122,0,.55)" stroke-width="2"><circle cx="200" cy="90" r="13"/><circle cx="200" cy="170" r="13"/><circle cx="200" cy="250" r="13"/><circle cx="330" cy="120" r="13"/><circle cx="330" cy="200" r="13"/><circle cx="330" cy="270" r="13"/><circle cx="460" cy="110" r="13"/><circle cx="460" cy="170" r="13"/><circle cx="460" cy="230" r="13"/></g>
+        <circle cx="60" cy="170" r="24" fill="#141418" stroke="#ff7a00" stroke-width="2.5"/><text x="60" y="214" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="600">You</text>
+        <circle cx="550" cy="170" r="24" fill="#141418" stroke="#39d98a" stroke-width="2.5"/><text x="550" y="214" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="600">Network</text>
+        <text x="300" y="324" text-anchor="middle" fill="#8b8b95" font-size="16">three hops · one layer peeled per hop · constant cover traffic</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="sovereign">
+  <div class="wrap split rev">
+    <div class="rv">
+      <div class="kick">Sovereign</div>
+      <h2>A browser for a web <span class="or">nobody can take down.</span></h2>
+      <p>Publish a site from your wallet in three taps: pick a template, claim a <code>.mud</code> name, pay once in dollars. The site lives on the network's own nodes, owned by the key in your wallet. Sovereign checks every byte against the site's root on chain before it shows the page.</p>
+      <ul class="ticks">
+        <li>No host, no registrar, no certificate to renew — and nothing to rent each month</li>
+        <li>Sites run in a sandbox whose only network is the Veil: they can't leak your IP</li>
+        <li>Browsing is free; your history stays on your device</li>
+      </ul>
+      <p style="margin-top:18px"><span class="status st-design">Records &amp; verified serving built · names, sharding &amp; private reads in design</span></p>
+      <a class="more" href="/sovereign">How Sovereign works →</a>
+    </div>
+    <div class="diagram anim rv" role="img" aria-label="Typing kai.mud resolves the name to an owner key, then to the site root on chain, then to chunks from four holders, each verified">
+      <svg viewBox="0 0 600 350">
+        <rect x="20" y="18" width="560" height="44" rx="12" fill="#0a0a0c" stroke="rgba(255,255,255,.1)"/>
+        <circle cx="44" cy="40" r="6" fill="#39d98a" class="seq d5"/><text x="60" y="46" fill="#f4f1ee" font-size="18" font-family="JBM,monospace">kai.mud</text>
+        <text x="566" y="45" text-anchor="end" fill="#39d98a" font-size="15" font-family="JBM,monospace" class="seq d5">✓ @kai · checked against the chain</text>
+        <g font-size="17">
+          <g class="seq d1"><rect x="40" y="88" width="240" height="46" rx="10" fill="#16161b" stroke="rgba(255,122,0,.45)"/><text x="56" y="116" fill="#f4f1ee" font-weight="600">name → owner key</text></g>
+          <g class="seq d2"><rect x="40" y="148" width="240" height="46" rx="10" fill="#16161b" stroke="rgba(255,122,0,.45)"/><text x="56" y="176" fill="#f4f1ee" font-weight="600">owner → site root (on chain)</text></g>
+          <g class="seq d3"><rect x="40" y="208" width="240" height="46" rx="10" fill="#16161b" stroke="rgba(255,122,0,.45)"/><text x="56" y="236" fill="#f4f1ee" font-weight="600">root → chunks from 4 holders</text></g>
+          <g class="seq d4"><rect x="40" y="268" width="240" height="46" rx="10" fill="#16161b" stroke="#39d98a"/><text x="56" y="296" fill="#f4f1ee" font-weight="600">every byte verified ✓</text></g>
+        </g>
+        <g class="seq d4" fill="#16161b" stroke="rgba(255,255,255,.14)"><rect x="330" y="96" width="110" height="80" rx="10"/><rect x="456" y="96" width="110" height="80" rx="10"/><rect x="330" y="196" width="110" height="80" rx="10"/><rect x="456" y="196" width="110" height="80" rx="10"/></g>
+        <g class="seq d4" font-family="JBM,monospace" font-size="14" fill="#9d978f" text-anchor="middle"><text x="385" y="140">holder 1</text><text x="511" y="140">holder 2</text><text x="385" y="240">holder 3</text><text x="511" y="240">holder 4</text></g>
+        <g class="seq d5"><rect x="330" y="290" width="236" height="40" rx="10" fill="rgba(57,217,138,.1)" stroke="#39d98a"/><text x="448" y="315" text-anchor="middle" fill="#39d98a" font-size="16" font-weight="600">page shown · v3 · kept forever</text></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="sat">
+  <div class="wrap split">
+    <div class="rv">
+      <div class="kick">Introducing SAT</div>
+      <h2>Satoshi (SAT): <span class="or">the reward asset of MoneroUSD.</span></h2>
+      <p>SAT is mined by the nodes that secure the chain. It is the bond validators lock to guard custody and finality, it earns a share of network fees, and it trades directly against Bitcoin and Monero.</p>
+      <div class="grid2" style="margin-top:24px">
+        <div class="card stat"><b>21,000,000</b><span>maximum supply, enforced by consensus</span></div>
+        <div class="card stat"><b>19,000,000</b><span>issued only as block rewards, halving every ~4 years</span></div>
+        <div class="card stat"><b>≤ 2,000,000</b><span>developer set-aside, proven at genesis; exact amount private</span></div>
+        <div class="card stat"><b>$1</b><span>opening price in the direct SAT/BTC and SAT/XMR pools</span></div>
+      </div>
+      <a class="more" href="/sat">Full SAT tokenomics →</a>
+    </div>
+    <div class="diagram anim rv" role="img" aria-label="SAT supply curve: half of the block-reward supply is issued in the first four years, then each era issues half as much, approaching 19 million plus the set-aside, under a 21 million cap">
+      <svg viewBox="0 0 600 360">
+        <g stroke="rgba(255,255,255,.07)"><line x1="60" y1="40" x2="580" y2="40"/><line x1="60" y1="110" x2="580" y2="110"/><line x1="60" y1="180" x2="580" y2="180"/><line x1="60" y1="250" x2="580" y2="250"/><line x1="60" y1="300" x2="580" y2="300" stroke="rgba(255,255,255,.2)"/></g>
+        <g fill="#8b8b95" font-size="15" font-family="JBM,monospace"><text x="52" y="44" text-anchor="end">21M</text><text x="52" y="114" text-anchor="end">16M</text><text x="52" y="184" text-anchor="end">10.5M</text><text x="52" y="254" text-anchor="end">5M</text><text x="52" y="304" text-anchor="end">0</text>
+          <text x="60" y="324">launch</text><text x="190" y="324" text-anchor="middle">yr 4</text><text x="320" y="324" text-anchor="middle">yr 8</text><text x="450" y="324" text-anchor="middle">yr 12</text><text x="575" y="324" text-anchor="end">yr 16</text></g>
+        <line x1="60" y1="40" x2="580" y2="40" stroke="#ffab4d" stroke-dasharray="4 6" stroke-width="1.5"/>
+        <text x="575" y="32" text-anchor="end" fill="#ffab4d" font-size="15">hard cap 21M</text>
+        <path d="M60 272 C100 216 150 180 190 167 C240 152 280 132 320 128 C370 122 410 116 450 113 C500 110 540 109 580 108" fill="none" stroke="#ff7a00" stroke-width="3.5" class="draw"/>
+        <path d="M60 300 L60 272" stroke="#a9b4ff" stroke-width="3.5"/>
+        <text x="70" y="290" fill="#a9b4ff" font-size="15" class="seq d1">≤ 2M set-aside at genesis</text>
+        <text x="200" y="155" fill="#f4f1ee" font-size="16" class="seq d3">+9.5M by year 4</text>
+        <text x="330" y="116" fill="#f4f1ee" font-size="16" class="seq d4">+14.25M by year 8</text>
+        <text x="580" y="96" text-anchor="end" fill="#c4beb8" font-size="15" class="seq d5">rewards → 19M</text>
+        <text x="320" y="350" text-anchor="middle" fill="#8b8b95" font-size="15">Years assume the 500 ms block-time target; halvings are counted in blocks.</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="status">
+  <div class="wrap">
+    <div class="rv center">
+      <div class="kick">Measured, not declared</div>
+      <h2>Where MoneroUSD stands <span class="or">today.</span></h2>
+      <p class="lead">We publish what is built and what isn't. Real money waits for proof, not promises.</p>
+    </div>
+    <div class="tscroll rv" style="margin-top:36px">
+      <table class="t">
+        <thead><tr><th>Part</th><th>Status</th><th>What that means</th></tr></thead>
+        <tbody>
+          <tr><td>Private payments</td><td><span class="status st-test">Testing</span></td><td>Built; being proven end to end on real nodes, including restarts and new nodes joining.</td></tr>
+          <tr><td>Wallet (desktop)</td><td><span class="status st-test">Testing</span></td><td>Pay, receive, buy and sell with BTC/XMR, earn, borrow, vote, browser and apps.</td></tr>
+          <tr><td>Tap to pay (Bluetooth LE)</td><td><span class="status st-test">Testing</span></td><td>Signed charges over BLE with an ML-KEM handshake, in the wallet's POS.</td></tr>
+          <tr><td>Letter</td><td><span class="status st-built">Built</span></td><td>Sealed messages, groups, profiles and payments in chat.</td></tr>
+          <tr><td>Bitcoin &amp; Monero bridge</td><td><span class="status st-test">Testing</span></td><td>Deposits mint USDm; forged mints and burns are refused on real nodes.</td></tr>
+          <tr><td>SAT</td><td><span class="status st-test">Testing</span></td><td>Block rewards, the supply cap, validator bonds and the direct BTC/XMR pools.</td></tr>
+          <tr><td>MoneroUSD Veil</td><td><span class="status st-build">In build</span></td><td>Mix core, hidden addresses and the private push run on test nodes; anti-censorship pieces are being built.</td></tr>
+          <tr><td>Sovereign</td><td><span class="status st-design">Design</span></td><td>Site records and verified serving exist; .mud names, sharded hosting and private reads are next.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid4 rv" style="margin-top:28px">
+      <div class="card"><h3>1 · Public testnet</h3><p>Every end-to-end check passes on real nodes: pay, change, tap, restart, join, bridge, trading, staking.</p></div>
+      <div class="card"><h3>2 · Attacks refused</h3><p>Every listed attack is run against real nodes and refused.</p></div>
+      <div class="card"><h3>3 · Outside audit</h3><p>An external audit of the cash layer.</p></div>
+      <div class="card"><h3>4 · Soak, then guarded launch</h3><p>At least four weeks of public testnet with a bug bounty, then launch with published value caps that rise on a schedule.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="holders">
+  <div class="wrap">
+    <div class="center rv"><div class="kick">Already in crypto?</div><h2>Bring what you hold.</h2></div>
+    <div class="grid3 rv" style="margin-top:34px">
+      <a class="card" href="/for-bitcoin-holders"><h3>For Bitcoin holders →</h3><p>Spend and save in dollars privately against your BTC, borrow against it, and trade SAT directly for BTC.</p></a>
+      <a class="card" href="/for-monero-holders"><h3>For Monero holders →</h3><p>The privacy you expect, with post-quantum cryptography, a private dollar and direct SAT/XMR trading.</p></a>
+      <a class="card" href="/sat"><h3>For validators →</h3><p>Bond SAT to validate, earn a share of fees, and help secure custody and finality.</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="faq">
+  <div class="wrap prose" style="margin:0 auto">
+    <div class="kick">FAQ</div>
+    <h2 style="margin-top:12px">Short answers</h2>
+    <details><summary>Is MoneroUSD live?</summary><p>Not yet. It's in development and being tested on real nodes. A public testnet comes first; real funds only after the testnet, an outside audit, a four-week public soak and a guarded launch.</p></details>
+    <details><summary>Is MoneroUSD part of Monero?</summary><p>No. MoneroUSD is a separate project with its own chain and cryptography. It shares Monero's goal — private money — and its wallet trades directly with Monero (XMR) and Bitcoin (BTC).</p></details>
+    <details><summary>What does "post-quantum" mean here?</summary><p>Every key exchange, signature, commitment and proof uses schemes designed to resist quantum computers (ML-KEM, ML-DSA, Poseidon2, WHIR, BLAKE3, SHA-3). There are no elliptic curves, so there's nothing to record today and break later.</p></details>
+    <details><summary>What is USDm?</summary><p>The dollar of MoneroUSD. Every USDm is minted against a Bitcoin or Monero deposit and the system is over-collateralized. It's what you pay with.</p></details>
+    <details><summary>What is SAT?</summary><p>The reward asset: 21 million maximum, mined by the nodes that secure the chain, bonded by validators, and traded directly for BTC and XMR. <a href="/sat">Full tokenomics</a>.</p></details>
+    <p style="margin-top:22px"><a href="/faq">More questions →</a></p>
+  </div>
+</section>
+
+<section class="s">
+  <div class="wrap center rv">
+    <img src="/logo.svg" alt="" width="84" height="84" style="margin:0 auto 18px">
+    <h2>Private. Post-quantum. <span class="or">Final.</span></h2>
+    <p class="lead">The wallet opens to the public with the testnet. Until then, watch the film and read how it works.</p>
+    <div class="ctas" style="justify-content:center"><a class="btn btn-p" href="#film">▶ Watch the film</a><a class="btn btn-g" href="/faq">Read the FAQ</a></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">MoneroUSD</a><p style="margin-top:12px;max-width:360px">Private, post-quantum digital cash. Not affiliated with the Monero Project. Nothing here is financial advice.</p></div>
+    <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
+    <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

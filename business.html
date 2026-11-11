@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>MoneroUSD for Business — No Chargebacks, Optional Buyer Protection</title>
+<meta name="description" content="Take private dollar payments with a $0.001 network fee and no chargebacks. Optional buyer protection by escrow with no judge, delivery proof at the doorstep, website checkout and proof of income.">
+<link rel="canonical" href="https://monerousd.org/business">
+<meta name="theme-color" content="#060607">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<meta property="og:type" content="article"><meta property="og:site_name" content="MoneroUSD">
+<meta property="og:title" content="MoneroUSD for Business — get paid, keep all of it">
+<meta property="og:description" content="No card company, no chargebacks, a $0.001 network fee. Optional buyer protection by escrow that needs no judge.">
+<meta property="og:url" content="https://monerousd.org/business"><meta property="og:image" content="https://monerousd.org/assets/og.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://monerousd.org/assets/og.png">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"TechArticle","headline":"MoneroUSD for Business — no chargebacks, optional buyer protection","datePublished":"2026-11-10","author":{"@type":"Organization","name":"MoneroUSD"},"publisher":{"@type":"Organization","name":"MoneroUSD","logo":{"@type":"ImageObject","url":"https://monerousd.org/logo.svg"}},"mainEntityOfPage":"https://monerousd.org/business"},
+ {"@type":"VideoObject","name":"MoneroUSD for Business — get paid, keep all of it","description":"Where a card payment goes, escrow with no judge, a sale from start to finish in the real wallets, the doorstep delivery proof, the false claims it answers, a website checkout, and proof of income. Balances and the carrier in the film are demo values.","thumbnailUrl":"https://monerousd.org/media/business-poster.jpg","contentUrl":"https://monerousd.org/media/business-film.mp4","uploadDate":"2026-11-10","duration":"PT5M15S"},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MoneroUSD","item":"https://monerousd.org/"},{"@type":"ListItem","position":2,"name":"For business","item":"https://monerousd.org/business"}]},
+ {"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"Can a MoneroUSD payment be charged back?","acceptedAnswer":{"@type":"Answer","text":"No. No transaction is ever reversed and no party can take a payment back from a merchant. Buyer protection is optional and works by escrow: the price is held in a vault that pays the seller when the buyer confirms receipt, and returns to the buyer by itself at the deadline if the order is not delivered."}},
+  {"@type":"Question","name":"How does buyer protection work without a judge?","acceptedAnswer":{"@type":"Answer","text":"The price sits in a vault that can leave in only three ways: the buyer's receipt confirmation, both parties agreeing, or the clock. None of those paths takes a claim as its input, so there is nothing to argue about and nobody decides."}},
+  {"@type":"Question","name":"What does it cost a merchant?","acceptedAnswer":{"@type":"Answer","text":"The network fee is a flat $0.001 per payment. Online checkout and protected purchases add nothing. The first-party tap-to-pay terminal charges merchants 0.5%."}}
+ ]}
+]}
+</script>
+  <script src="lib/wallet-nav.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
+  <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business" aria-current="page">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li></ul>
+  <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
+    <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
+</div></nav>
+
+<main id="main">
+<header class="ph"><div class="wrap">
+  <div class="kick">For business</div>
+  <h1>Get paid. Keep all of it. <span class="or">Never fight a chargeback again.</span></h1>
+  <p class="lead">Money moves from your customer's wallet straight to yours: no card company, no account to open, and no payment that can be taken back. When a customer wants protection, the price waits in escrow that needs no judge — and pays you the moment they have their order.</p>
+  <p style="margin-top:20px"><span class="status st-test">Built in the wallet · being proven on real nodes</span></p>
+  <div class="grid4" style="margin-top:34px">
+    <div class="card stat"><b>$0.001</b><span>network fee per payment, whatever the amount</span></div>
+    <div class="card stat"><b>0</b><span>chargebacks: no payment is ever reversed</span></div>
+    <div class="card stat"><b>0</b><span>accounts, applications or reserves held back</span></div>
+    <div class="card stat"><b>Private</b><span>amounts, customers and your revenue stay yours</span></div>
+  </div>
+</div></header>
+
+<section class="s" id="film">
+  <div class="wrap center rv">
+    <div class="kick">The film</div>
+    <h2>A sale, a doorstep delivery and a web checkout. <span class="or">Recorded in the real wallets.</span></h2>
+    <p class="lead">Five minutes: where a card payment goes, how escrow works with no judge, the doorstep proof, and proof of income. Balances and the carrier in the film are demo values.</p>
+    <div class="film" data-player data-download="MoneroUSD-business.mp4" data-thumbs="/media/business-thumbs.jpg" data-thumb-every="2" data-thumb-cols="10" data-thumb-w="160" data-thumb-h="90"><video controls preload="metadata" playsinline poster="/media/business-poster.jpg"><source src="/media/business-film.mp4" type="video/mp4"><a href="/media/business-film.mp4">Download the film (MP4)</a></video></div>
+  </div>
+</section>
+
+<section class="s"><div class="wrap split">
+  <div class="rv">
+    <div class="kick">Where the money goes</div>
+    <h2>Cards pass your sale through five hands. <span class="or">This passes it through none.</span></h2>
+    <p>A card payment travels through the customer's bank, the card network, your bank and a processor before it reaches you. Each takes a cut, each can hold your money, and for months afterwards the sale can be pulled back. A MoneroUSD payment is one step: the customer's wallet pays yours, and it is final.</p>
+    <ul class="ticks">
+      <li>The amount, the customer and your sales totals are hidden from everyone else</li>
+      <li>Settles to your own wallet; nobody can freeze it or close your account</li>
+      <li>Post-quantum cryptography end to end</li>
+    </ul>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="A card payment passes through the issuing bank, the card network, the acquiring bank and a processor, losing fees and staying reversible; a MoneroUSD payment goes directly from customer to merchant and is final">
+    <svg viewBox="0 0 600 380">
+      <text x="300" y="26" text-anchor="middle" fill="#c4beb8" font-size="16" font-weight="600">A card payment</text>
+      <g font-size="14" font-weight="600" fill="#f4f1ee" text-anchor="middle">
+        <g class="seq d1"><rect x="8" y="46" width="84" height="46" rx="10" fill="#17171c" stroke="rgba(255,255,255,.14)"/><text x="50" y="74">Customer</text></g>
+        <g class="seq d1"><rect x="110" y="46" width="84" height="46" rx="10" fill="#17171c" stroke="rgba(255,93,108,.5)"/><text x="152" y="74">Their bank</text></g>
+        <g class="seq d2"><rect x="212" y="46" width="84" height="46" rx="10" fill="#17171c" stroke="rgba(255,93,108,.5)"/><text x="254" y="74">Network</text></g>
+        <g class="seq d2"><rect x="314" y="46" width="84" height="46" rx="10" fill="#17171c" stroke="rgba(255,93,108,.5)"/><text x="356" y="74">Your bank</text></g>
+        <g class="seq d3"><rect x="416" y="46" width="84" height="46" rx="10" fill="#17171c" stroke="rgba(255,93,108,.5)"/><text x="458" y="74">Processor</text></g>
+        <g class="seq d3"><rect x="518" y="46" width="74" height="46" rx="10" fill="#17171c" stroke="rgba(255,255,255,.14)"/><text x="555" y="74">You</text></g>
+      </g>
+      <g stroke="rgba(255,255,255,.3)" stroke-width="2"><line x1="92" y1="69" x2="110" y2="69"/><line x1="194" y1="69" x2="212" y2="69"/><line x1="296" y1="69" x2="314" y2="69"/><line x1="398" y1="69" x2="416" y2="69"/><line x1="500" y1="69" x2="518" y2="69"/></g>
+      <g class="seq d4" fill="#ff5d6c" font-size="14" text-anchor="middle"><text x="305" y="120">each takes a cut · each can hold your money</text></g>
+      <g class="seq d5"><path d="M555 96 C555 196 50 196 50 98" fill="none" stroke="#ff5d6c" stroke-width="2.5" stroke-dasharray="7 7" class="flow"/><text x="305" y="194" text-anchor="middle" fill="#ff5d6c" font-size="15" font-weight="600">chargeback: reversible for months</text></g>
+      <line x1="20" y1="212" x2="580" y2="212" stroke="rgba(255,255,255,.08)"/>
+      <text x="300" y="238" text-anchor="middle" fill="#ff7a00" font-size="16" font-weight="600">A MoneroUSD payment</text>
+      <rect x="60" y="262" width="150" height="56" rx="12" fill="#17171c" stroke="rgba(255,122,0,.55)" stroke-width="2"/><text x="135" y="296" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="700">Customer</text>
+      <rect x="390" y="262" width="150" height="56" rx="12" fill="#17171c" stroke="rgba(57,217,138,.6)" stroke-width="2"/><text x="465" y="296" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="700">You</text>
+      <line x1="212" y1="290" x2="388" y2="290" stroke="#ff7a00" stroke-width="3" class="flow"/>
+      <text x="300" y="278" text-anchor="middle" fill="#ffab4d" font-size="14" font-family="JBM,monospace">fee $0.001</text>
+      <text x="300" y="352" text-anchor="middle" fill="#39d98a" font-size="15" font-weight="600" class="pulse">one step · private · final</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s" id="protection"><div class="wrap split rev">
+  <div class="rv">
+    <div class="kick">Optional buyer protection</div>
+    <h2>Escrow with no judge. <span class="or">Nothing to argue about.</span></h2>
+    <p>Chargebacks exist because someone has to decide who is telling the truth, and that someone can be lied to. A protected purchase removes the decision. The price goes into a <b>vault</b>: an ordinary private payment that can leave in only three ways.</p>
+    <ul class="ticks">
+      <li><b>Receipt:</b> the customer confirms they have the order, and you are paid at once</li>
+      <li><b>Agreement:</b> you cancel or refund, and the money returns to the customer by itself</li>
+      <li><b>The clock:</b> no delivery by the deadline you set, and the customer is refunded automatically</li>
+    </ul>
+    <p style="margin-top:16px">None of the three takes a claim as its input. There is no "I never got it" button, so there is nothing to lie to and nobody who judges. Protection is the shop's choice per sale, and costs the same $0.001 as a plain payment.</p>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="The price enters a vault with three exits: the buyer confirms receipt and the seller is paid; both agree and the buyer is refunded; the deadline passes and the buyer is refunded automatically">
+    <svg viewBox="0 0 600 400">
+      <defs><marker id="ahb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7a00"/></marker></defs>
+      <g class="seq d1"><rect x="14" y="160" width="120" height="70" rx="12" fill="#17171c" stroke="rgba(255,122,0,.55)" stroke-width="2"/><text x="74" y="192" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="700">Customer</text><text x="74" y="214" text-anchor="middle" fill="#ffab4d" font-size="14" font-family="JBM,monospace">pays $480</text>
+        <line x1="136" y1="195" x2="196" y2="195" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ahb)"/></g>
+      <g class="seq d2"><rect x="200" y="130" width="150" height="130" rx="16" fill="rgba(255,122,0,.08)" stroke="#ff7a00" stroke-width="2.5"/>
+        <circle cx="275" cy="186" r="26" fill="none" stroke="#ffab4d" stroke-width="3"/><circle cx="275" cy="186" r="6" fill="#ffab4d"/><path d="M275 160 V168 M275 204 V212 M249 186 H257 M293 186 H301" stroke="#ffab4d" stroke-width="3"/>
+        <text x="275" y="240" text-anchor="middle" fill="#f4f1ee" font-size="17" font-weight="700">Vault</text></g>
+      <g class="seq d3"><path d="M350 160 C400 120 410 78 440 70" fill="none" stroke="#39d98a" stroke-width="2.5" class="flow"/>
+        <rect x="444" y="34" width="146" height="72" rx="12" fill="#17171c" stroke="rgba(57,217,138,.6)" stroke-width="2"/><text x="517" y="62" text-anchor="middle" fill="#39d98a" font-size="15" font-weight="700">Receipt confirmed</text><text x="517" y="86" text-anchor="middle" fill="#f4f1ee" font-size="14">you are paid</text></g>
+      <g class="seq d4"><path d="M352 195 L440 195" fill="none" stroke="#a9b4ff" stroke-width="2.5" class="flow"/>
+        <rect x="444" y="160" width="146" height="72" rx="12" fill="#17171c" stroke="rgba(169,180,255,.6)" stroke-width="2"/><text x="517" y="188" text-anchor="middle" fill="#a9b4ff" font-size="15" font-weight="700">You cancel</text><text x="517" y="212" text-anchor="middle" fill="#f4f1ee" font-size="14">customer refunded</text></g>
+      <g class="seq d5"><path d="M350 232 C400 270 410 316 440 322" fill="none" stroke="#ffab4d" stroke-width="2.5" class="flow"/>
+        <rect x="444" y="286" width="146" height="72" rx="12" fill="#17171c" stroke="rgba(255,171,77,.6)" stroke-width="2"/><text x="517" y="314" text-anchor="middle" fill="#ffab4d" font-size="15" font-weight="700">Deadline passes</text><text x="517" y="338" text-anchor="middle" fill="#f4f1ee" font-size="14">refund, automatic</text></g>
+      <text x="275" y="386" text-anchor="middle" fill="#8b8b95" font-size="14" class="seq d6">no claim goes in · nobody decides</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="rv center"><div class="kick">One Merchant tab</div><h2>Four ways to sell.</h2><p class="lead">Type what it is and the price, create the sale, share the link. The customer's wallet reads one sentence and pays.</p></div>
+  <div class="grid4 rv" style="margin-top:34px">
+    <div class="card"><h3>Protected purchase</h3><p>The price is held in escrow and released to you on delivery. Add a non-refundable deposit for made-to-order work, or a delivery bond to show you mean it.</p></div>
+    <div class="card"><h3>In person</h3><p>Tap to pay at the counter over Bluetooth. The charge is signed, so its amount can't be altered, and it settles in seconds.</p></div>
+    <div class="card"><h3>Subscription</h3><p>A recurring payment collected automatically each period. The subscriber can cancel at any time; nothing is ever pulled from their wallet.</p></div>
+    <div class="card"><h3>Digital download</h3><p>The customer pays and receives the file by itself: the payment that pays you is the same one that hands over the file's key.</p></div>
+  </div>
+</div></section>
+
+<section class="s" id="doorstep"><div class="wrap split">
+  <div class="rv">
+    <div class="kick">At the doorstep</div>
+    <h2>The parcel is on the porch. Nobody is home. <span class="or">Who proves it arrived?</span></h2>
+    <p>This is the hard case of online selling: no handover, two people who can each say anything. The answer is a fact neither of them controls — <b>the carrier's own delivery notice</b>. Carriers sign their notification emails. Your wallet turns that signed "delivered" notice into a zero-knowledge proof, the customer's wallet checks it, and the payment is released. Nobody taps anything.</p>
+    <ul class="ticks">
+      <li>The parcel is pinned to the order before it ships: one tracking number, accepted by the customer's wallet</li>
+      <li>The carrier's email never leaves your machine — the customer's wallet learns only that the carrier signed "delivered" for the parcel it accepted</li>
+      <li>The carrier does nothing new and is never asked; nothing is added to the label</li>
+    </ul>
+    <p class="muted" style="margin-top:14px;font-size:15px">Delivery to the address the customer gave completes the sale. A parcel that comes back is a proof too: it refunds the customer and covers your postage both ways.</p>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="The seller ships a pinned parcel; the carrier delivers and emails a signed delivery notice; the seller's wallet makes a zero-knowledge proof from it; the buyer's wallet checks the proof and releases the payment from the vault">
+    <svg viewBox="0 0 600 420">
+      <defs><marker id="ahd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7a00"/></marker></defs>
+      <g class="seq d1"><rect x="14" y="30" width="130" height="64" rx="12" fill="#17171c" stroke="rgba(255,122,0,.55)" stroke-width="2"/><text x="79" y="58" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="700">You ship</text><text x="79" y="80" text-anchor="middle" fill="#ffab4d" font-size="13" font-family="JBM,monospace">parcel pinned</text></g>
+      <g class="seq d2"><line x1="146" y1="62" x2="226" y2="62" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ahd)"/>
+        <rect x="230" y="30" width="140" height="64" rx="12" fill="#17171c" stroke="rgba(255,255,255,.2)" stroke-width="2"/><text x="300" y="58" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="700">Carrier</text><text x="300" y="80" text-anchor="middle" fill="#c4beb8" font-size="13">delivers as usual</text></g>
+      <g class="seq d3"><line x1="372" y1="62" x2="452" y2="62" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ahd)"/>
+        <path d="M470 94 L470 46 L520 22 L570 46 L570 94 Z" fill="#17171c" stroke="rgba(255,255,255,.25)" stroke-width="2"/><rect x="506" y="62" width="28" height="32" fill="#26262c"/><rect x="540" y="74" width="26" height="20" rx="3" fill="#b9741a"/>
+        <text x="520" y="116" text-anchor="middle" fill="#c4beb8" font-size="13">left at the door</text></g>
+      <g class="seq d4"><path d="M300 96 L300 150" stroke="#ffab4d" stroke-width="2.5" class="flow" marker-end="url(#ahd)"/>
+        <rect x="196" y="154" width="208" height="70" rx="12" fill="rgba(255,171,77,.08)" stroke="#ffab4d" stroke-width="2"/><text x="300" y="182" text-anchor="middle" fill="#f4f1ee" font-size="15" font-weight="700">"Delivered" notice</text><text x="300" y="206" text-anchor="middle" fill="#ffab4d" font-size="13" font-family="JBM,monospace">signed by the carrier</text></g>
+      <g class="seq d5"><path d="M196 190 C120 190 90 230 90 262" fill="none" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ahd)"/>
+        <path d="M90 268 L140 297 L140 355 L90 384 L40 355 L40 297 Z" fill="rgba(255,122,0,.1)" stroke="#ff7a00" stroke-width="2.5"/><text x="90" y="322" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="700">proof</text><text x="90" y="344" text-anchor="middle" fill="#ffab4d" font-size="12" font-family="JBM,monospace">zero-knowledge</text>
+        <text x="90" y="408" text-anchor="middle" fill="#8b8b95" font-size="13">made on your machine</text></g>
+      <g class="seq d6"><line x1="144" y1="326" x2="250" y2="326" stroke="#39d98a" stroke-width="2.5" class="flow"/>
+        <rect x="254" y="290" width="150" height="72" rx="12" fill="#17171c" stroke="rgba(57,217,138,.6)" stroke-width="2"/><text x="329" y="318" text-anchor="middle" fill="#f4f1ee" font-size="15" font-weight="700">Customer's wallet</text><text x="329" y="342" text-anchor="middle" fill="#39d98a" font-size="14">checks it ✓</text>
+        <line x1="406" y1="326" x2="452" y2="326" stroke="#39d98a" stroke-width="2.5" class="flow"/>
+        <rect x="456" y="290" width="134" height="72" rx="12" fill="rgba(57,217,138,.1)" stroke="#39d98a" stroke-width="2"/><text x="523" y="318" text-anchor="middle" fill="#39d98a" font-size="16" font-weight="700">You are paid</text><text x="523" y="342" text-anchor="middle" fill="#f4f1ee" font-size="13">automatically</text></g>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s" id="claims"><div class="wrap">
+  <div class="rv center"><div class="kick">False claims</div><h2>The lies commerce runs on, <span class="or">and what each one earns here.</span></h2>
+    <p class="lead">A card dispute rewards whoever tells the better story. Here a payment moves on a confirmation, a proof or the clock — never on a story.</p></div>
+  <div class="tscroll rv" style="margin-top:34px"><table class="t">
+    <thead><tr><th>The claim</th><th>On cards</th><th>On MoneroUSD</th></tr></thead>
+    <tbody>
+      <tr><td>"I never authorised this payment."</td><td>The sale is reversed; you lose the goods, the money and a dispute fee</td><td><span class="status st-built">Earns nothing</span> No payment can be reversed, by anyone</td></tr>
+      <tr><td>"It never arrived." (handed over in person)</td><td>The bank decides, usually for the cardholder</td><td><span class="status st-built">Earns nothing</span> You were paid by the customer's own confirmation at the handover</td></tr>
+      <tr><td>"The download didn't work."</td><td>Refunded; the customer keeps the file</td><td><span class="status st-built">Earns nothing</span> The file is checked before paying, and the payment itself hands over its key</td></tr>
+      <tr><td>"I shipped it." (the seller never did)</td><td>The customer waits weeks for a dispute</td><td><span class="status st-built">Earns nothing</span> No confirmation and no proof: the customer is refunded by the clock</td></tr>
+      <tr><td>"I'll refund you soon."</td><td>The customer waits and hopes</td><td><span class="status st-built">Earns nothing</span> Cancelling a protected sale returns the money by itself, at once</td></tr>
+      <tr><td>"It never arrived." (left at the door)</td><td>Friendly fraud: the commonest chargeback</td><td><span class="status st-test">Answered by proof</span> The carrier's signed delivery notice releases the payment</td></tr>
+    </tbody>
+  </table></div>
+  <div class="diagram anim rv" style="margin-top:26px" role="img" aria-label="What a liar gains: on cards a false it never arrived claim returns the full price while keeping the goods; on MoneroUSD the same claims return nothing">
+    <svg viewBox="0 0 900 250">
+      <text x="450" y="28" text-anchor="middle" fill="#c4beb8" font-size="16" font-weight="600">What the liar gains, as a share of the price</text>
+      <g font-size="15" fill="#f4f1ee"><text x="20" y="78">Card dispute won on a false claim</text><text x="20" y="128">MoneroUSD: handover, download, cancel</text><text x="20" y="178">MoneroUSD: "I shipped it" by a seller</text></g>
+      <rect x="330" y="58" width="540" height="30" rx="6" fill="#1e1e24"/><rect x="330" y="58" width="540" height="30" rx="6" fill="#ff5d6c" class="seq d1"/><text x="860" y="79" text-anchor="end" fill="#fff" font-size="15" font-weight="700" class="seq d1">+100%: keeps the goods and the money</text>
+      <rect x="330" y="108" width="540" height="30" rx="6" fill="#1e1e24"/><rect x="330" y="108" width="6" height="30" rx="3" fill="#39d98a" class="seq d2"/><text x="346" y="129" fill="#39d98a" font-size="15" font-weight="700" class="seq d2">0%</text>
+      <rect x="330" y="158" width="540" height="30" rx="6" fill="#1e1e24"/><rect x="330" y="158" width="6" height="30" rx="3" fill="#39d98a" class="seq d3"/><text x="346" y="179" fill="#39d98a" font-size="15" font-weight="700" class="seq d3">0%, and the seller's delivery bond goes to the customer</text>
+      <text x="450" y="228" text-anchor="middle" fill="#8b8b95" font-size="14">The design's games were searched exhaustively: every buyer and seller strategy, at maximum greed.</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s" id="compare"><div class="wrap">
+  <div class="rv center"><div class="kick">Compared</div><h2>Every other answer adds a referee. <span class="or">This one removes the question.</span></h2></div>
+  <div class="tscroll rv" style="margin-top:30px"><table class="t">
+    <thead><tr><th>System</th><th>Buyer protected</th><th>Seller safe from reversal</th><th>No judge or operator</th><th>Private</th><th>Automatic</th><th>Typical cost</th></tr></thead>
+    <tbody>
+      <tr><td>Card networks</td><td>Yes</td><td>No: chargebacks</td><td>No: the issuer decides</td><td>No</td><td>No: disputes take weeks</td><td>2–3% + fees</td></tr>
+      <tr><td>Plain crypto payments</td><td>No</td><td>Yes</td><td>Yes</td><td>Varies</td><td>Yes</td><td>Network fee</td></tr>
+      <tr><td>Stablecoin escrow with an arbiter</td><td>Yes</td><td>The arbiter decides</td><td>No</td><td>No</td><td>No</td><td>Varies</td></tr>
+      <tr><td>Checkout run by an operator</td><td>Yes</td><td>The operator decides</td><td>No</td><td>No</td><td>Partly</td><td>Varies</td></tr>
+      <tr><td>Jury escrow</td><td>By vote</td><td>By vote</td><td>No: jurors read the evidence</td><td>No</td><td>No</td><td>Juror fees</td></tr>
+      <tr><td>Mutual-deposit escrow</td><td>Partly</td><td>Partly</td><td>Yes</td><td>Yes</td><td>No: both must sign</td><td>A deposit on every sale</td></tr>
+      <tr><td><span class="or">MoneroUSD</span></td><td><b>Yes, by escrow</b></td><td><b>Yes: nothing is ever reversed</b></td><td><b>Yes</b></td><td><b>Yes</b></td><td><b>Yes: confirmation, proof or clock</b></td><td><b>$0.001</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted rv" style="font-size:14px;margin-top:12px">Other systems are described by category, from their public documentation as read in November 2026. A referee can still do one thing this design refuses to: guess. Where only a guess exists — a parcel stolen from a porch after delivery — the customer carries it unless your offer says otherwise, and the wallet says so before they pay.</p>
+</div></section>
+
+<section class="s" id="website"><div class="wrap split rev">
+  <div class="rv">
+    <div class="kick">On your website</div>
+    <h2>One Pay button. <span class="or">Told the moment the money lands.</span></h2>
+    <p>Run the small checkout helper beside your wallet. Your shop asks it for an order, shows one Pay button, and receives a signed webhook when the payment arrives or enters escrow. There is no processor, no hosted service and no key issued by anyone.</p>
+    <ul class="ticks">
+      <li>A WooCommerce plugin, a Shopify connector, and a pay panel plus a five-call API for any other site</li>
+      <li>No-code option: a price list in the helper and a link you can paste anywhere</li>
+      <li>Wallet and shop talk over a hidden address, so a customer's network address never reaches you</li>
+    </ul>
+    <pre class="note mono" style="font-size:13px;line-height:1.55;overflow-x:auto;white-space:pre;margin-top:20px">&lt;div class="musd-pay"
+     data-link="monerousd:pay?h=…&amp;t=…"
+     data-status="/order/1042/status"
+     data-protected&gt;&lt;/div&gt;
+&lt;script src="musd-pay.js" defer&gt;&lt;/script&gt;</pre>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="Your shop asks the checkout helper for an order, shows a Pay button; the customer's wallet pays; the helper sends your shop a webhook and the order is marked paid">
+    <svg viewBox="0 0 600 400">
+      <defs><marker id="ahw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7a00"/></marker></defs>
+      <rect x="14" y="20" width="270" height="230" rx="14" fill="#f5f5f7"/><rect x="14" y="20" width="270" height="34" rx="14" fill="#e3e3e8"/><circle cx="34" cy="37" r="5" fill="#ff5f57"/><circle cx="50" cy="37" r="5" fill="#febc2e"/><circle cx="66" cy="37" r="5" fill="#28c840"/>
+      <text x="34" y="84" fill="#1d1d1f" font-size="16" font-weight="700">Your shop · Order 1042</text><text x="34" y="108" fill="#6e6e73" font-size="14">Road bike</text><text x="264" y="108" text-anchor="end" fill="#1d1d1f" font-size="14" font-weight="700">$480.00</text>
+      <rect x="34" y="128" width="230" height="44" rx="10" fill="#ff7a00" class="pulse"/><text x="149" y="156" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">Pay with MoneroUSD</text>
+      <text x="34" y="200" fill="#6e6e73" font-size="14">Status:</text>
+      <text x="88" y="200" fill="#1d1d1f" font-size="14" font-weight="700" class="seq d1">waiting for payment</text>
+      <g class="seq d5"><rect x="84" y="184" width="186" height="24" fill="#f5f5f7"/><text x="88" y="200" fill="#1a8f4c" font-size="14" font-weight="700">paid. Thank you. ✓</text></g>
+      <g class="seq d2"><path d="M286 150 L356 150" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ahw)"/>
+        <rect x="360" y="60" width="226" height="180" rx="22" fill="#101014" stroke="rgba(255,255,255,.18)" stroke-width="2.5"/><text x="473" y="96" text-anchor="middle" fill="#f4f1ee" font-size="15" font-weight="700">Customer's wallet</text>
+        <text x="473" y="126" text-anchor="middle" fill="#c4beb8" font-size="13">Road bike · $480.00</text><text x="473" y="146" text-anchor="middle" fill="#39d98a" font-size="13">Protected purchase</text>
+        <rect x="390" y="166" width="166" height="40" rx="10" fill="#ff7a00"/><text x="473" y="192" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">Pay</text></g>
+      <g class="seq d3"><path d="M473 244 C473 300 400 330 330 330" fill="none" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ahw)"/>
+        <rect x="150" y="298" width="178" height="66" rx="12" fill="rgba(255,122,0,.08)" stroke="#ff7a00" stroke-width="2"/><text x="239" y="326" text-anchor="middle" fill="#f4f1ee" font-size="15" font-weight="700">Checkout helper</text><text x="239" y="348" text-anchor="middle" fill="#ffab4d" font-size="12" font-family="JBM,monospace">beside your wallet</text></g>
+      <g class="seq d4"><path d="M150 330 C80 330 80 290 120 256" fill="none" stroke="#39d98a" stroke-width="2.5" class="flow"/><text x="22" y="300" fill="#39d98a" font-size="13" font-weight="600">webhook</text></g>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s" id="income"><div class="wrap split">
+  <div class="rv">
+    <div class="kick">Optional proof of income</div>
+    <h2>Private by default. <span class="or">Provable when you choose.</span></h2>
+    <p>Your revenue is invisible to everyone — and sometimes you need to show it: to a lender, a landlord, an accountant. One switch in Settings lets your wallet make a single proof of your income. It shows the <b>total</b> and how many payments make it up, and nothing else: not one payment's amount, not one customer.</p>
+    <ul class="ticks">
+      <li>Off by default, and off again every time the wallet opens</li>
+      <li>Tied to a reference you type, so a proof can't be reused somewhere else</li>
+      <li>Make it for one named verifier, or one anyone can check against their own node</li>
+    </ul>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="Many private payments are folded into one proof that shows only the total and the number of payments">
+    <svg viewBox="0 0 600 340">
+      <g font-family="JBM,monospace" font-size="14" fill="#6c6c75">
+        <g class="seq d1"><rect x="14" y="30" width="150" height="34" rx="8" fill="#17171c"/><text x="28" y="52">payment ••••</text></g>
+        <g class="seq d1"><rect x="14" y="72" width="150" height="34" rx="8" fill="#17171c"/><text x="28" y="94">payment ••••</text></g>
+        <g class="seq d2"><rect x="14" y="114" width="150" height="34" rx="8" fill="#17171c"/><text x="28" y="136">payment ••••</text></g>
+        <g class="seq d2"><rect x="14" y="156" width="150" height="34" rx="8" fill="#17171c"/><text x="28" y="178">payment ••••</text></g>
+        <g class="seq d3"><rect x="14" y="198" width="150" height="34" rx="8" fill="#17171c"/><text x="28" y="220">payment ••••</text></g>
+        <g class="seq d3"><rect x="14" y="240" width="150" height="34" rx="8" fill="#17171c"/><text x="28" y="262">… 37 in all</text></g>
+      </g>
+      <g class="seq d4" stroke="#ff7a00" stroke-width="2" fill="none"><path d="M166 47 C220 47 220 150 262 150" class="flow"/><path d="M166 131 C210 131 220 152 262 152" class="flow"/><path d="M166 215 C220 215 220 156 262 156" class="flow"/><path d="M166 257 C230 257 220 160 262 160" class="flow"/></g>
+      <g class="seq d4"><path d="M320 92 L374 123 L374 185 L320 216 L266 185 L266 123 Z" fill="rgba(255,122,0,.1)" stroke="#ff7a00" stroke-width="2.5"/><text x="320" y="150" text-anchor="middle" fill="#f4f1ee" font-size="17" font-weight="700">one proof</text><text x="320" y="172" text-anchor="middle" fill="#ffab4d" font-size="12" font-family="JBM,monospace">zero-knowledge</text></g>
+      <g class="seq d5"><line x1="376" y1="154" x2="420" y2="154" stroke="#39d98a" stroke-width="2.5" class="flow"/>
+        <rect x="424" y="96" width="162" height="116" rx="14" fill="#17171c" stroke="rgba(57,217,138,.6)" stroke-width="2"/><text x="505" y="126" text-anchor="middle" fill="#c4beb8" font-size="14">The verifier sees</text><text x="505" y="160" text-anchor="middle" fill="#39d98a" font-size="24" font-weight="700">$12,480.00</text><text x="505" y="186" text-anchor="middle" fill="#c4beb8" font-size="13">total · 37 payments</text></g>
+      <text x="300" y="316" text-anchor="middle" fill="#8b8b95" font-size="14">each amount and each customer stays private</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap prose">
+  <div class="kick">Where it stands</div>
+  <h2 style="margin-top:12px">Built, and being proven. Not yet for real money.</h2>
+  <ul>
+    <li><b>Built in the wallet:</b> the Merchant tab, payment links, protected purchases, deposits, delivery bonds, subscriptions, downloads, pickup relays, the doorstep delivery proof and proof of income.</li>
+    <li><b>Passed on real nodes so far:</b> a shop order, a protected order, a cancel-and-refund and a one-link sale. The deposit-and-bond step and the download step have not passed on real nodes yet.</li>
+    <li><b>Checkout:</b> the helper passes its own tests; the WooCommerce plugin and Shopify connector have not been run against live shops yet.</li>
+    <li><b>The doorstep:</b> the proof is built and checked between the two wallets. Each carrier's mail key is added only at release, after it has been confirmed from three independent sources, so no carrier is accepted in today's build.</li>
+  </ul>
+  <h2>What it does not do, in plain words</h2>
+  <ul>
+    <li>It never judges. A parcel stolen from the porch after delivery, or sent to an address the customer mistyped, is not refunded by the chain. Offer pickup at a carrier counter or a relay to close that.</li>
+    <li>At the doorstep, a customer running altered wallet software can refuse to confirm even against a valid proof. Until that proof is enforced on the chain itself, your cover in that case is the non-refundable deposit you set.</li>
+    <li>It does not tell you what is inside an unwatched box. Say in your offer who carries that, and the wallet shows it before the customer pays.</li>
+  </ul>
+  <div class="note">MoneroUSD is in development. Nothing on this page holds real funds today, and nothing here is financial or legal advice.</div>
+  <p style="margin-top:24px"><a class="btn btn-p" href="#film">▶ Watch the business film</a> <a class="btn btn-g" href="/faq">FAQ</a></p>
+</div></section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">MoneroUSD</a><p style="margin-top:12px;max-width:360px">Private, post-quantum digital cash. Not affiliated with the Monero Project. Nothing here is financial advice.</p></div>
+    <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
+    <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

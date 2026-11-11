@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>Ion Swap &amp; Dark Solidity — The First Private DeFi Layer | MoneroUSD</title>
+<meta name="description" content="Ion Swap is MoneroUSD's private DeFi layer: sealed batch trading that publishes one price, and Dark Solidity, a zk-VM whose contracts are proven, never re-executed.">
+<link rel="canonical" href="https://monerousd.org/defi">
+<meta name="theme-color" content="#060607">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<meta property="og:type" content="article"><meta property="og:site_name" content="MoneroUSD">
+<meta property="og:title" content="Ion Swap &amp; Dark Solidity — the first private DeFi layer">
+<meta property="og:description" content="Sealed batch trading that publishes one price per batch, and smart contracts proven in zero knowledge.">
+<meta property="og:url" content="https://monerousd.org/defi"><meta property="og:image" content="https://monerousd.org/assets/og.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://monerousd.org/assets/og.png">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"TechArticle","headline":"Ion Swap & Dark Solidity — the first private DeFi layer","datePublished":"2026-11-07","author":{"@type":"Organization","name":"MoneroUSD"},"publisher":{"@type":"Organization","name":"MoneroUSD","logo":{"@type":"ImageObject","url":"https://monerousd.org/logo.svg"}},"mainEntityOfPage":"https://monerousd.org/defi"},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MoneroUSD","item":"https://monerousd.org/"},{"@type":"ListItem","position":2,"name":"DeFi","item":"https://monerousd.org/defi"}]},
+ {"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"What is Dark Solidity?","acceptedAnswer":{"@type":"Answer","text":"Dark Solidity (DSOL) is MoneroUSD's smart-contract language and zero-knowledge virtual machine. Your wallet runs a contract call and produces a proof that it ran correctly; every node verifies the proof without re-running the contract or seeing its inputs. Values are commitments end to end and every primitive is post-quantum."}},
+  {"@type":"Question","name":"What does Ion Swap publish?","acceptedAnswer":{"@type":"Answer","text":"One clearing price per trading pair per batch, published every batch whether or not anything traded. Volumes, liquidity depth, positions and who traded are never published."}}
+ ]}
+]}
+</script>
+  <script src="lib/wallet-nav.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
+  <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi" aria-current="page">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li></ul>
+  <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
+    <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
+</div></nav>
+
+<main id="main">
+<header class="ph"><div class="wrap">
+  <div class="kick">Ion Swap · the DeFi layer</div>
+  <h1>The first private DeFi layer. <span class="or">Trading and smart contracts nobody can watch.</span></h1>
+  <p class="lead">On every other chain, DeFi is a glass box: anyone can see who traded, how much, and every position. Ion Swap trades in sealed batches that publish one price and nothing else, and its smart contracts are written in Dark Solidity — a zero-knowledge VM whose contracts are proven, never re-executed in public.</p>
+  <p style="margin-top:20px"><span class="status st-test">Built · testing on real nodes</span></p>
+</div></header>
+
+<section class="s"><div class="wrap split">
+  <div class="rv">
+    <div class="kick">Sealed batches</div>
+    <h2>Every order sealed. <span class="or">Only the price comes out.</span></h2>
+    <p>Your order is encrypted to the current epoch's threshold key and placed with a private spend, so who placed it is hidden unconditionally. At each batch, the bonded validators clear the whole book together on secret shares — no single validator ever sees an order — and open exactly one number: the clearing price. Your fill comes back as a fresh private note only you can open.</p>
+    <ul class="ticks">
+      <li>One clearing price per pair per batch — published every batch, traded or not, so even activity stays hidden</li>
+      <li>Settlement is proven: no coalition of validators can steal, inflate or misprice; at worst it can delay a batch</li>
+      <li>If a batch is late, your order refunds itself as a private note — nobody has to cooperate</li>
+    </ul>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="Sealed orders go into a batch; validators clear it on secret shares; one price is opened and fills return as private notes">
+    <svg viewBox="0 0 600 400">
+      <defs><marker id="ah1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7a00"/></marker></defs>
+      <g font-size="15" font-weight="600" fill="#f4f1ee">
+        <g class="seq d1"><rect x="14" y="70" width="128" height="46" rx="10" fill="#16161b" stroke="rgba(255,122,0,.5)"/><text x="32" y="99">sealed order</text></g>
+        <g class="seq d1"><rect x="14" y="130" width="128" height="46" rx="10" fill="#16161b" stroke="rgba(255,122,0,.5)"/><text x="32" y="159">sealed order</text></g>
+        <g class="seq d1"><rect x="14" y="190" width="128" height="46" rx="10" fill="#16161b" stroke="rgba(255,122,0,.5)"/><text x="32" y="219">sealed order</text></g>
+        <g class="seq d1"><rect x="14" y="250" width="128" height="46" rx="10" fill="#16161b" stroke="rgba(255,122,0,.5)"/><text x="32" y="279">sealed order</text></g>
+      </g>
+      <g class="seq d2" stroke="#ff7a00" stroke-width="2.5" fill="none">
+        <path d="M142 93 C170 93 175 170 196 178" class="flow"/><path d="M142 153 C165 153 175 180 196 182" class="flow"/><path d="M142 213 C165 213 175 190 196 188" class="flow"/><path d="M142 273 C170 273 175 200 196 192" class="flow"/>
+      </g>
+      <g class="seq d2"><rect x="198" y="140" width="120" height="94" rx="14" fill="rgba(255,122,0,.08)" stroke="#ff7a00" stroke-width="2"/><text x="258" y="180" text-anchor="middle" fill="#f4f1ee" font-size="17" font-weight="700">batch</text><text x="258" y="204" text-anchor="middle" fill="#ffab4d" font-size="14" font-family="JBM,monospace">all sealed</text></g>
+      <g class="seq d3"><line x1="318" y1="187" x2="384" y2="187" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ah1)"/>
+        <g fill="#141418" stroke="#ff7a00" stroke-width="2"><circle cx="462" cy="132" r="15"/><circle cx="512" cy="168" r="15"/><circle cx="494" cy="228" r="15"/><circle cx="430" cy="228" r="15"/><circle cx="412" cy="168" r="15"/></g>
+        <g stroke="rgba(255,171,77,.55)" stroke-width="1.5" stroke-dasharray="4 5" fill="none" class="flow"><path d="M462 132 L512 168 L494 228 L430 228 L412 168 Z"/><path d="M462 132 L494 228 M512 168 L430 228 M494 228 L412 168 M430 228 L462 132 M412 168 L512 168"/></g>
+        <text x="462" y="270" text-anchor="middle" fill="#c4beb8" font-size="15">validators clear on shares</text>
+        <text x="462" y="290" text-anchor="middle" fill="#8b8b95" font-size="13">no one sees an order</text></g>
+      <g class="seq d4"><path d="M462 116 L462 72" stroke="#39d98a" stroke-width="2.5" class="flow"/><rect x="372" y="22" width="190" height="48" rx="24" fill="rgba(57,217,138,.12)" stroke="#39d98a" stroke-width="2"/><text x="467" y="52" text-anchor="middle" fill="#39d98a" font-size="16" font-weight="700">one price, opened</text></g>
+      <g class="seq d5"><path d="M398 176 C360 262 262 340 162 340" stroke="#39d98a" stroke-width="2.5" fill="none" class="flow" marker-end="url(#ah1)"/><rect x="14" y="316" width="146" height="50" rx="12" fill="#16161b" stroke="rgba(57,217,138,.55)"/><text x="87" y="338" text-anchor="middle" fill="#f4f1ee" font-size="15" font-weight="700">your fill</text><text x="87" y="356" text-anchor="middle" fill="#c4beb8" font-size="12" font-family="JBM,monospace">a fresh private note</text></g>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap split rev">
+  <div class="rv">
+    <div class="kick">What the chain shows</div>
+    <h2>A public DEX shows everything. <span class="or">Ion Swap shows a price.</span></h2>
+    <p>On a public exchange, every trade is a permanent record of who, how much and when; every liquidity position is a public map of where the money sits, ready to be front-run. Ion Swap's DeFi layer may publish only a closed list: the clearing price of each batch, and protocol-wide totals the chain already publishes. Anything else would be treated as a privacy bug.</p>
+    <ul class="ticks">
+      <li>No volume, depth, positions, fills or traders — ever</li>
+      <li>Nothing links a trade to a payment, a deposit or a withdrawal on the cash layer</li>
+      <li>Nothing to front-run: orders are sealed until the batch clears</li>
+    </ul>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="A public DEX shows traders, amounts and pool depth; Ion Swap shows only one price per batch">
+    <svg viewBox="0 0 600 330">
+      <text x="150" y="28" text-anchor="middle" fill="#c4beb8" font-size="17" font-weight="600">A public DEX</text>
+      <text x="450" y="28" text-anchor="middle" fill="#ff7a00" font-size="17" font-weight="600">Ion Swap</text>
+      <g font-family="JBM,monospace" font-size="14">
+        <g><rect x="14" y="46" width="272" height="44" rx="8" fill="#17171c"/><text x="26" y="73" fill="#e6e1dc">0x3f… sold 12.4 BTC</text></g>
+        <g><rect x="14" y="98" width="272" height="44" rx="8" fill="#17171c"/><text x="26" y="125" fill="#e6e1dc">pool depth $8.2M</text></g>
+        <g><rect x="14" y="150" width="272" height="44" rx="8" fill="#17171c"/><text x="26" y="177" fill="#e6e1dc">0x91… LP range set</text></g>
+        <g><rect x="14" y="202" width="272" height="44" rx="8" fill="#17171c"/><text x="26" y="229" fill="#e6e1dc">bot front-ran 0x3f…</text></g>
+        <rect x="14" y="46" width="272" height="44" rx="8" fill="rgba(255,93,108,.22)" class="seq d1"/>
+        <rect x="14" y="202" width="272" height="44" rx="8" fill="rgba(255,93,108,.22)" class="seq d3"/>
+        <g><rect x="314" y="46" width="272" height="44" rx="8" fill="#17171c"/><text x="326" y="73" fill="#c4beb8">batch 1842 → price</text><rect x="520" y="56" width="56" height="24" rx="12" fill="rgba(57,217,138,.14)"/><text x="548" y="73" text-anchor="middle" fill="#39d98a" font-size="13">only</text></g>
+        <g><rect x="314" y="98" width="272" height="44" rx="8" fill="#17171c"/><text x="326" y="125" fill="#c4beb8">batch 1843 → price</text><rect x="520" y="108" width="56" height="24" rx="12" fill="rgba(57,217,138,.14)"/><text x="548" y="125" text-anchor="middle" fill="#39d98a" font-size="13">only</text></g>
+        <g><rect x="314" y="150" width="272" height="44" rx="8" fill="#17171c"/><text x="326" y="177" fill="#c4beb8">batch 1844 → price</text><rect x="520" y="160" width="56" height="24" rx="12" fill="rgba(57,217,138,.14)"/><text x="548" y="177" text-anchor="middle" fill="#39d98a" font-size="13">only</text></g>
+        <g><rect x="314" y="202" width="272" height="44" rx="8" fill="#17171c"/><text x="326" y="229" fill="#c4beb8">batch 1845 → price</text><rect x="520" y="212" width="56" height="24" rx="12" fill="rgba(57,217,138,.14)"/><text x="548" y="229" text-anchor="middle" fill="#39d98a" font-size="13">only</text></g>
+      </g>
+      <text x="150" y="276" text-anchor="middle" fill="#ff5d6c" font-size="15" class="seq d2">who, how much, where</text>
+      <text x="450" y="276" text-anchor="middle" fill="#39d98a" font-size="15" class="pulse">one number per batch</text>
+      <text x="300" y="316" text-anchor="middle" fill="#8b8b95" font-size="14">examples are illustrative</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s" id="dsol"><div class="wrap split">
+  <div class="rv">
+    <div class="kick">Dark Solidity</div>
+    <h2>Smart contracts <span class="or">that can keep a secret.</span></h2>
+    <p><b>Dark Solidity (DSOL)</b> is MoneroUSD's smart-contract language and its <b>zero-knowledge virtual machine</b>. On Ethereum, every node re-runs every contract call in public, so every input and balance is visible. In DSOL, <i>your wallet</i> runs the call and produces a zero-knowledge proof that it ran exactly as the contract's code says. Every node checks that proof — in milliseconds — without re-running the contract and without seeing what went in.</p>
+    <ul class="ticks">
+      <li>Values are commitments from start to finish — there is no instruction that reveals an amount</li>
+      <li>Post-quantum throughout: ML-DSA signatures, ML-KEM notes, SHA-3 and Poseidon2 hashing, WHIR proofs</li>
+      <li>A contract can't mint or hold funds: it emits effects, and the chain's own rules decide what moves</li>
+    </ul>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="The wallet steps through the contract's instructions, produces a WHIR proof, and every node verifies it and moves the contract's state root">
+    <svg viewBox="0 0 600 400">
+      <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7a00"/></marker></defs>
+      <rect x="14" y="16" width="230" height="300" rx="14" fill="#0d0d10" stroke="rgba(255,255,255,.1)"/>
+      <text x="30" y="44" fill="#ffab4d" font-size="14" font-family="JBM,monospace" font-weight="600">your wallet · runs the call</text>
+      <g font-family="JBM,monospace" font-size="15" fill="#d6d0ca">
+        <rect x="24" y="58" width="210" height="28" rx="6" fill="rgba(255,122,0,.22)" class="seq d1"/><text x="36" y="77">MSG_SENDER</text>
+        <rect x="24" y="90" width="210" height="28" rx="6" fill="rgba(255,122,0,.22)" class="seq d2"/><text x="36" y="109">SLOAD</text>
+        <rect x="24" y="122" width="210" height="28" rx="6" fill="rgba(255,122,0,.22)" class="seq d2"/><text x="36" y="141">PUSH_U64 50</text>
+        <rect x="24" y="154" width="210" height="28" rx="6" fill="rgba(255,122,0,.22)" class="seq d3"/><text x="36" y="173">ADD_U64</text>
+        <rect x="24" y="186" width="210" height="28" rx="6" fill="rgba(255,122,0,.22)" class="seq d3"/><text x="36" y="205">SSTORE_PRIV</text>
+        <rect x="24" y="218" width="210" height="28" rx="6" fill="rgba(255,122,0,.22)" class="seq d4"/><text x="36" y="237">NULLIFIER</text>
+        <rect x="24" y="250" width="210" height="28" rx="6" fill="rgba(255,122,0,.22)" class="seq d4"/><text x="36" y="269">EMIT</text>
+        <rect x="24" y="282" width="210" height="28" rx="6" fill="rgba(255,122,0,.22)" class="seq d4"/><text x="36" y="301">RETURN</text>
+      </g>
+      <g class="seq d5"><line x1="246" y1="166" x2="290" y2="166" stroke="#ff7a00" stroke-width="2.5" class="flow" marker-end="url(#ah2)"/>
+        <path d="M352 112 L402 141 L402 199 L352 228 L302 199 L302 141 Z" fill="rgba(255,122,0,.1)" stroke="#ff7a00" stroke-width="2.5"/>
+        <text x="352" y="164" text-anchor="middle" fill="#f4f1ee" font-size="17" font-weight="700">proof</text><text x="352" y="186" text-anchor="middle" fill="#ffab4d" font-size="13" font-family="JBM,monospace">WHIR · zk</text></g>
+      <g class="seq d6"><line x1="404" y1="170" x2="440" y2="170" stroke="#39d98a" stroke-width="2.5" class="flow"/>
+        <rect x="442" y="96" width="146" height="148" rx="14" fill="#16161b" stroke="rgba(57,217,138,.6)" stroke-width="2"/>
+        <text x="515" y="128" text-anchor="middle" fill="#f4f1ee" font-size="16" font-weight="700">every node</text>
+        <text x="515" y="160" text-anchor="middle" fill="#39d98a" font-size="26" font-weight="700">✓</text>
+        <text x="515" y="190" text-anchor="middle" fill="#c4beb8" font-size="13">verifies the proof</text>
+        <text x="515" y="210" text-anchor="middle" fill="#c4beb8" font-size="13">never re-runs it</text>
+        <text x="515" y="230" text-anchor="middle" fill="#c4beb8" font-size="13">sees no inputs</text>
+        <rect x="270" y="276" width="318" height="40" rx="10" fill="rgba(57,217,138,.08)" stroke="rgba(57,217,138,.5)"/>
+        <text x="429" y="302" text-anchor="middle" fill="#39d98a" font-size="15" font-weight="600" font-family="JBM,monospace">state root: pre → post</text></g>
+      <text x="300" y="370" text-anchor="middle" fill="#8b8b95" font-size="14">real DSOL instructions · the wallet proves, the chain verifies</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="rv center"><div class="kick">Side by side</div><h2>Solidity vs <span class="or">Dark Solidity</span></h2></div>
+  <div class="tscroll rv" style="margin-top:30px"><table class="t">
+    <thead><tr><th></th><th>Solidity on Ethereum</th><th>Dark Solidity on MoneroUSD</th></tr></thead>
+    <tbody>
+      <tr><td>Who runs a call</td><td>Every node re-runs it, in public</td><td>Your wallet runs it and proves it; nodes only verify the proof</td></tr>
+      <tr><td>What the chain sees</td><td>Every input, balance and transfer</td><td>A proof, commitments and a new state root</td></tr>
+      <tr><td>Quantum safety</td><td>Elliptic-curve signatures</td><td>ML-DSA, ML-KEM, SHA-3, Poseidon2, WHIR</td></tr>
+      <tr><td>Funds in contracts</td><td>Contracts hold funds — the source of most drains and re-entrancy hacks</td><td>A contract can't hold or mint value; the chain's rules move it</td></tr>
+      <tr><td>Node storage</td><td>Grows with every contract and slot</td><td>One contract-state root; each call carries the paths it touches</td></tr>
+      <tr><td>Builder income</td><td>Off-chain or by convention</td><td>A publisher fee set at deploy, enforced by the chain on every call</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section class="s"><div class="wrap prose">
+  <div class="kick">Where it stands</div>
+  <h2 style="margin-top:12px">Built, and being proven.</h2>
+  <ul>
+    <li><b>Built:</b> the DSOL zk-VM laws and its prover and verifier; the contract deploy and call doors (two nodes move one state root from the block alone, and forged callers, wrong roots, flipped proofs and replays are refused); sealed orders, threshold clearing and proven settlement; the direct SAT/BTC and SAT/XMR pools.</li>
+    <li><b>Being proven on real nodes:</b> a sealed-batch trade settling end to end is one of the public-testnet checks.</li>
+    <li><b>Next for DSOL:</b> contract-to-contract calls, wider arithmetic and developer tooling.</li>
+  </ul>
+  <div class="note">Privacy of the DeFi layer holds against any group controlling less than a third of the validators' bonded weight; liveness needs two thirds online. Soundness never relies on the validators: every batch settles only with a proof the chain verifies.</div>
+  <p style="margin-top:24px"><a class="btn btn-p" href="/sat">SAT tokenomics</a> <a class="btn btn-g" href="/faq">FAQ</a></p>
+</div></section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">MoneroUSD</a><p style="margin-top:12px;max-width:360px">Private, post-quantum digital cash. Not affiliated with the Monero Project. Nothing here is financial advice.</p></div>
+    <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
+    <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

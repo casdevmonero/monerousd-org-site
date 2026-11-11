@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>MoneroUSD FAQ — Privacy, Post-Quantum Security, USDm, SAT &amp; Launch</title>
+<meta name="description" content="Answers about MoneroUSD: is it live, how payments stay private, what post-quantum means, USDm, SAT, tap-to-pay, Letter, the Veil, Sovereign, fees and the launch plan.">
+<link rel="canonical" href="https://monerousd.org/faq">
+<meta name="theme-color" content="#060607">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<meta property="og:type" content="website"><meta property="og:site_name" content="MoneroUSD">
+<meta property="og:title" content="MoneroUSD FAQ"><meta property="og:description" content="Privacy, post-quantum security, USDm, SAT, tap-to-pay, Letter, the Veil, Sovereign and the launch plan.">
+<meta property="og:url" content="https://monerousd.org/faq"><meta property="og:image" content="https://monerousd.org/assets/og.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://monerousd.org/assets/og.png">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"Is MoneroUSD live?","acceptedAnswer":{"@type":"Answer","text":"Not yet. MoneroUSD is in development and being tested on real nodes. A public testnet comes first. Real funds come only after the testnet, every listed attack refused on real nodes, an outside audit, a public soak of at least four weeks with a bug bounty, and a guarded launch with published value caps."}},
+ {"@type":"Question","name":"Is MoneroUSD part of the Monero Project?","acceptedAnswer":{"@type":"Answer","text":"No. MoneroUSD is a separate project with its own chain and cryptography. It shares the goal of private money, and its wallet trades directly with Monero (XMR) and Bitcoin (BTC)."}},
+ {"@type":"Question","name":"How does MoneroUSD hide amounts, senders and receivers?","acceptedAnswer":{"@type":"Answer","text":"Money lives in confidential notes. To spend, the wallet proves in zero knowledge that the spend is valid; a one-time nullifier enters the spent set so a note cannot be spent twice. The chain stores commitments, nullifiers and proofs, never amounts or addresses, and every block has the same shape so activity cannot be counted."}},
+ {"@type":"Question","name":"What does post-quantum mean for MoneroUSD?","acceptedAnswer":{"@type":"Answer","text":"Key exchange uses ML-KEM-768, signatures use ML-DSA-65, commitments use Poseidon2, proofs use WHIR, and hashing uses BLAKE3 and SHA-3. There are no elliptic curves anywhere, so traffic recorded today cannot be decrypted later by a quantum computer."}},
+ {"@type":"Question","name":"What is USDm?","acceptedAnswer":{"@type":"Answer","text":"USDm is the dollar of MoneroUSD. Every USDm is minted against a Bitcoin or Monero deposit and the system is over-collateralized. It is used for payments, staking and trading."}},
+ {"@type":"Question","name":"What is SAT?","acceptedAnswer":{"@type":"Answer","text":"SAT (Satoshi) is the reward asset: 21,000,000 maximum supply, 19,000,000 issued only by block rewards halving about every four years, and a developer set-aside capped at 2,000,000 that is proven at genesis with the exact amount private. Validators bond SAT, bonders receive a share of fees, and SAT trades directly for BTC and XMR."}},
+ {"@type":"Question","name":"How does tap-to-pay work without a card network?","acceptedAnswer":{"@type":"Answer","text":"The merchant's wallet advertises a charge signed with ML-DSA over Bluetooth LE. The customer's wallet, within a few centimetres, completes an ML-KEM handshake, shows the signed amount in dollars, and pays on approval. The radio only carries ciphertext."}},
+ {"@type":"Question","name":"What does a transaction cost?","acceptedAnswer":{"@type":"Answer","text":"A flat network fee of $0.001 per transaction, the same for everyone. First-party apps may add an interface fee that is always shown in dollars before you act."}},
+ {"@type":"Question","name":"What is Dark Solidity?","acceptedAnswer":{"@type":"Answer","text":"Dark Solidity (DSOL) is MoneroUSD's smart-contract language and zero-knowledge virtual machine. Your wallet runs a contract call and produces a proof that it ran correctly; every node verifies the proof without re-running the contract or seeing its inputs. Values are commitments end to end, every primitive is post-quantum, and a contract cannot mint or hold funds."}},
+ {"@type":"Question","name":"What is Ion Swap?","acceptedAnswer":{"@type":"Answer","text":"Ion Swap is the private DeFi layer of MoneroUSD. Orders are sealed, bonded validators clear each batch on secret shares, and the chain publishes only one clearing price per pair per batch: never volumes, depth, positions or who traded. Settlement is proven, so validators cannot steal or misprice."}},
+ {"@type":"Question","name":"Can a payment be reversed?","acceptedAnswer":{"@type":"Answer","text":"No. Payments are final. There are no chargebacks and no recovery from a wrong address, and the wallet warns you in plain language before every payment."}}
+]}
+</script>
+  <script src="lib/wallet-nav.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
+  <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq" aria-current="page">FAQ</a></li></ul>
+  <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
+    <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
+</div></nav>
+<main id="main">
+<header class="ph"><div class="wrap"><div class="kick">FAQ</div><h1>Questions, <span class="or">answered plainly.</span></h1></div></header>
+<section class="s" style="border-top:0;padding-top:0"><div class="wrap prose">
+  <h2>The project</h2>
+  <details open><summary>Is MoneroUSD live?</summary><p>Not yet. It's in development and being tested on real nodes. A public testnet comes first. Real funds come only after the testnet, every listed attack refused on real nodes, an outside audit, a public soak of at least four weeks with a bug bounty, and a guarded launch with published value caps that rise on a published schedule.</p></details>
+  <details><summary>Is MoneroUSD part of the Monero Project?</summary><p>No. It's a separate project with its own chain and cryptography. It shares the goal of private money, and its wallet trades directly with Monero (XMR) and Bitcoin (BTC).</p></details>
+  <details><summary>Who controls the network?</summary><p>Nobody in particular. There is one kind of node, which mines, verifies, proves and relays. Every key that moves value — fees, rewards, custody, bonds — is per-participant or held by a threshold of bonded validators, never one shared key.</p></details>
+  <h2>Privacy &amp; security</h2>
+  <details><summary>How are amounts, senders and receivers hidden?</summary><p>Money lives in confidential notes. To spend, your wallet proves in zero knowledge that the spend is valid; a one-time nullifier enters the spent set, so a note can't be spent twice. The chain stores commitments, nullifiers and proofs — never amounts or addresses — and every block has the same shape, so activity can't be counted.</p></details>
+  <details><summary>What does "post-quantum" mean here?</summary><p>Key exchange uses ML-KEM-768, signatures ML-DSA-65, commitments Poseidon2, proofs WHIR, hashing BLAKE3 and SHA-3. There are no elliptic curves anywhere, so traffic recorded today can't be decrypted later. The one exception is verifying another chain's own signatures at the Bitcoin and Monero bridge, which is unavoidable and clearly separated.</p></details>
+  <details><summary>Does my node see my balance?</summary><p>No. Your scan key never leaves your device — not even to your own node. Notes are found by your wallet locally.</p></details>
+  <details><summary>Can a payment be reversed?</summary><p>No. Payments are final: no chargebacks, no recovery from a wrong address. The wallet warns you in plain language and shows every cost in dollars before you confirm.</p></details>
+  <h2>USDm &amp; SAT</h2>
+  <details><summary>What is USDm?</summary><p>The dollar of MoneroUSD. Every USDm is minted against a Bitcoin or Monero deposit and the system is over-collateralized. It's what you pay with, stake and trade.</p></details>
+  <details><summary>What is SAT?</summary><p>The reward asset: 21,000,000 maximum, 19,000,000 issued only by block rewards halving about every four years, and a developer set-aside capped at 2,000,000 that is proven at genesis with the exact amount private. See <a href="/sat">SAT tokenomics</a>.</p></details>
+  <details><summary>What does a transaction cost?</summary><p>A flat $0.001 network fee per transaction, the same for everyone so the fee reveals nothing. It's split between USDm stakers (40%), SAT for validators' bonds (25%), the surplus buffer (25%) and miners (10%, rising later). First-party apps may add an interface fee, always shown in dollars first.</p></details>
+  <h2>Features</h2>
+  <details><summary>How does tap-to-pay work without a card network?</summary><p>The merchant's wallet advertises an ML-DSA-signed charge over Bluetooth LE. The customer's wallet, within a few centimetres, completes an ML-KEM handshake, shows the signed amount in dollars, and pays on approval. The radio only carries ciphertext.</p></details>
+  <details><summary>What is Letter?</summary><p>Private messaging inside the wallet: letters sealed end to end with ML-KEM-768 and signed with ML-DSA-65, payments inside the chat, groups and profiles. No phone number, email or server; history restores from your seed.</p></details>
+  <details><summary>What is Ion Swap?</summary><p>The private DeFi layer. Orders are sealed, the bonded validators clear each batch on secret shares, and the chain publishes only one clearing price per pair per batch — never volumes, depth, positions or who traded. Settlement is proven, so validators can't steal or misprice. <a href="/defi">Read more</a>.</p></details>
+  <details><summary>What is Dark Solidity?</summary><p>MoneroUSD's smart-contract language and zero-knowledge virtual machine. Your wallet runs a contract call and proves it ran correctly; every node verifies the proof without re-running the contract or seeing its inputs. Values stay commitments, everything is post-quantum, and a contract can't mint or hold funds. <a href="/defi#dsol">Read more</a>.</p></details>
+  <details><summary>What is the MoneroUSD Veil?</summary><p>MoneroUSD's own post-quantum mix network: three-hop layered packets, constant cover traffic, private transaction origin and private reads. It's partly built and in testing. <a href="/veil">Read more</a>.</p></details>
+  <details><summary>What is Sovereign?</summary><p>A browser for websites that live on the network: publish in three taps, own the site with your wallet key, and every byte is checked against the chain. Parts are built; .mud names and sharded hosting are in design. <a href="/sovereign">Read more</a>.</p></details>
+  <details><summary>Will phones run full nodes?</summary><p>That's the design goal: node state stays the same size as the chain grows, and a new node joins at the tip by checking one recursive proof. It's being measured on real nodes.</p></details>
+</div></section>
+</main>
+<footer>
+  <div class="wrap cols">
+    <div><a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">MoneroUSD</a><p style="margin-top:12px;max-width:360px">Private, post-quantum digital cash. Not affiliated with the Monero Project. Nothing here is financial advice.</p></div>
+    <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
+    <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

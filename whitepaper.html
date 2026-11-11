@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>MoneroUSD Whitepaper v3 — Private Digital Cash, Without Permission</title>
+<meta name="description" content="The MoneroUSD whitepaper, version 3: why private digital cash, freedom from censorship and the right to a financial system matter now, the design that follows from those beliefs, what has been built so far, and what it sets out to prove. By Cas.">
+<link rel="canonical" href="https://monerousd.org/whitepaper">
+<meta name="theme-color" content="#060607">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<meta property="og:type" content="article"><meta property="og:site_name" content="MoneroUSD">
+<meta property="og:title" content="MoneroUSD Whitepaper v3 — private digital cash, without permission">
+<meta property="og:description" content="Private digital cash is a right, so I am building it. Why MoneroUSD exists, the design behind it, what is built so far, and the five things it sets out to prove. Signed, Cas.">
+<meta property="og:url" content="https://monerousd.org/whitepaper"><meta property="og:image" content="https://monerousd.org/assets/og.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://monerousd.org/assets/og.png">
+<link rel="alternate" type="application/pdf" href="https://monerousd.org/MoneroUSD-Whitepaper-v3.pdf" title="MoneroUSD Whitepaper v3, one-page PDF">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Article","headline":"MoneroUSD Whitepaper v3 — private digital cash, without permission","version":"3","datePublished":"2026-11-10","dateModified":"2026-11-10","author":{"@type":"Person","name":"Cas"},"publisher":{"@type":"Organization","name":"MoneroUSD","logo":{"@type":"ImageObject","url":"https://monerousd.org/logo.svg"}},"mainEntityOfPage":"https://monerousd.org/whitepaper","image":"https://monerousd.org/assets/og.png","about":["private digital cash","censorship resistance","financial inclusion","inflation","post-quantum cryptography","AI security"]},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MoneroUSD","item":"https://monerousd.org/"},{"@type":"ListItem","position":2,"name":"Whitepaper v3","item":"https://monerousd.org/whitepaper"}]}
+]}
+</script>
+<style>
+/* ── whitepaper v3: page-only styles ── */
+#prog{position:fixed;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,#ff7a00,#ffcf8a);z-index:60;box-shadow:0 0 14px rgba(255,122,0,.7)}
+.wp-hero{position:relative;padding:96px 0 70px;overflow:hidden;isolation:isolate}
+.wp-hero:before{content:'';position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(60% 55% at 78% 30%,rgba(255,122,0,.20),transparent 70%),
+  radial-gradient(40% 40% at 12% 80%,rgba(255,171,77,.10),transparent 70%)}
+.wp-hero:after{content:'';position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:56px 56px;mask-image:radial-gradient(ellipse at 60% 30%,#000 10%,transparent 72%);-webkit-mask-image:radial-gradient(ellipse at 60% 30%,#000 10%,transparent 72%)}
+.wp-hero .wrap{display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center}
+.wp-hero h1{font-size:clamp(40px,6.4vw,78px);margin:18px 0 22px;letter-spacing:-.03em}
+.wp-hero h1 span{display:block}
+.wp-hero .lead{max-width:640px}
+.byline{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:28px;color:var(--mu);font-family:JBM,monospace;font-size:14px;letter-spacing:.06em}
+.byline b{color:var(--tx);font-weight:600}
+.byline i{width:5px;height:5px;border-radius:50%;background:var(--or);display:inline-block}
+.seal{position:relative;width:min(100%,340px);aspect-ratio:1;margin:0 auto}
+.seal svg{width:100%;height:100%;overflow:visible}
+.seal .turn{transform-origin:170px 170px;animation:turn 60s linear infinite}
+.seal .turn.back{animation-duration:90s;animation-direction:reverse}
+@keyframes turn{to{transform:rotate(360deg)}}
+.seal img{position:absolute;left:50%;top:50%;width:34%;height:34%;transform:translate(-50%,-50%);filter:drop-shadow(0 0 34px rgba(255,122,0,.55))}
+.toc{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.toc a{display:inline-flex;gap:10px;align-items:baseline;padding:8px 14px;border:1px solid var(--line2);border-radius:999px;color:var(--tx2);font-size:15px;background:rgba(255,255,255,.025);transition:border-color .2s,color .2s}
+.toc a:hover{border-color:rgba(255,122,0,.6);color:#fff}
+.toc a b{font:600 12px JBM,monospace;color:var(--or)}
+/* document column */
+.doc{max-width:860px;margin:0 auto;padding:0 24px}
+.wide{max-width:1160px;margin:0 auto;padding:0 24px}
+.sec{padding:84px 0 0}
+.sec:last-of-type{padding-bottom:40px}
+.num{display:flex;align-items:center;gap:14px;font:600 14px JBM,monospace;letter-spacing:.22em;text-transform:uppercase;color:var(--or)}
+.num:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,122,0,.5),transparent)}
+.sec h2{font-size:clamp(30px,4.4vw,50px);margin:18px 0 20px;letter-spacing:-.025em}
+.doc p{color:var(--tx2);font-size:19px;line-height:1.72}
+.doc p+p{margin-top:16px}
+.doc p b,.doc li b{color:var(--tx)}
+.abstract{position:relative;margin-top:8px;padding:30px 30px 30px 34px;border-radius:22px;background:linear-gradient(135deg,rgba(255,122,0,.10),rgba(255,122,0,.02) 55%),var(--card);border:1px solid rgba(255,122,0,.28)}
+.abstract p{font-size:clamp(19px,2.2vw,22px);color:var(--tx);line-height:1.6}
+.abstract p:first-letter{font-size:3.1em;font-weight:700;float:left;line-height:.86;padding:6px 12px 0 0;color:var(--or)}
+.pull{margin:44px 0 6px;padding-left:22px;border-left:3px solid var(--or);font-size:clamp(24px,3.4vw,36px);line-height:1.22;font-weight:600;letter-spacing:-.02em;color:var(--tx)}
+.pull em{font-style:normal;color:var(--or)}
+sup.c{font:600 11px JBM,monospace;margin-left:2px}
+sup.c a{color:var(--or2)}
+/* satoshi */
+.satoshi{margin-top:34px;padding:4px 0 4px 24px;border-left:3px solid var(--or)}
+.satoshi .num{margin-bottom:12px}
+.satoshi p i{color:var(--tx)}
+/* timeline */
+.tl{position:relative;margin-top:38px;display:grid;gap:18px}
+.tl:before{content:'';position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--or),rgba(255,122,0,.08))}
+.ev{position:relative;margin-left:44px;padding:20px 22px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.ev:before{content:'';position:absolute;left:-39px;top:24px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--or);box-shadow:0 0 0 5px rgba(255,122,0,.12)}
+.ev.big{border-color:rgba(255,122,0,.4);background:radial-gradient(ellipse at 0 0,rgba(255,122,0,.12),transparent 60%),var(--card)}
+.ev time{font:600 13px JBM,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--or2)}
+.ev h3{font-size:22px;margin:6px 0 8px}
+.ev p{font-size:17px;line-height:1.6;color:var(--tx2)}
+.ev .figure{font-size:clamp(40px,7vw,72px);font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--or);margin:8px 0 10px}
+.ev .figure small{font-size:.32em;letter-spacing:0;color:var(--tx2);font-weight:500;margin-left:10px}
+.lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+.lessons .card{border-top:3px solid var(--or)}
+.lessons .card h3{font-size:20px}
+/* rights */
+.rights{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.right{position:relative;padding:28px 24px;border-radius:22px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+.right:after{content:attr(data-n);position:absolute;right:10px;top:-22px;font:700 140px/1 Outfit,sans-serif;color:rgba(255,255,255,.035)}
+.right svg{width:44px;height:44px;stroke:var(--or);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-bottom:16px}
+.right h3{font-size:23px;margin-bottom:10px}
+.right p{color:var(--tx2);font-size:17px;line-height:1.6}
+/* money */
+.power{margin-top:34px;padding:26px;border-radius:22px;background:var(--card);border:1px solid var(--line)}
+.power .row{display:grid;grid-template-columns:150px 1fr 74px;gap:14px;align-items:center;margin-top:16px;font-size:16px;color:var(--tx2)}
+.power .bar{height:26px;border-radius:8px;background:rgba(255,255,255,.06);overflow:hidden}
+.power .bar i{display:block;height:100%;width:0;border-radius:8px;transition:width 2.2s cubic-bezier(.2,.8,.2,1)}
+.power .bar i.a{background:linear-gradient(90deg,#8d8a92,#c9c5cc)}
+.power .bar i.b{background:linear-gradient(90deg,#ff7a00,#ffb866)}
+.power.in .bar i.a{width:100%}.power.in .bar i.b{width:79%}
+.power .row b{font:600 17px JBM,monospace;color:var(--tx);text-align:right}
+.power .cap{font-size:14px;color:var(--mu);margin-top:16px}
+.cap21{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-top:8px}
+.cap21 b{font-size:clamp(34px,6vw,60px);font-weight:700;letter-spacing:-.03em;color:var(--or);line-height:1.1}
+/* proofs */
+.claims{counter-reset:c;display:grid;gap:18px;margin-top:36px}
+.claim{position:relative;padding:28px 26px 28px 118px;border-radius:22px;background:var(--card);border:1px solid var(--line)}
+.claim:before{counter-increment:c;content:'0' counter(c);position:absolute;left:26px;top:24px;font:700 54px/1 Outfit,sans-serif;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px var(--or)}
+.claim>*+*{margin-top:10px}
+.claim h3{font-size:clamp(22px,2.6vw,27px);line-height:1.2}
+.claim p{color:var(--tx2);font-size:17.5px;line-height:1.65}
+.claim .test{font-size:15.5px;color:var(--mu);border-top:1px dashed var(--line2);padding-top:12px;margin-top:16px}
+.claim .test b{color:var(--or2);font:600 12px JBM,monospace;letter-spacing:.14em;text-transform:uppercase;margin-right:8px}
+.eq{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin:16px 0;padding:18px 20px;border-radius:16px;background:#0b0b0e;border:1px solid var(--line)}
+.eq .m{position:relative;font:600 clamp(30px,6vw,52px)/1 JBM,monospace;letter-spacing:.04em;color:var(--tx)}
+.eq .m:after{content:'';position:absolute;left:-6px;right:-6px;top:50%;height:4px;border-radius:4px;background:#ff5b4d;transform:scaleX(0);transform-origin:left;transition:transform .9s .5s cubic-bezier(.6,0,.2,1)}
+.rv.in .eq .m:after{transform:scaleX(1)}
+.eq .r{font:600 14px JBM,monospace;letter-spacing:.16em;text-transform:uppercase;color:#ff8d82;border:1px solid rgba(255,91,77,.45);background:rgba(255,91,77,.08);padding:6px 12px;border-radius:999px}
+.eq span.t{flex:1 1 240px;color:var(--tx2);font-size:16px;line-height:1.5}
+/* how */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.how .card h3{font-size:19px}
+.how .card p{font-size:16.5px;line-height:1.6}
+.how .card code{font-size:13.5px;color:var(--or2)}
+/* design laws + built grid */
+.laws{list-style:none;counter-reset:l;display:grid;gap:12px;margin-top:30px}
+.laws li{counter-increment:l;position:relative;padding:16px 18px 16px 62px;border-radius:14px;background:var(--card);border:1px solid var(--line);color:var(--tx2);font-size:17.5px;line-height:1.6}
+.laws li:before{content:counter(l);position:absolute;left:18px;top:13px;font:700 30px/1 Outfit,sans-serif;color:var(--or)}
+.laws li b{color:var(--tx)}
+.built{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:34px}
+.built .card{border-top:3px solid var(--or)}
+.built .card h3{font-size:19px}
+.built .card p{font-size:16.5px;line-height:1.6}
+@media(max-width:1100px){.built{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.built{grid-template-columns:1fr}.laws li{padding:14px 14px 14px 50px;font-size:17px}.laws li:before{left:14px;font-size:26px}}
+/* status ladder */
+.ladder{list-style:none;display:grid;gap:10px;margin-top:28px}
+.ladder li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;padding:16px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line);color:var(--tx2);font-size:17px;line-height:1.55}
+.ladder li b{color:var(--tx)}
+/* closing + signature */
+.close{position:relative;margin-top:84px;padding:90px 0 80px;border-top:1px solid var(--line);background:radial-gradient(70% 90% at 50% 100%,rgba(255,122,0,.16),transparent 70%)}
+.close h2{font-size:clamp(34px,5.6vw,66px);letter-spacing:-.03em}
+.close .big{font-size:clamp(21px,2.6vw,26px);color:var(--tx);line-height:1.55}
+.sig{margin-top:46px;display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 26px}
+.sig svg{width:min(300px,70vw);height:auto;overflow:visible}
+.sig path{fill:none;stroke:#ffab4d;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1200;stroke-dashoffset:1200}
+.sig.in path{animation:sign 2.6s .2s cubic-bezier(.5,0,.2,1) forwards}
+.sig.in path.u{animation-delay:2.4s;animation-duration:1s}
+@keyframes sign{to{stroke-dashoffset:0}}
+.sig .who{font:500 15px JBM,monospace;letter-spacing:.1em;color:var(--mu);padding-bottom:10px}
+.sig .who b{display:block;font:700 26px Outfit,sans-serif;letter-spacing:-.01em;color:var(--tx)}
+.src{margin-top:26px;padding-left:22px;display:grid;gap:10px;color:var(--mu);font-size:15px;line-height:1.55}
+.src li::marker{font-family:JBM,monospace;color:var(--or2);font-size:13px}
+.src a{color:var(--tx2);text-decoration:underline;text-decoration-color:rgba(255,255,255,.2);text-underline-offset:3px}
+.src a:hover{color:#fff}
+@media(max-width:980px){.wp-hero .wrap{grid-template-columns:1fr}.seal{width:200px;order:-1;margin:0}.lessons,.rights,.how{grid-template-columns:1fr}}
+@media(max-width:620px){.wp-hero{padding:56px 0 48px}.sec{padding-top:64px}.doc p{font-size:18px}.claim{padding:22px 20px}.claim:before{position:static;display:block;font-size:44px;margin-bottom:12px}.ev .figure small{display:block;margin:8px 0 0;font-size:16px}.power{padding:20px 16px}.power .row{grid-template-columns:1fr 62px;gap:6px 10px}.power .row span{grid-column:1/-1}.ev{margin-left:36px;padding:18px 16px}.ev:before{left:-32px}.tl:before{left:10px}.abstract{padding:22px 20px}.seal{width:150px}.close{padding:64px 0 56px}}
+@media (prefers-reduced-motion:reduce){.sig path{stroke-dashoffset:0}.power .bar i.a{width:100%}.power .bar i.b{width:79%}.eq .m:after{transform:scaleX(1)}}
+@media print{
+  .nav,footer,#prog,.toc,.seal,.skip,.ctas,.close .btn{display:none!important}
+  :root{--bg:#fff;--card:#fff;--tx:#111;--tx2:#222;--mu:#555;--line:#ccc;--line2:#bbb}
+  body{background:#fff;color:#111;font-size:12pt}
+  .wp-hero:before,.wp-hero:after{display:none}.wp-hero{padding:0 0 20px}.close{background:none}
+  .rv{opacity:1!important;transform:none!important}.sig path{stroke-dashoffset:0;stroke:#c25e00}
+  .power .bar i.a{width:100%}.power .bar i.b{width:79%}
+  .ev,.claim,.card,.right,.abstract,.power{break-inside:avoid}
+  a{color:#111}
+}
+</style>
+  <script src="lib/wallet-nav.js?v=1"></script>
+</head>
+<body>
+<div id="prog" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
+  <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper" aria-current="page">Whitepaper</a></li><li><a href="/faq">FAQ</a></li></ul>
+  <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
+    <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
+</div></nav>
+
+<main id="main">
+<header class="wp-hero"><div class="wrap">
+  <div>
+    <div class="kick">Whitepaper · version 3 · November 2026</div>
+    <h1><span>Private digital cash</span><span>is a right.</span><span class="or">So I am building it.</span></h1>
+    <p class="lead">MoneroUSD is private, post-quantum digital cash with a whole economy on top of it. Nobody asked me for another coin. I am building this because money that watches you, obeys someone else and shrinks every year is not good enough for anyone.</p>
+    <div class="byline"><span>By <b>Cas</b></span><i></i><span>One page</span><i></i><span>About 11 minutes</span><i></i><span>Sources at the end</span></div>
+    <div class="ctas" style="margin-top:26px"><a class="btn btn-p" href="/MoneroUSD-Whitepaper-v3.pdf" download="MoneroUSD-Whitepaper-v3.pdf"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download the one-page PDF</a><a class="btn btn-g" href="#why">Read it here ↓</a></div>
+    <div class="toc" aria-label="Sections" style="margin-top:26px">
+      <a href="#why"><b>01</b>Why now</a><a href="#rights"><b>02</b>Three rights</a><a href="#money"><b>03</b>Money nobody prints</a><a href="#prove"><b>04</b>Five convictions</a><a href="#how"><b>05</b>The design</a><a href="#built"><b>06</b>Built this far</a><a href="#for"><b>07</b>Who it is for</a><a href="#choice"><b>08</b>The choice</a>
+    </div>
+  </div>
+  <div class="seal" aria-hidden="true">
+    <svg viewBox="0 0 340 340">
+      <defs><path id="ringA" d="M170,170 m-150,0 a150,150 0 1,1 300,0 a150,150 0 1,1 -300,0"/><path id="ringB" d="M170,170 m-112,0 a112,112 0 1,1 224,0 a112,112 0 1,1 -224,0"/></defs>
+      <circle cx="170" cy="170" r="166" fill="none" stroke="rgba(255,122,0,.35)" stroke-width="1"/>
+      <circle cx="170" cy="170" r="131" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1" stroke-dasharray="2 7"/>
+      <circle cx="170" cy="170" r="94" fill="none" stroke="rgba(255,122,0,.25)" stroke-width="1"/>
+      <g class="turn"><text font-family="JBM,monospace" font-size="15.5" font-weight="600" letter-spacing="5.2" fill="#ffab4d"><textPath href="#ringA">PRIVATE DIGITAL CASH · NO PERMISSION · NO CENSOR · NO PRINTER · POST-QUANTUM ·</textPath></text></g>
+      <g class="turn back"><text font-family="JBM,monospace" font-size="12" letter-spacing="4.4" fill="#a29ea6"><textPath href="#ringB">WHITEPAPER V3 · MONEY THAT IS YOURS · WHITEPAPER V3 · MONEY THAT IS YOURS ·</textPath></text></g>
+    </svg>
+    <img src="/logo.svg" alt="" width="116" height="116">
+  </div>
+</div></header>
+
+<div class="doc">
+  <div class="abstract rv">
+    <p>Cash never asked who you were. It kept no diary of your life, it could not be switched off, and when you handed it over the matter was finished. That kind of money is being taken from us one convenience at a time. What replaces it watches every purchase, answers to whoever controls it, and melts a little in your hand each year. I refuse to accept that as the future. MoneroUSD is cash rebuilt for the internet: a dollar that is yours the way a banknote in your pocket is yours, with a whole economy around it that nobody can close to you. This paper is the reason I am building it.</p>
+  </div>
+  <div class="satoshi rv">
+    <div class="num">The inspiration</div>
+    <p>In October 2008 someone using the name Satoshi Nakamoto published nine pages titled <i>Bitcoin: A Peer-to-Peer Electronic Cash System</i>. Then Satoshi built it, gave it to the world, asked for nothing and walked away. Read that title again. <b>Cash.</b> Satoshi proved that money does not need a master, and that one person with an idea and the will to finish it can change what money is. That is the reason I am here.</p>
+    <p>Bitcoin made money free. It did not make it private, and a ledger the whole world can read is a gift to everyone who wants to watch. MoneroUSD is my attempt to finish the sentence Satoshi started: electronic cash that is truly cash. The asset that secures this network is named Satoshi, and there will only ever be twenty-one million of it, for the same reason.</p>
+  </div>
+</div>
+
+<!-- 01 -->
+<section class="sec" id="why"><div class="doc">
+  <div class="num rv">01 · Why now</div>
+  <h2 class="rv">I did not have to imagine any of this. <span class="or">I only had to read the news.</span></h2>
+  <p class="rv">Everything below happened. It happened to the biggest, most licensed, most supervised companies in this industry, and to ordinary people whose only mistake was trusting them.</p>
+
+  <div class="tl">
+    <div class="ev big rv">
+      <time datetime="2026-10-29">29 October 2026 · Binance</time>
+      <div class="figure">$6.3 billion<small>gone in about 20 minutes</small></div>
+      <p>The largest theft in the history of crypto left the world's largest exchange across ten blockchains. Analysts at TRM Labs attribute it to a North Korean unit and assess that the exchange's hot-wallet signing system was compromised. Trading and withdrawals stopped for about three days. Binance says it is covering the loss itself.<sup class="c"><a href="#s1">1</a></sup> One company held the keys to everyone's money, and one break was enough.</p>
+    </div>
+    <div class="ev rv">
+      <time datetime="2026-10-29">The same night</time>
+      <h3>About $2.6 billion of it was frozen within hours.</h3>
+      <p>Tether and Circle froze the stolen dollars from their own keyboards.<sup class="c"><a href="#s1">1</a></sup> People cheered, and that night I understood why. But think about what you just watched. A dollar an issuer can freeze for a thief is a dollar that can be frozen for a protester, a journalist, or a shop a bank has decided it dislikes. The switch does not know the difference, and the hand on it changes.</p>
+    </div>
+    <div class="ev rv">
+      <time datetime="2025-02-21">February 2025 · Bybit</time>
+      <h3>$1.5 billion, through one developer's laptop.</h3>
+      <p>Attackers compromised a developer's machine at the exchange's wallet provider, and the signers approved a transaction they could not read.<sup class="c"><a href="#s2">2</a></sup> That record stood for twenty months. Then it was beaten four times over.</p>
+    </div>
+    <div class="ev rv">
+      <time datetime="2025-05-15">May 2025 · Coinbase</time>
+      <h3>69,461 customers' identity files, sold by insiders.</h3>
+      <p>Criminals bribed support staff and left with names, home addresses and images of government ID.<sup class="c"><a href="#s3">3</a></sup> That file exists for one reason: the rules force every exchange to build it. This month a seller claimed to hold records on hundreds of millions of Binance users. Binance says it found no evidence of a breach.<sup class="c"><a href="#s4">4</a></sup> True or not, the file exists to be claimed, and one day it will be.</p>
+    </div>
+    <div class="ev rv">
+      <time datetime="2025-11-06">August to November 2025 · New York</time>
+      <h3>Privacy developers, prosecuted as unlicensed money businesses.</h3>
+      <p>A jury convicted a Tornado Cash developer of conspiring to run an unlicensed money transmitting business. The two founders of Samourai Wallet were sentenced to five and four years.<sup class="c"><a href="#s5">5</a></sup> Their software never held a customer's funds. They went to prison for giving people privacy.</p>
+    </div>
+    <div class="ev rv">
+      <time datetime="2027-07-10">Arriving 10 July 2027 · European Union</time>
+      <h3>Privacy coins leave every regulated exchange in Europe.</h3>
+      <p>The EU's anti-money-laundering regulation bars exchanges and custodians from anonymous accounts and from coins that enhance anonymity.<sup class="c"><a href="#s6">6</a></sup> In October a French finance committee adopted an amendment that would make people declare wallets they hold themselves above €100,000. South Korea blocked access to 27 unregistered exchanges the same month.<sup class="c"><a href="#s7">7</a></sup> It never arrives all at once. It arrives one reasonable-sounding rule at a time.</p>
+    </div>
+    <div class="ev rv">
+      <time datetime="2026-09">2026 · The economy</time>
+      <h3>Prices up 3.7%. Real pay down 0.7%.</h3>
+      <p>In the year to September, US prices rose 3.7% while real hourly earnings fell 0.7%.<sup class="c"><a href="#s8">8</a></sup> Prices are more than a quarter higher than at the start of 2020.<sup class="c"><a href="#s9">9</a></sup> In November's University of Michigan survey, about 57% of consumers said high prices were eroding their standard of living.<sup class="c"><a href="#s10">10</a></sup> People are working harder to stand still.</p>
+    </div>
+  </div>
+</div>
+<div class="wide">
+  <div class="lessons rv">
+    <div class="card"><h3>Custody is the hole.</h3><p>When one company holds everyone's keys, one break takes everything. The rules did not prevent it. They licensed it.</p></div>
+    <div class="card"><h3>The identity file is the hole.</h3><p>Data that is never collected cannot be stolen, sold or subpoenaed. Know-your-customer builds the list that criminals shop from.</p></div>
+    <div class="card"><h3>The printer is the hole.</h3><p>A raise that prices then eat is not a raise. Whoever can create money decides what yours is worth.</p></div>
+  </div>
+</div></section>
+
+<!-- 02 -->
+<section class="sec" id="rights"><div class="doc">
+  <div class="num rv">02 · The reason</div>
+  <h2 class="rv">Three rights. <span class="or">Not features. Rights.</span></h2>
+  <p class="rv">A right that depends on a company's terms of service is a permission, and permissions get withdrawn. I wanted these three to hold because of how the system is made, so that no executive, no regulator and no later version of me could ever take them back.</p>
+</div>
+<div class="wide">
+  <div class="rights">
+    <div class="right rv" data-n="1">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><rect x="9" y="19" width="26" height="18" rx="4"/><path d="M15 19v-5a7 7 0 0 1 14 0v5"/><circle cx="22" cy="28" r="2.4"/></svg>
+      <h3>Private digital cash</h3>
+      <p>What you earn and what you buy is nobody's business unless you choose to show it. Every payment is checked by every node and readable by none of them: not the amount, not the sender, not the receiver, not even how many payments a block holds.</p>
+    </div>
+    <div class="right rv" data-n="2">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="14"/><path d="M8 22h28M22 8c5 4 5 24 0 28M22 8c-5 4-5 24 0 28"/></svg>
+      <h3>No censor</h3>
+      <p>No account to open, no company to approve you, no switch that freezes a balance, and no payment that can be pulled back. Nodes speak only over hidden addresses, so there is no server to seize and no IP address to block or log.</p>
+    </div>
+    <div class="right rv" data-n="3">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M7 36h30M10 36V20M18 36V20M26 36V20M34 36V20M6 20l16-11 16 11z"/></svg>
+      <h3>The right to a financial system</h3>
+      <p>Saving, paying, borrowing, trading, selling and getting paid: all of it, open to a phone anywhere on earth, with nobody deciding who qualifies. The chain is made to stay small enough that the people who use it are the people who run it.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 03 -->
+<section class="sec" id="money"><div class="doc">
+  <div class="num rv">03 · Money nobody prints</div>
+  <h2 class="rv">Inflation is a decision. <span class="or">Take the decision away.</span></h2>
+  <p class="rv">Inflation is not weather. It is a choice, made in rooms you will never be invited into, by people it does not hurt. Those closest to the new money spend it first. Everyone living on a wage or holding savings pays for it afterwards, a few percent at a time, for the rest of their lives.</p>
+
+  <div class="power rv">
+    <div class="num" style="letter-spacing:.16em">What one dollar buys</div>
+    <div class="row"><span>January 2020</span><div class="bar"><i class="a"></i></div><b>$1.00</b></div>
+    <div class="row"><span>Late 2026</span><div class="bar"><i class="b"></i></div><b>&lt; 80¢</b></div>
+    <p class="cap">US consumer prices are more than 25% higher than in January 2020, so a 2020 dollar buys less than 80 cents' worth today.<sup class="c"><a href="#s9">9</a></sup></p>
+  </div>
+
+  <p class="pull rv">I want a world where your pay goes up <em>and your prices do not follow it.</em></p>
+  <p class="rv">That is not a fantasy. It is what happens when money cannot be created at will: the gains from better tools and harder work stay with the people who earned them. Saving works again. Patience pays. Someone who starts with nothing has a real shot at wealth, because the measuring stick stops shrinking in their hand. Fair does not mean everyone is handed the same. It means nobody gets to quietly water down what you earned.</p>
+  <p class="rv"><b>So MoneroUSD has no printer.</b> Every USDm comes into existence against a larger deposit of Bitcoin or Monero, checked by proof. There is no issuer, no treasury, no committee that can decide there should be more of it, and no bank account behind it for anyone to freeze.</p>
+  <div class="cap21 rv"><b>21,000,000</b><span class="muted">Satoshi (SAT), the asset that secures the network. Twenty-one million, enforced by every node, for good.</span></div>
+  <p class="rv" style="margin-top:16px"><b>And the network's income belongs to the people in it.</b> A payment costs a tenth of a cent, the same for everyone. That fee goes to the people who stake, validate and mine. No company sits in the middle taking its cut.</p>
+  <p class="rv">The dollar is where this starts, because it is what the world is paid in today. Take away the power to print it. Take away the power to freeze it. Put a fixed-supply asset beside it and let people hold, earn and settle in money that answers to nobody. That is how inflation ends. Not by a law, and not by asking politely. By giving people the exit.</p>
+</div></section>
+
+<!-- 04 -->
+<section class="sec" id="prove"><div class="doc">
+  <div class="num rv">04 · What MoneroUSD is here to prove</div>
+  <h2 class="rv">Five convictions. <span class="or">I intend to prove every one.</span></h2>
+  <p class="rv">I am tired of being told to choose. Privacy or safety. Freedom or protection. People or machines. MoneroUSD exists to show that every one of those was a false choice.</p>
+
+  <div class="claims">
+    <div class="claim rv">
+      <h3>Privacy and protection belong together.</h3>
+      <p>We were told you can have privacy or you can have protection, and that anyone who wants both must have something to hide. That is a lie told by people who profit from watching. On MoneroUSD a payment is private and final, and a buyer who wants protection still gets it: the money waits in an escrow that no company judges and no clerk can be argued with. It moves when the buyer confirms, when both sides agree, or when the clock runs out. A parcel left on a doorstep is proven delivered by the carrier's own signature, and the carrier's email never leaves the seller's machine. Nobody had to be watched for any of it.</p>
+    </div>
+    <div class="claim rv">
+      <h3>Crypto does not need permission to be safe.</h3>
+      <p>Know-your-customer was sold as protection. Look at what it delivered: the largest thefts in history from licensed custodians, identity files sold by insiders, and the developers of privacy tools sent to prison. Every rule that begins as protection ends as reach. Real safety is built, never granted: no company holding everyone's keys, no file of passports waiting to leak, no button that freezes or reverses, and every rule enforced by mathematics that anyone can check. This industry has to decide whether it will be regulated out of existence or become the real thing. I have decided.</p>
+    </div>
+    <div class="claim rv">
+      <h3>AI can build this.</h3>
+      <p>I am building MoneroUSD with AI, and I am not going to hide it. One person with conviction and the most capable machines ever made can now build what used to take a bank's budget and a floor of engineers. People will say that makes it fragile. I say watch. Nothing here is taken on faith. Every weakness found becomes a permanent attack the network must keep refusing, and the code is hammered day and night by the same kind of intelligence that wrote it. When AI-built infrastructure holds people's money safely, the monopoly on building financial systems is over.</p>
+    </div>
+    <div class="claim rv">
+      <h3>And AI will not break it.</h3>
+      <p>AI already breaks crypto. In one 2025 study, AI agents exploited 207 of 405 real contracts that had been hacked before, and found two unknown flaws in 2,849 new ones.<sup class="c"><a href="#s11">11</a></sup> Deepfaked video calls and fake job interviews are now ordinary tools for getting inside an exchange.<sup class="c"><a href="#s12">12</a></sup> Most of this industry is not ready for what is coming. My answer is arithmetic.</p>
+      <div class="eq"><span class="m">1 + 1 = 3</span><span class="r">Refused</span><span class="t">No model, however strong, can make a false statement check. A payment is valid only if its proof verifies.</span></div>
+      <p>So MoneroUSD gives a clever attacker nothing to talk to. No admin key to phish. No support desk to bribe. No signer to fool on a video call. What is left is mathematics, guarded around the clock by the same kind of intelligence that would attack it. AI can break crypto. It is also the best thing that has ever happened to securing it, and to securing every system the world already depends on.</p>
+    </div>
+    <div class="claim rv">
+      <h3>Digital cash can replace the card networks.</h3>
+      <p>A card payment hands your name to half a dozen companies, costs the shop two or three percent, and can be pulled back weeks later. Cash never did any of that. MoneroUSD is built to settle in under a second for a tenth of a cent, final the moment it lands, from a tap of a phone or a button on any website. This was never meant to be a niche coin for people who already love crypto. It is meant to replace the thing in your wallet.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 -->
+<section class="sec" id="how"><div class="doc">
+  <div class="num rv">05 · The design</div>
+  <h2 class="rv">The ideology, <span class="or">written in code.</span></h2>
+  <p class="rv">Beliefs are cheap until they cost you something. Before the first line was written I set the rules below, and I have refused, every single time, to trade one of them for another. When two of them collided, the answer was never a compromise. The answer was to go back and invent something better. That is why this took as long as it did, and why it is shaped the way it is.</p>
+  <ol class="laws">
+    <li class="rv"><b>Private by construction.</b> A promise not to look is worth nothing. The chain is designed so there is nothing to look at: no amounts, no names, no links between payments, no count of how many were made.</li>
+    <li class="rv"><b>Post-quantum from the first byte.</b> Money has to outlive the machines that will break today's cryptography. I was not willing to build something that a future computer could quietly open.</li>
+    <li class="rv"><b>Proof, never trust.</b> Every rule in the system is enforced by a proof that any node can check. Nobody is asked to behave. Misbehaviour simply does not verify.</li>
+    <li class="rv"><b>Small enough for a phone, for good.</b> A chain that only data centres can run belongs to data centres. The whole history folds into one proof, so the node never grows and anyone can run one.</li>
+    <li class="rv"><b>Nobody to ask.</b> No company, no server and no committee that the network needs in order to work. Every key that moves value belongs to one participant or is split among many.</li>
+    <li class="rv"><b>It never stops.</b> A bad payment is refused and the chain moves on. Nothing and nobody gets to halt everyone else's money.</li>
+    <li class="rv"><b>Simple enough for anyone.</b> If it needs a manual, it has failed. Every cost is shown in dollars before you act, and protection is on by default.</li>
+  </ol>
+  <p class="rv" style="margin-top:26px">Here is what those rules turned into.</p>
+</div>
+<div class="wide">
+  <div class="how">
+    <div class="card rv"><h3>Sealed notes</h3><p>Money is held as sealed notes, not account balances. Spending a note publishes a one-time marker into a set, so the same note can never be spent twice, and nothing links the marker back to the note.</p></div>
+    <div class="card rv"><h3>Proofs instead of trust</h3><p>Each payment carries a zero-knowledge proof that the amounts balance and nothing was created. Nodes check the proof and learn nothing else.</p></div>
+    <div class="card rv"><h3>Post-quantum throughout</h3><p><code>ML-KEM-768</code> <code>ML-DSA-65</code> <code>Poseidon2</code> <code>WHIR</code> <code>BLAKE3</code> <code>SHA-3</code>. Built for the day quantum computers arrive, so there is nothing to record now and break later.</p></div>
+    <div class="card rv"><h3>A DAG of blocks</h3><p>Blocks are made in parallel and put in one order by GHOSTDAG, the rule Kaspa proved in production. The chain is designed for a block every half second.</p></div>
+    <div class="card rv"><h3>A chain that does not grow</h3><p>Each block folds into one recursive proof, so a new node joins at the tip without replaying history. A full node is meant to fit on a phone, for good.</p></div>
+    <div class="card rv"><h3>Nothing to count</h3><p>Every block has the same shape whether it carries one payment or many, and the network runs over hidden addresses. An observer cannot measure activity, timing or who is talking.</p></div>
+  </div>
+  <p class="rv" style="margin-top:26px;text-align:center"><a class="more" href="/#how">The mechanism in detail →</a> &nbsp; <a class="more" href="/business">For business →</a> &nbsp; <a class="more" href="/defi">Trading and contracts →</a> &nbsp; <a class="more" href="/sat">SAT →</a></p>
+</div></section>
+
+<!-- 06 -->
+<section class="sec" id="built"><div class="doc">
+  <div class="num rv">06 · Built this far</div>
+  <h2 class="rv">Cash first. <span class="or">Then everything a person needs around it.</span></h2>
+  <p class="rv">I started with the hardest part, the cash itself, because a private economy built on money that leaks is a lie. Once a payment could move between real nodes with nothing showing, I kept going, because cash alone does not free anyone. People need to earn, sell, save, borrow, trade, talk and publish. So the goal was never a coin. The goal was a whole economy that cannot be watched and cannot be closed.</p>
+</div>
+<div class="wide">
+  <div class="built">
+    <div class="card rv"><h3>The chain</h3><p>A post-quantum block-DAG where real nodes pay each other privately, restart without losing a thing, and let a brand-new node join straight at the tip.</p></div>
+    <div class="card rv"><h3>The wallet</h3><p>Feels like a bank app, works like cash. A seed in one tap, pay anyone by @username, every cost in dollars before you confirm.</p></div>
+    <div class="card rv"><h3>USDm and the bridge</h3><p>Bring Bitcoin or Monero and mint dollars against it. Custody is shared among bonded validators, so nobody holds the vault.</p></div>
+    <div class="card rv"><h3>Tap to pay and business</h3><p>Phone to phone over Bluetooth with no card network, escrow that needs no judge, proof of delivery, and a checkout for any website.</p></div>
+    <div class="card rv"><h3>Ion Swap and Dark Solidity</h3><p>Trading in sealed batches that publish one price and nothing else, and smart contracts that are proven instead of re-run in public.</p></div>
+    <div class="card rv"><h3>Letter</h3><p>Private messages with money inside. No phone number, no email, no server. Your wallet is your login.</p></div>
+    <div class="card rv"><h3>MoneroUSD Veil</h3><p>Our own mix network, so that who talks to whom is hidden as well as what they say. Being built now.</p></div>
+    <div class="card rv"><h3>Sovereign</h3><p>A browser and a home for websites that nobody can take down, owned by the key in your wallet. Next in line.</p></div>
+  </div>
+  <p class="pull rv" style="max-width:860px;margin:44px auto 0">It is not finished. It is far enough along that <em>I know it can be.</em></p>
+</div></section>
+
+<!-- 07 -->
+<section class="sec" id="for"><div class="doc">
+  <div class="num rv">07 · Who it is for</div>
+  <h2 class="rv">Built for the people <span class="or">the system was not built for.</span></h2>
+  <p class="rv">I am not building this for funds, exchanges or anyone who is already comfortable. I am building it for these people.</p>
+</div>
+<div class="wide">
+  <div class="how">
+    <div class="card rv"><h3>The worker whose raise vanished</h3><p>You earned more this year and you can afford less. That gap went somewhere. It should have stayed with you.</p></div>
+    <div class="card rv"><h3>The shop that pays to be allowed to sell</h3><p>Two or three percent of every sale, and the sale can still be reversed. Keep all of it, and keep it for good.</p></div>
+    <div class="card rv"><h3>The person a bank did not want</h3><p>Wrong country, wrong paperwork, wrong politics, wrong job. Here there is no account to open and nobody to say no.</p></div>
+    <div class="card rv"><h3>The saver</h3><p>You were told to be careful with money, and then you watched it shrink. You deserve money that respects the years it took to earn.</p></div>
+    <div class="card rv"><h3>The builder</h3><p>Write a contract or publish an app and be paid by the chain itself. No app store, no gatekeeper, no cut taken on the way.</p></div>
+    <div class="card rv"><h3>Anyone whose life is their own</h3><p>What you buy, who you pay and what you are worth is yours to share or to keep. Privacy is not suspicion. It is dignity.</p></div>
+  </div>
+</div></section>
+
+<!-- 08 -->
+<section class="close" id="choice"><div class="doc">
+  <div class="num rv">08 · The choice</div>
+  <h2 class="rv" style="margin:18px 0 24px">Regulated away, <span class="or">or real.</span></h2>
+  <p class="big rv">Crypto began as cash for the internet. Then most of it took a deal: hold your customers' keys, collect their passports, add a freeze button, and you may stay in business. Read section 01 again and tell me that deal protected anyone.</p>
+  <p class="big rv" style="margin-top:18px">This industry has to decide what it is. If it is a faster database for the same banks, it will be regulated until nothing is left of the idea, and it will have earned that. If it is real, it has to work with no permission at all: private by default, open to every person on earth, protected by proof.</p>
+  <p class="big rv" style="margin-top:18px">I choose real. I want a world where pay rises and prices do not, where privacy is ordinary, where nobody can be locked out of money, and where the most powerful technology we have ever made is used to protect people instead of watching them. I believe that world can be built, so I am building it. That is the whole reason for MoneroUSD.</p>
+
+  <div class="sig rv" aria-label="Signed, Cas">
+    <svg viewBox="0 0 300 120" role="img" aria-label="Signature: Cas">
+      <path d="M92 30 C70 4 22 26 24 66 C26 104 76 106 98 80 C106 70 118 58 130 60 C114 56 100 70 104 84 C108 98 126 88 132 64 C130 80 132 96 146 90 C158 84 164 70 172 60 C182 50 192 56 184 64 C172 72 196 78 186 92 C178 102 162 98 160 90"/>
+      <path class="u" d="M70 110 C130 100 200 98 276 96"/>
+    </svg>
+    <div class="who"><b>— Cas</b>MoneroUSD · November 2026</div>
+  </div>
+  <p class="rv" style="margin-top:34px"><a class="btn btn-g" href="/MoneroUSD-Whitepaper-v3.pdf" download="MoneroUSD-Whitepaper-v3.pdf">Download the one-page PDF ↓</a></p>
+</div></section>
+
+<section class="sec" id="sources" style="padding-top:56px"><div class="doc">
+  <div class="num">Sources</div>
+  <ol class="src">
+    <li id="s1">The October 2026 Binance theft, its timeline, attribution and the issuer freezes: <a href="https://www.trmlabs.com/resources/blog/north-korea-steals-usd-6-36-billion-from-binance-in-the-largest-hack-in-history" rel="noopener">TRM Labs</a>; <a href="https://en.wikipedia.org/wiki/2026_Binance_hack" rel="noopener">Wikipedia, "2026 Binance hack"</a>; <a href="https://www.cnbc.com/2026/10/30/billions-in-crypto-frozen-in-binance-hack-heres-what-happens-next-.html" rel="noopener">CNBC</a>.</li>
+    <li id="s2">Bybit, February 2025: <a href="https://www.bleepingcomputer.com/news/security/lazarus-hacked-bybit-via-a-breached-safe-wallet-developer-machine/" rel="noopener">BleepingComputer</a>.</li>
+    <li id="s3">Coinbase customer data, May 2025: <a href="https://www.helpnetsecurity.com/2025/05/15/coinbase-suffers-data-breach-gets-extorted/" rel="noopener">Help Net Security</a>; the 69,461 figure is from Coinbase's filing with the Maine Attorney General.</li>
+    <li id="s4">The November 2026 claim about Binance user records, and Binance's denial: <a href="https://www.bleepingcomputer.com/news/security/binance-denies-data-breach-after-alleged-shinyhunters-claims/" rel="noopener">BleepingComputer</a>.</li>
+    <li id="s5">Tornado Cash verdict, August 2025: <a href="https://blockworks.co/news/roman-storm-guilty-one-count" rel="noopener">Blockworks</a>. Samourai Wallet sentences, November 2025: <a href="https://www.theblock.co/post/377937/samourai-wallet-keonne-rodriguez-sentenced-maximum-five-year-term-crypto-mixing-service" rel="noopener">The Block</a>.</li>
+    <li id="s6">Regulation (EU) 2024/1624, Article 79, applying from 10 July 2027: <a href="https://eur-lex.europa.eu/eli/reg/2024/1624/oj" rel="noopener">EUR-Lex</a>; <a href="https://cointelegraph.com/news/eu-crypto-ban-anonymous-privacy-tokens-2027" rel="noopener">Cointelegraph</a>.</li>
+    <li id="s7">France's wallet-declaration amendment (adopted in committee, not law at the time of writing) and South Korea's blocks, October 2026: <a href="https://www.bullrunners.com/blog/crypto-regulation-news-october-2026/" rel="noopener">Bullrunners regulation roundup</a>.</li>
+    <li id="s8">US inflation, September 2026: <a href="https://tradingeconomics.com/united-states/inflation-cpi" rel="noopener">Trading Economics</a>. Real hourly earnings: <a href="https://realinvestmentadvice.com/resources/blog/real-wages-are-shrinking-again-watch-consumer-earnings/" rel="noopener">Real Investment Advice</a>, citing the Bureau of Labor Statistics.</li>
+    <li id="s9">Consumer Price Index, all urban consumers, January 2020 to 2026: <a href="https://www.bls.gov/cpi/" rel="noopener">US Bureau of Labor Statistics</a>.</li>
+    <li id="s10">Consumer sentiment, November 2026 preliminary: <a href="https://www.sca.isr.umich.edu/" rel="noopener">University of Michigan Surveys of Consumers</a>; <a href="https://bankingjournal.aba.com/2026/11/preliminary-consumer-sentiment-rises-in-november/" rel="noopener">ABA Banking Journal</a>.</li>
+    <li id="s11">AI agents exploiting smart contracts: <a href="https://red.anthropic.com/2025/smart-contracts/" rel="noopener">Anthropic, SCONE-bench</a>.</li>
+    <li id="s12">AI-enabled social engineering against crypto firms: <a href="https://cloud.google.com/blog/topics/threat-intelligence/unc1069-targets-cryptocurrency-ai-social-engineering" rel="noopener">Google Mandiant</a>.</li>
+  </ol>
+  <p class="muted" style="margin-top:26px;font-size:14px">MoneroUSD is in development and does not hold real funds yet. This paper is its author's vision and is not financial or legal advice. MoneroUSD is not affiliated with the Monero Project.</p>
+</div></section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">MoneroUSD</a><p style="margin-top:12px;max-width:360px">Private, post-quantum digital cash. Not affiliated with the Monero Project. Nothing here is financial advice.</p></div>
+    <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
+    <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script>
+(function(){var p=document.getElementById('prog');if(!p)return;var t=false;
+function u(){t=false;var h=document.documentElement,m=h.scrollHeight-h.clientHeight;p.style.width=(m>0?Math.min(100,h.scrollTop/m*100):0)+'%';}
+addEventListener('scroll',function(){if(!t){t=true;requestAnimationFrame(u);}},{passive:true});u();})();
+</script>
+</body>
+</html>

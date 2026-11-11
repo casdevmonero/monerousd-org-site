@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>Sovereign — The Uncensorable Web Browser &amp; .mud Sites | MoneroUSD</title>
+<meta name="description" content="Sovereign: a browser for websites that live on the MoneroUSD network. Publish in three taps, claim a .mud name, pay once, and every byte is checked on chain.">
+<link rel="canonical" href="https://monerousd.org/sovereign">
+<meta name="theme-color" content="#060607">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<meta property="og:type" content="article"><meta property="og:site_name" content="MoneroUSD">
+<meta property="og:title" content="Sovereign — a browser for a web nobody can take down">
+<meta property="og:description" content="Publish in three taps, own your site with your wallet key, and browse privately over the MoneroUSD Veil.">
+<meta property="og:url" content="https://monerousd.org/sovereign"><meta property="og:image" content="https://monerousd.org/assets/og.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://monerousd.org/assets/og.png">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"TechArticle","headline":"Sovereign — a browser for a web nobody can take down","datePublished":"2026-11-07","author":{"@type":"Organization","name":"MoneroUSD"},"publisher":{"@type":"Organization","name":"MoneroUSD","logo":{"@type":"ImageObject","url":"https://monerousd.org/logo.svg"}},"mainEntityOfPage":"https://monerousd.org/sovereign"},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MoneroUSD","item":"https://monerousd.org/"},{"@type":"ListItem","position":2,"name":"Sovereign","item":"https://monerousd.org/sovereign"}]}
+]}
+</script>
+  <script src="lib/wallet-nav.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
+  <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign" aria-current="page">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li></ul>
+  <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
+    <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
+</div></nav>
+
+<main id="main">
+<header class="ph"><div class="wrap">
+  <div class="kick">Sovereign</div>
+  <h1>Websites that live on the network. <span class="or">Nobody can take them down.</span></h1>
+  <p class="lead">Sovereign is the browser built into the MoneroUSD wallet. Sites are published to the network's own nodes, owned by a key in your wallet, and checked byte by byte against the chain before they're shown.</p>
+  <p style="margin-top:20px"><span class="status st-design">Site records &amp; verified serving built · .mud names, sharded hosting &amp; private reads in design</span></p>
+</div></header>
+
+<section class="s"><div class="wrap grid3">
+  <div class="card rv"><h3>Browse</h3><p>Type a name like <code>kai.mud</code> and the site opens. Nobody — not your internet provider, not the node that serves it — learns which site you opened.</p></div>
+  <div class="card rv"><h3>Publish</h3><p>Pick a template or drop a folder, choose a name, see the price in dollars, tap Publish. No server, registrar, hosting account, DNS or certificate.</p></div>
+  <div class="card rv"><h3>Own</h3><p>The site belongs to the key in your wallet. Only you can change it, and nobody can roll it back or seize it.</p></div>
+</div></section>
+
+<section class="s"><div class="wrap split">
+  <div class="rv prose">
+    <div class="kick">How a name resolves</div>
+    <h2 style="margin-top:12px">Two lookups, both answered from the chain.</h2>
+    <p>A site name is your <b>@username</b>, so <code>flame.mud</code> is @flame's site and your payment handle and site share one name. Resolving it takes two steps: the name gives the owner's key; the owner's key gives the latest site root published on chain. Every node can answer both from its own state, so resolving a name asks nobody anything.</p>
+    <p>Look-alike names are refused by consensus, and the browser shows the verified owner beside the address.</p>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="Name to owner key to site root to verified chunks">
+    <svg viewBox="0 0 600 330">
+      <g font-size="17">
+        <g class="seq d1"><rect x="30" y="30" width="240" height="56" rx="12" fill="#16161b" stroke="rgba(255,122,0,.5)"/><text x="50" y="64" fill="#f4f1ee" font-weight="700" font-family="JBM,monospace">kai.mud</text></g>
+        <g class="seq d2"><line x1="150" y1="86" x2="150" y2="118" stroke="#ff7a00" stroke-width="2.5" class="flow"/><rect x="30" y="118" width="240" height="56" rx="12" fill="#16161b" stroke="rgba(255,122,0,.5)"/><text x="50" y="146" fill="#f4f1ee" font-weight="700">owner key</text><text x="50" y="164" fill="#9d978f" font-size="15" font-family="JBM,monospace">@kai · ML-DSA-65</text></g>
+        <g class="seq d3"><line x1="150" y1="174" x2="150" y2="206" stroke="#ff7a00" stroke-width="2.5" class="flow"/><rect x="30" y="206" width="240" height="56" rx="12" fill="#16161b" stroke="rgba(255,122,0,.5)"/><text x="50" y="234" fill="#f4f1ee" font-weight="700">site root, on chain</text><text x="50" y="252" fill="#9d978f" font-size="15" font-family="JBM,monospace">version 3 · Merkle root</text></g>
+        <g class="seq d4"><path d="M270 234 C320 234 320 120 360 120" stroke="#ff7a00" stroke-width="2" fill="none" class="flow"/><path d="M270 234 C320 234 320 180 360 180" stroke="#ff7a00" stroke-width="2" fill="none" class="flow"/><path d="M270 234 C320 234 320 240 360 240" stroke="#ff7a00" stroke-width="2" fill="none" class="flow"/><path d="M270 234 C320 234 320 300 360 300" stroke="#ff7a00" stroke-width="2" fill="none" class="flow"/>
+          <g fill="#16161b" stroke="rgba(255,255,255,.15)"><rect x="360" y="100" width="200" height="40" rx="8"/><rect x="360" y="160" width="200" height="40" rx="8"/><rect x="360" y="220" width="200" height="40" rx="8"/><rect x="360" y="280" width="200" height="40" rx="8"/></g>
+          <g fill="#9d978f" font-size="15" font-family="JBM,monospace"><text x="376" y="125">chunk · holder 1</text><text x="376" y="185">chunk · holder 2</text><text x="376" y="245">chunk · holder 3</text><text x="376" y="305">chunk · holder 4</text></g></g>
+        <g class="seq d5" fill="#39d98a" font-size="18" font-weight="700"><text x="545" y="126" text-anchor="end">✓</text><text x="545" y="186" text-anchor="end">✓</text><text x="545" y="246" text-anchor="end">✓</text><text x="545" y="306" text-anchor="end">✓</text></g>
+        <g class="seq d5"><text x="460" y="70" text-anchor="middle" fill="#39d98a" font-size="17" font-weight="600">each chunk checked</text></g>
+      </g>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap split rev">
+  <div class="rv prose">
+    <div class="kick">Hosting</div>
+    <h2 style="margin-top:12px">Sharded so nodes stay small.</h2>
+    <p>A site is cut into 256 KB chunks, each addressed by its hash. Each chunk is held by the four nodes nearest its hash, so per-node storage <i>falls</i> as nodes join. Every epoch, holders answer a random-chunk challenge drawn from the block hash; only holders that answer are paid. A node that serves a wrong byte is caught and the browser asks the next holder.</p>
+    <p>Popular sites are cached by whoever fetched them, like any web cache — caching never changes the root.</p>
+  </div>
+  <div class="rv">
+    <div class="tscroll"><table class="t">
+      <thead><tr><th>What you pay</th><th>Proposed price</th><th>Kept</th></tr></thead>
+      <tbody>
+        <tr><td>Storage</td><td>$0.50 per MB, once (a 2 MB site ≈ $1)</td><td>Forever — nothing to renew</td></tr>
+        <tr><td>An update</td><td>Only the new chunks</td><td>Forever</td></tr>
+        <tr><td>A .mud name</td><td>About $10 a year ($5 in a site's first year)</td><td>While renewed</td></tr>
+        <tr><td>Browsing</td><td>Free</td><td>History on your device only</td></tr>
+      </tbody>
+    </table></div>
+    <p class="muted" style="font-size:13px;margin-top:10px">Proposed prices from the design; final prices are set before launch and are always shown in dollars before you publish.</p>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap prose">
+  <div class="kick">Safety</div>
+  <h2 style="margin-top:12px">Private by construction.</h2>
+  <ul>
+    <li><b>No phoning home.</b> Sites run in a sandbox whose only network is the Veil — no clearnet requests and no WebRTC, so a site can't leak a visitor's IP.</li>
+    <li><b>Private reads.</b> Pages are fetched with private information retrieval, so the serving node doesn't learn which page you read. Visit counts exist only on the owner's own node.</li>
+    <li><b>Post-quantum.</b> ML-DSA site records, ML-KEM links, hash-addressed chunks.</li>
+  </ul>
+  <h2>The trade-off, stated.</h2>
+  <p>A published site can't be removed from the network — only replaced by a newer version — which also means nobody can take content down globally. Each node may refuse to <i>serve</i> a chunk on a local, opt-in list. That is a local choice, not global censorship, and the publish screen warns you plainly before anything goes live.</p>
+  <h2>What exists today</h2>
+  <p>The wallet already has a Sovereign browser tab, signed site records with versioned roots, and a server on your own node that checks every file against its on-chain root before serving it. Next: <code>.mud</code> name resolution, chunked and sharded hosting with storage proofs, private reads, and redesigned Browse, Publish, My Sites and Hosting screens.</p>
+</div></section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">MoneroUSD</a><p style="margin-top:12px;max-width:360px">Private, post-quantum digital cash. Not affiliated with the Monero Project. Nothing here is financial advice.</p></div>
+    <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
+    <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>MoneroUSD Veil — A Post-Quantum Mix Network for Private Money</title>
+<meta name="description" content="MoneroUSD Veil: a post-quantum mix network for private money. Three-hop layered packets, constant cover traffic, private origin and private reads.">
+<link rel="canonical" href="https://monerousd.org/veil">
+<meta name="theme-color" content="#060607">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<meta property="og:type" content="article"><meta property="og:site_name" content="MoneroUSD">
+<meta property="og:title" content="MoneroUSD Veil — who talks to whom stays hidden">
+<meta property="og:description" content="A post-quantum mix network built for money: layered packets, constant cover traffic, private origin and private reads.">
+<meta property="og:url" content="https://monerousd.org/veil"><meta property="og:image" content="https://monerousd.org/assets/og.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://monerousd.org/assets/og.png">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"TechArticle","headline":"MoneroUSD Veil — a post-quantum mix network for private money","datePublished":"2026-11-07","author":{"@type":"Organization","name":"MoneroUSD"},"publisher":{"@type":"Organization","name":"MoneroUSD","logo":{"@type":"ImageObject","url":"https://monerousd.org/logo.svg"}},"mainEntityOfPage":"https://monerousd.org/veil"},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MoneroUSD","item":"https://monerousd.org/"},{"@type":"ListItem","position":2,"name":"Veil","item":"https://monerousd.org/veil"}]}
+]}
+</script>
+  <script src="lib/wallet-nav.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
+  <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil" aria-current="page">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li></ul>
+  <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
+    <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
+</div></nav>
+
+<main id="main">
+<header class="ph"><div class="wrap">
+  <div class="kick">MoneroUSD Veil</div>
+  <h1>Encryption hides what you say. <span class="or">The Veil hides who you say it to.</span></h1>
+  <p class="lead">Even a perfectly private payment can be traced by watching the network: which computer sent it, and when. The Veil is MoneroUSD's own post-quantum mix network, built so that watching the wires tells an observer as little as watching the chain.</p>
+  <p style="margin-top:20px"><span class="status st-build">Partly built · in testing on real nodes</span></p>
+</div></header>
+
+<section class="s"><div class="wrap split">
+  <div class="rv prose">
+    <div class="kick">Sending</div>
+    <h2 style="margin-top:12px">Three hops, one layer each.</h2>
+    <p>Your wallet wraps a packet in three layers of encryption, one per relay. Each relay can remove only its own layer, so it learns only the hop before and after it. Every packet has the same size; each hop checks a MAC and refuses replays and tampered packets.</p>
+    <p>Relays send <b>cover traffic at a constant rate</b>, so a real packet is one among many identical ones. And your payment never leaves from your own node: it's pushed through the mix to a random node, which announces it as its own.</p>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="A packet loses one encryption layer at each of three relays">
+    <svg viewBox="0 0 600 300">
+      <g font-size="16" font-weight="600" text-anchor="middle" fill="#f4f1ee"><text x="60" y="250">You</text><text x="210" y="250">Relay 1</text><text x="360" y="250">Relay 2</text><text x="510" y="250">Relay 3</text></g>
+      <g fill="#141418" stroke="rgba(255,122,0,.55)" stroke-width="2"><circle cx="60" cy="150" r="26"/><circle cx="210" cy="150" r="26"/><circle cx="360" cy="150" r="26"/><circle cx="510" cy="150" r="26"/></g>
+      <g stroke="rgba(255,255,255,.12)" stroke-width="2"><line x1="86" y1="150" x2="184" y2="150"/><line x1="236" y1="150" x2="334" y2="150"/><line x1="386" y1="150" x2="484" y2="150"/><line x1="536" y1="150" x2="590" y2="150"/></g>
+      <g class="seq d1"><circle cx="135" cy="150" r="26" fill="none" stroke="rgba(255,122,0,.3)" stroke-width="4"/><circle cx="135" cy="150" r="18" fill="none" stroke="rgba(255,122,0,.55)" stroke-width="4"/><circle cx="135" cy="150" r="10" fill="none" stroke="rgba(255,122,0,.85)" stroke-width="4"/><rect x="130" y="145" width="10" height="10" fill="#ff7a00"/><text x="135" y="98" text-anchor="middle" fill="#ffab4d" font-size="15" font-family="JBM,monospace">3 layers</text></g>
+      <g class="seq d3"><circle cx="285" cy="150" r="18" fill="none" stroke="rgba(255,122,0,.55)" stroke-width="4"/><circle cx="285" cy="150" r="10" fill="none" stroke="rgba(255,122,0,.85)" stroke-width="4"/><rect x="280" y="145" width="10" height="10" fill="#ff7a00"/><text x="285" y="98" text-anchor="middle" fill="#ffab4d" font-size="15" font-family="JBM,monospace">2 layers</text></g>
+      <g class="seq d5"><circle cx="435" cy="150" r="10" fill="none" stroke="rgba(255,122,0,.85)" stroke-width="4"/><rect x="430" y="145" width="10" height="10" fill="#ff7a00"/><text x="435" y="98" text-anchor="middle" fill="#ffab4d" font-size="15" font-family="JBM,monospace">1 layer</text></g>
+      <text x="300" y="290" text-anchor="middle" fill="#8b8b95" font-size="16">each relay sees only its neighbours · fixed packet size · ML-KEM-768 per hop</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap split rev">
+  <div class="rv prose">
+    <div class="kick">Reading</div>
+    <h2 style="margin-top:12px">Private reads: the server doesn't learn what you asked for.</h2>
+    <p>Hiding who asked is half the job; a server that knows <i>which</i> page or record you fetched still learns something. The Veil reads with <b>private information retrieval (PIR)</b>, in tiers, fastest first:</p>
+    <ol>
+      <li><b>Local:</b> data every node already holds — an instant read, nothing leaves your device.</li>
+      <li><b>Two-server PIR:</b> two nodes each scan a whole bucket with a key that looks random; combined, the answers give you your item. Neither learns which item it was.</li>
+      <li><b>Single-server PIR</b> with a small client hint, for sublinear server work.</li>
+      <li><b>The mixnet,</b> for anything else.</li>
+    </ol>
+  </div>
+  <div class="diagram anim rv" role="img" aria-label="Two nodes scan every entry with random-looking keys; XOR of their answers gives the wanted page">
+    <svg viewBox="0 0 600 300">
+      <g class="seq d1"><rect x="20" y="40" width="180" height="170" rx="14" fill="#16161b" stroke="rgba(255,255,255,.1)"/><text x="110" y="234" text-anchor="middle" fill="#c4beb8" font-size="16">Node A</text></g>
+      <g class="seq d1"><rect x="400" y="40" width="180" height="170" rx="14" fill="#16161b" stroke="rgba(255,255,255,.1)"/><text x="490" y="234" text-anchor="middle" fill="#c4beb8" font-size="16">Node B</text></g>
+      <g fill="#2a2a31">
+        <rect x="36" y="56" width="30" height="30" rx="4" class="pulse"/><rect x="74" y="56" width="30" height="30" rx="4" class="pulse"/><rect x="112" y="56" width="30" height="30" rx="4" class="pulse"/><rect x="150" y="56" width="30" height="30" rx="4" class="pulse"/>
+        <rect x="36" y="94" width="30" height="30" rx="4" class="pulse"/><rect x="74" y="94" width="30" height="30" rx="4" class="pulse"/><rect x="112" y="94" width="30" height="30" rx="4" class="pulse"/><rect x="150" y="94" width="30" height="30" rx="4" class="pulse"/>
+        <rect x="36" y="132" width="30" height="30" rx="4" class="pulse"/><rect x="74" y="132" width="30" height="30" rx="4" class="pulse"/><rect x="112" y="132" width="30" height="30" rx="4" class="pulse"/><rect x="150" y="132" width="30" height="30" rx="4" class="pulse"/>
+        <rect x="416" y="56" width="30" height="30" rx="4" class="pulse"/><rect x="454" y="56" width="30" height="30" rx="4" class="pulse"/><rect x="492" y="56" width="30" height="30" rx="4" class="pulse"/><rect x="530" y="56" width="30" height="30" rx="4" class="pulse"/>
+        <rect x="416" y="94" width="30" height="30" rx="4" class="pulse"/><rect x="454" y="94" width="30" height="30" rx="4" class="pulse"/><rect x="492" y="94" width="30" height="30" rx="4" class="pulse"/><rect x="530" y="94" width="30" height="30" rx="4" class="pulse"/>
+        <rect x="416" y="132" width="30" height="30" rx="4" class="pulse"/><rect x="454" y="132" width="30" height="30" rx="4" class="pulse"/><rect x="492" y="132" width="30" height="30" rx="4" class="pulse"/><rect x="530" y="132" width="30" height="30" rx="4" class="pulse"/>
+      </g>
+      <circle cx="300" cy="125" r="42" fill="#141418" stroke="#ff7a00" stroke-width="2.5"/><text x="300" y="131" text-anchor="middle" fill="#f4f1ee" font-size="18" font-weight="700">You</text>
+      <g class="seq d2" stroke="#ff7a00" stroke-width="2"><line x1="258" y1="110" x2="204" y2="100" class="flow"/><line x1="342" y1="110" x2="396" y2="100" class="flow"/></g>
+      <g class="seq d2" font-family="JBM,monospace" font-size="14" fill="#ffab4d" text-anchor="middle"><text x="232" y="86">key a</text><text x="368" y="86">key b</text></g>
+      <g class="seq d4"><text x="300" y="200" text-anchor="middle" fill="#39d98a" font-size="18" font-weight="700">A ⊕ B = your page</text></g>
+      <text x="300" y="284" text-anchor="middle" fill="#8b8b95" font-size="16">each node touches every entry the same way</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="rv prose"><div class="kick">Built for a hostile world</div><h2 style="margin-top:12px">Attacks, and where each defence stands.</h2>
+    <p>Every defence is listed with its real status. "Built" means it runs on test nodes; none of this is outside-audited yet.</p></div>
+  <div class="tscroll rv" style="margin-top:24px"><table class="t">
+    <thead><tr><th>Attack</th><th>The Veil's answer</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Take down a directory</td><td>There are no directory authorities. Relay records are gossiped; a node needs one live peer.</td><td><span class="status st-built">Built</span></td></tr>
+      <tr><td>Record now, decrypt later</td><td>ML-KEM-768 links and packets, ML-DSA records — no pre-quantum key exchange to harvest.</td><td><span class="status st-built">Built</span></td></tr>
+      <tr><td>Tag or replay packets</td><td>A MAC per hop, a per-epoch replay set, fixed packet size.</td><td><span class="status st-built">Built</span></td></tr>
+      <tr><td>Flood a relay</td><td>Load-priced link puzzles, per-link rates, bounded queues that drop cover first.</td><td><span class="status st-built">Built</span></td></tr>
+      <tr><td>Tor goes down</td><td>Nodes move to the Veil in about 10 s and back in about 2 s.</td><td><span class="status st-built">Built</span></td></tr>
+      <tr><td>Global timing analysis</td><td>Constant-rate cover, per-hop delays, the private push, private reads.</td><td><span class="status st-build">Partly built</span></td></tr>
+      <tr><td>Isolate one node (eclipse)</td><td>Pinned first hops, peers from several sources, rotation.</td><td><span class="status st-build">Partly built</span></td></tr>
+      <tr><td>Block by address list</td><td>Relays drawn from a view nobody publishes whole; onion faces and BLE links.</td><td><span class="status st-build">Partly built</span></td></tr>
+      <tr><td>Block by fingerprint (DPI)</td><td>A handshake encoded so every byte looks uniformly random, with fixed frames.</td><td><span class="status st-design">Design</span></td></tr>
+      <tr><td>Sybil relays</td><td>Routes weighted by bonded SAT, so owning half the routing costs half the bonds.</td><td><span class="status st-design">Design</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="prose rv">
+    <h2>The limits, stated plainly.</h2>
+    <p>No network can promise perfect anonymity against everyone. Anonymity is bounded by the crowd you hide in, and there is a proven trade-off between anonymity, bandwidth and delay. Someone who cuts every link a node has can stop any network — the Veil's aim is that nothing short of that takes it down, and that it heals by itself once links return.</p>
+    <p>The Veil's own launch gate: every row above built with a real-node check, an outside audit of the mix code, a run over real internet links, and a soak of at least four weeks.</p>
+  </div>
+</div></section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><a class="brand" href="/"><img src="/logo.svg" alt="" width="28" height="28">MoneroUSD</a><p style="margin-top:12px;max-width:360px">Private, post-quantum digital cash. Not affiliated with the Monero Project, or with any other project named Veil.</p></div>
+    <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
+    <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

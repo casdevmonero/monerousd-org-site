@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /*.bak
+Disallow: /*.bak-*
+Disallow: /*.pre*
+
+Sitemap: https://monerousd.org/sitemap.xml

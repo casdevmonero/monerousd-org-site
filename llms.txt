@@ -1,0 +1,27 @@
+# MoneroUSD
+
+> MoneroUSD is a private, post-quantum block-DAG chain for digital cash. Anyone can verify every payment; nobody can see the amount, the sender or the receiver. It is in development and being tested on real nodes; a public testnet comes first, and real funds only after an outside audit, a four-week public soak and a guarded launch.
+
+Key facts:
+- Privacy: confidential notes, one-time nullifiers in a spent set, zero-knowledge proofs; every block has the same shape so activity cannot be counted. The scan key never leaves the user's device.
+- Post-quantum: ML-KEM-768, ML-DSA-65, Poseidon2, WHIR, BLAKE3, SHA-3. No elliptic curves.
+- Consensus: GHOSTDAG block-DAG; each block folds into a recursive proof, so new nodes join at the tip. Design targets: 500 ms blocks, DAG width 32, constant proof of at most 1.8 MB.
+- USDm: the dollar of MoneroUSD, minted against BTC or XMR deposits, over-collateralized. Flat network fee $0.001 per transaction.
+- SAT (Satoshi): reward asset. 21,000,000 maximum; 19,000,000 issued only by block rewards halving every 252,460,800 blocks (~4 years at target); developer set-aside capped at 2,000,000, proven at genesis, exact amount private. Validators bond SAT; 25% of fees buy SAT for bonders; direct SAT/BTC and SAT/XMR pools opening at $1.
+- DeFi layer (Ion Swap): sealed batch trading; orders are encrypted to a per-epoch threshold key, bonded validators clear each batch on secret shares and open only one clearing price per pair per batch; settlement is proven. Volumes, depth, positions and traders are never published.
+- Dark Solidity (DSOL): the smart-contract language and zero-knowledge VM. The wallet runs a call and proves it; nodes verify the proof without re-executing or seeing inputs. Values are commitments; contracts cannot mint or hold funds; publisher fees are enforced by the chain.
+- For business: payments are final and are never reversed. Optional buyer protection holds the price in a vault that leaves only on the buyer's receipt confirmation, on both parties agreeing, or on the clock, so nothing is judged. A doorstep delivery is proven in zero knowledge from the carrier's own signed delivery notice. Checkout helper, WooCommerce plugin, Shopify connector and a pay panel for any site. Optional proof of income shows only a total and the number of payments, never a single amount. Network fee $0.001.
+- Features: tap-to-pay over Bluetooth LE with ML-DSA-signed charges; Letter private messaging with payments in chat; MoneroUSD Veil mix network (partly built); Sovereign browser for .mud sites (in design, parts built).
+- Not affiliated with the Monero Project.
+
+## Pages
+- [Home](https://monerousd.org/): overview, the film, status
+- [Whitepaper v3](https://monerousd.org/whitepaper): why the project exists (private digital cash, no censorship, the right to a financial system, money nobody can print), the five things it sets out to prove, and where it stands; signed by Cas; one-page PDF at https://monerousd.org/MoneroUSD-Whitepaper-v3.pdf
+- [SAT tokenomics](https://monerousd.org/sat)
+- [For business](https://monerousd.org/business): the business film, the vault, the doorstep proof, comparisons, checkout, proof of income
+- [Ion Swap & Dark Solidity (DeFi)](https://monerousd.org/defi)
+- [MoneroUSD Veil](https://monerousd.org/veil)
+- [Sovereign](https://monerousd.org/sovereign)
+- [For Bitcoin holders](https://monerousd.org/for-bitcoin-holders)
+- [For Monero holders](https://monerousd.org/for-monero-holders)
+- [FAQ](https://monerousd.org/faq)
