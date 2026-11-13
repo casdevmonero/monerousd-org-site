@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. SPDX-License-Identifier: Apache-2.0. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -48,7 +48,7 @@
       <li><a href="/veil">Veil</a></li>
       <li><a href="/sovereign">Sovereign</a></li>
       <li><a href="/sat">SAT</a></li>
-      <li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li>
+      <li><a href="/testnet">Testnet</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li>
     </ul>
     <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
     <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
@@ -59,7 +59,7 @@
 <header class="hero">
   <canvas id="dag" aria-hidden="true"></canvas>
   <div class="wrap">
-    <span class="status st-test">In development · public testnet next</span>
+    <span class="status st-ok" style="color:var(--ok);background:rgba(57,217,138,.1);border:1px solid rgba(57,217,138,.3)">Public testnet live · <a href="/testnet" style="color:var(--ok);text-decoration:underline">join now</a></span>
     <h1>Digital cash that stays private — <span class="or">even against quantum computers.</span></h1>
     <p class="lead">MoneroUSD is a private, post-quantum block-DAG chain. Anyone can verify every payment. Nobody can see the amount, the sender or the receiver.</p>
     <div class="ctas">
@@ -343,7 +343,7 @@
       <div class="grid2" style="margin-top:24px">
         <div class="card stat"><b>21,000,000</b><span>maximum supply, enforced by consensus</span></div>
         <div class="card stat"><b>19,000,000</b><span>issued only as block rewards, halving every ~4 years</span></div>
-        <div class="card stat"><b>≤ 2,000,000</b><span>developer set-aside, proven at genesis; exact amount private</span></div>
+        <div class="card stat"><b>≤ 2,000,000</b><span>developer set-aside, proven at launch; exact amount private</span></div>
         <div class="card stat"><b>$1</b><span>opening price in the direct SAT/BTC and SAT/XMR pools</span></div>
       </div>
       <a class="more" href="/sat">Full SAT tokenomics →</a>
@@ -357,7 +357,7 @@
         <text x="575" y="32" text-anchor="end" fill="#ffab4d" font-size="15">hard cap 21M</text>
         <path d="M60 272 C100 216 150 180 190 167 C240 152 280 132 320 128 C370 122 410 116 450 113 C500 110 540 109 580 108" fill="none" stroke="#ff7a00" stroke-width="3.5" class="draw"/>
         <path d="M60 300 L60 272" stroke="#a9b4ff" stroke-width="3.5"/>
-        <text x="70" y="290" fill="#a9b4ff" font-size="15" class="seq d1">≤ 2M set-aside at genesis</text>
+        <text x="70" y="290" fill="#a9b4ff" font-size="15" class="seq d1">≤ 2M set-aside at launch</text>
         <text x="200" y="155" fill="#f4f1ee" font-size="16" class="seq d3">+9.5M by year 4</text>
         <text x="330" y="116" fill="#f4f1ee" font-size="16" class="seq d4">+14.25M by year 8</text>
         <text x="580" y="96" text-anchor="end" fill="#c4beb8" font-size="15" class="seq d5">rewards → 19M</text>
@@ -384,8 +384,8 @@
           <tr><td>Letter</td><td><span class="status st-built">Built</span></td><td>Sealed messages, groups, profiles and payments in chat.</td></tr>
           <tr><td>Bitcoin &amp; Monero bridge</td><td><span class="status st-test">Testing</span></td><td>Deposits mint USDm; forged mints and burns are refused on real nodes.</td></tr>
           <tr><td>SAT</td><td><span class="status st-test">Testing</span></td><td>Block rewards, the supply cap, validator bonds and the direct BTC/XMR pools.</td></tr>
-          <tr><td>MoneroUSD Veil</td><td><span class="status st-build">In build</span></td><td>Mix core, hidden addresses and the private push run on test nodes; anti-censorship pieces are being built.</td></tr>
-          <tr><td>Sovereign</td><td><span class="status st-design">Design</span></td><td>Site records and verified serving exist; .mud names, sharded hosting and private reads are next.</td></tr>
+          <tr><td>MoneroUSD Veil</td><td><span class="status st-test">Testing</span></td><td>Veil v2: mix core, hidden addresses, private push and anti-censorship are built and running on test nodes.</td></tr>
+          <tr><td>Sovereign</td><td><span class="status st-build">In build</span></td><td>Private back ends for .mud sites built; verified storage, the assembler and the page bridge run on test nodes. Names and sharded hosting next.</td></tr>
         </tbody>
       </table>
     </div>
@@ -393,7 +393,7 @@
       <div class="card"><h3>1 · Public testnet</h3><p>Every end-to-end check passes on real nodes: pay, change, tap, restart, join, bridge, trading, staking.</p></div>
       <div class="card"><h3>2 · Attacks refused</h3><p>Every listed attack is run against real nodes and refused.</p></div>
       <div class="card"><h3>3 · Outside audit</h3><p>An external audit of the cash layer.</p></div>
-      <div class="card"><h3>4 · Soak, then guarded launch</h3><p>At least four weeks of public testnet with a bug bounty, then launch with published value caps that rise on a schedule.</p></div>
+      <div class="card"><h3>4 · Soak, then launch</h3><p>At least four weeks of public testnet with a bug bounty, then launch.</p></div>
     </div>
   </div>
 </section>
@@ -413,7 +413,7 @@
   <div class="wrap prose" style="margin:0 auto">
     <div class="kick">FAQ</div>
     <h2 style="margin-top:12px">Short answers</h2>
-    <details><summary>Is MoneroUSD live?</summary><p>Not yet. It's in development and being tested on real nodes. A public testnet comes first; real funds only after the testnet, an outside audit, a four-week public soak and a guarded launch.</p></details>
+    <details><summary>Is MoneroUSD live?</summary><p>A public testnet is live — <a href="/testnet">join it</a> to try private payments with free test coins. Real funds only after the testnet soak, an outside audit and launch.</p></details>
     <details><summary>Is MoneroUSD part of Monero?</summary><p>No. MoneroUSD is a separate project with its own chain and cryptography. It shares Monero's goal — private money — and its wallet trades directly with Monero (XMR) and Bitcoin (BTC).</p></details>
     <details><summary>What does "post-quantum" mean here?</summary><p>Every key exchange, signature, commitment and proof uses schemes designed to resist quantum computers (ML-KEM, ML-DSA, Poseidon2, WHIR, BLAKE3, SHA-3). There are no elliptic curves, so there's nothing to record today and break later.</p></details>
     <details><summary>What is USDm?</summary><p>The dollar of MoneroUSD. Every USDm is minted against a Bitcoin or Monero deposit and the system is over-collateralized. It's what you pay with.</p></details>
@@ -426,8 +426,8 @@
   <div class="wrap center rv">
     <img src="/logo.svg" alt="" width="84" height="84" style="margin:0 auto 18px">
     <h2>Private. Post-quantum. <span class="or">Final.</span></h2>
-    <p class="lead">The wallet opens to the public with the testnet. Until then, watch the film and read how it works.</p>
-    <div class="ctas" style="justify-content:center"><a class="btn btn-p" href="#film">▶ Watch the film</a><a class="btn btn-g" href="/faq">Read the FAQ</a></div>
+    <p class="lead">The public testnet is live. Try private payments with free test coins, or watch the film to see the whole idea.</p>
+    <div class="ctas" style="justify-content:center"><a class="btn btn-p" href="/testnet">Join the testnet</a><a class="btn btn-g" href="#film">▶ Watch the film</a></div>
   </div>
 </section>
 </main>
@@ -438,7 +438,7 @@
     <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
     <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
     <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
-    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/testnet">Join testnet</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>

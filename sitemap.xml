@@ -28,5 +28,6 @@
   <url><loc>https://monerousd.org/for-bitcoin-holders</loc><lastmod>2026-11-07</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://monerousd.org/for-monero-holders</loc><lastmod>2026-11-07</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://monerousd.org/faq</loc><lastmod>2026-11-07</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://monerousd.org/testnet</loc><lastmod>2026-11-13</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://monerousd.org/run-node</loc><lastmod>2026-11-07</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>
