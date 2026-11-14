@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. SPDX-License-Identifier: Apache-2.0. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
- {"@type":"Question","name":"Is MoneroUSD live?","acceptedAnswer":{"@type":"Answer","text":"Not yet. MoneroUSD is in development and being tested on real nodes. A public testnet comes first. Real funds come only after the testnet, every listed attack refused on real nodes, an outside audit, a public soak of at least four weeks with a bug bounty, and a guarded launch with published value caps."}},
+ {"@type":"Question","name":"Is MoneroUSD live?","acceptedAnswer":{"@type":"Answer","text":"The public testnet is live, with free test coins. Real funds come only after the testnet, every listed attack refused on real nodes, an outside audit, and a public soak with a bug bounty."}},
  {"@type":"Question","name":"Is MoneroUSD part of the Monero Project?","acceptedAnswer":{"@type":"Answer","text":"No. MoneroUSD is a separate project with its own chain and cryptography. It shares the goal of private money, and its wallet trades directly with Monero (XMR) and Bitcoin (BTC)."}},
  {"@type":"Question","name":"How does MoneroUSD hide amounts, senders and receivers?","acceptedAnswer":{"@type":"Answer","text":"Money lives in confidential notes. To spend, the wallet proves in zero knowledge that the spend is valid; a one-time nullifier enters the spent set so a note cannot be spent twice. The chain stores commitments, nullifiers and proofs, never amounts or addresses, and every block has the same shape so activity cannot be counted."}},
  {"@type":"Question","name":"What does post-quantum mean for MoneroUSD?","acceptedAnswer":{"@type":"Answer","text":"Key exchange uses ML-KEM-768, signatures use ML-DSA-65, commitments use Poseidon2, proofs use WHIR, and hashing uses BLAKE3 and SHA-3. There are no elliptic curves anywhere, so traffic recorded today cannot be decrypted later by a quantum computer."}},
@@ -44,7 +44,7 @@
 <header class="ph"><div class="wrap"><div class="kick">FAQ</div><h1>Questions, <span class="or">answered plainly.</span></h1></div></header>
 <section class="s" style="border-top:0;padding-top:0"><div class="wrap prose">
   <h2>The project</h2>
-  <details open><summary>Is MoneroUSD live?</summary><p>Not yet. It's in development and being tested on real nodes. A public testnet comes first. Real funds come only after the testnet, every listed attack refused on real nodes, an outside audit, a public soak of at least four weeks with a bug bounty, and a guarded launch with published value caps that rise on a published schedule.</p></details>
+  <details open><summary>Is MoneroUSD live?</summary><p>The public testnet is live — <a href="/testnet">join it</a> with free test coins. Real funds come only after the testnet, every listed attack refused on real nodes, an outside audit, and a public soak with a bug bounty.</p></details>
   <details><summary>Is MoneroUSD part of the Monero Project?</summary><p>No. It's a separate project with its own chain and cryptography. It shares the goal of private money, and its wallet trades directly with Monero (XMR) and Bitcoin (BTC).</p></details>
   <details><summary>Who controls the network?</summary><p>Nobody in particular. There is one kind of node, which mines, verifies, proves and relays. Every key that moves value — fees, rewards, custody, bonds — is per-participant or held by a threshold of bonded validators, never one shared key.</p></details>
   <h2>Privacy &amp; security</h2>

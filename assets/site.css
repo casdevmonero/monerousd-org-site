@@ -27,7 +27,18 @@ code,.mono{font-family:JBM,ui-monospace,monospace}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:var(--tx)}
 .brand img{width:32px;height:32px}
 .nav ul{display:flex;gap:22px;list-style:none;margin-left:auto}
-.nav ul a{color:var(--tx2);font-size:16px;font-weight:500}
+.nav ul a{color:var(--tx2);font-size:16px;font-weight:500;white-space:nowrap}
+.brand{flex:none;white-space:nowrap}
+/* header testnet button: one line, glass pill with a live dot (the button styles below are for page CTAs) */
+.nav .btn-sm{white-space:nowrap;flex:none;background:rgba(57,217,138,.08);border:1px solid rgba(57,217,138,.32);color:var(--tx);box-shadow:none;border-radius:999px;padding:8px 16px 8px 14px;font-size:14px;gap:9px}
+.nav .btn-sm:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(57,217,138,.6);animation:livepulse 2s ease-out infinite;flex:none}
+.nav .btn-sm:hover{color:#fff;border-color:rgba(57,217,138,.6);background:rgba(57,217,138,.14)}
+@keyframes livepulse{0%{box-shadow:0 0 0 0 rgba(57,217,138,.6)}70%{box-shadow:0 0 0 8px rgba(57,217,138,0)}100%{box-shadow:0 0 0 0 rgba(57,217,138,0)}}
+.live-pill{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 16px 7px 13px;border-radius:999px;background:rgba(57,217,138,.08);border:1px solid rgba(57,217,138,.3);font-family:JBM,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ok);line-height:1.4}
+.live-pill i{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;animation:livepulse 2s ease-out infinite}
+.live-pill span{white-space:nowrap}
+.live-pill a{color:#fff;white-space:nowrap;border-left:1px solid rgba(57,217,138,.3);padding-left:10px}
+.live-pill a:hover{color:var(--ok)}
 .nav ul a:hover,.nav ul a[aria-current]{color:#fff}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;font-weight:600;font-size:16px;border:1px solid transparent;transition:transform .15s;cursor:pointer;font-family:inherit}
 .btn:hover{transform:translateY(-1px)}
@@ -43,6 +54,7 @@ code,.mono{font-family:JBM,ui-monospace,monospace}
 .social a:hover,.social a:focus-visible{color:#fff;border-color:rgba(255,122,0,.6)}
 .social svg,footer .soc svg{width:17px;height:17px;fill:currentColor;flex:none}
 footer .soc{display:inline-flex;align-items:center;gap:8px}
+@media(max-width:480px){.nav .wrap{gap:12px;padding:0 16px}.brand{font-size:18px;gap:8px}.brand img{width:28px;height:28px}.social a{width:34px;height:34px}}
 @media(max-width:374px){.nav .wrap{gap:8px;padding:0 14px}.brand{font-size:17px;gap:8px}.brand img{width:26px;height:26px}.social{gap:4px}.social a{width:32px;height:32px}.menu-btn{padding:6px 9px;font-size:15px}}
 @media(max-width:1180px){.nav ul{display:none}.nav .btn-sm{display:none}.menu-btn{display:block;order:5;margin-left:0}.nav .social{margin-left:auto}
   .nav.open ul{display:flex;position:absolute;top:66px;left:0;right:0;flex-direction:column;gap:0;background:#0b0b0e;border-bottom:1px solid var(--line);padding:8px 0}
