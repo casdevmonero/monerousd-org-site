@@ -1,6 +1,6 @@
 # MoneroUSD
 
-> MoneroUSD is a private, post-quantum block-DAG chain for digital cash. Anyone can verify every payment; nobody can see the amount, the sender or the receiver. It is in development and being tested on real nodes; a public testnet comes first, and real funds only after an outside audit, a four-week public soak and a guarded launch.
+> MoneroUSD is a private, post-quantum block-DAG chain for digital cash. Anyone can verify every payment; nobody can see the amount, the sender or the receiver. A public testnet is live; real funds come only after an outside audit and a public soak with a bug bounty.
 
 Key facts:
 - Privacy: confidential notes, one-time nullifiers in a spent set, zero-knowledge proofs; every block has the same shape so activity cannot be counted. The scan key never leaves the user's device.
