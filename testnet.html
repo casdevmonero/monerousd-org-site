@@ -241,7 +241,7 @@ kbd{font:600 12.5px JBM,monospace;background:rgba(255,255,255,.08);border:1px so
       </div>
       <div class="req">
         <h3>Software</h3>
-        <p><strong>OS:</strong> macOS (Apple Silicon), Linux (x86-64 or ARM64). Windows via WSL2.</p>
+        <p><strong>OS:</strong> macOS (Apple Silicon), Windows (64-bit), Linux (x86-64 or ARM64).</p>
         <p style="margin-top:8px"><strong>Dependencies:</strong> None. The binary is self-contained and includes its own Tor client.</p>
         <p style="margin-top:8px"><strong>Sync:</strong> A new node checks one recursive proof and joins at the tip — no history replay.</p>
       </div>
@@ -331,6 +331,7 @@ kbd{font:600 12.5px JBM,monospace;background:rgba(255,255,255,.08);border:1px so
             <p>The MoneroUSD wallet runs the node for you. Download it, open it, and it connects to the testnet automatically.</p>
             <div class="dl-row">
               <a class="btn btn-p" href="https://github.com/casdevmonero/monerousd/releases/download/testnet-v0.2.0/MoneroUSD-Wallet-macOS-testnet.dmg">macOS (Apple Silicon)</a>
+              <a class="btn btn-p" href="https://github.com/casdevmonero/monerousd/releases/download/testnet-v0.2.0/MoneroUSD-Wallet-Windows-testnet-setup.exe">Windows (64-bit)</a>
               <a class="btn btn-g" href="https://github.com/casdevmonero/monerousd/releases" target="_blank" rel="noopener">All releases</a>
             </div>
             <div class="warn-card">
@@ -344,7 +345,10 @@ kbd{font:600 12.5px JBM,monospace;background:rgba(255,255,255,.08);border:1px so
               <p style="margin-top:10px">Then open <strong>MoneroUSD Wallet</strong> from Applications.</p>
             </div>
             <div class="warn-card" style="margin-top:10px">
-              <p>Linux and Windows builds are coming. Run the CLI node on Linux or Windows (WSL2) by <a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">building from source</a>.</p>
+              <p><strong>On Windows.</strong> The installer is not code-signed yet, so Windows may show <em>Windows protected your PC</em>. Click <strong>More info</strong>, then <strong>Run anyway</strong>, and follow the installer. Then open <strong>MoneroUSD Wallet</strong> from the Start menu. Prefer an MSI? It is on the <a href="https://github.com/casdevmonero/monerousd/releases/tag/testnet-v0.2.0" target="_blank" rel="noopener">release page</a>.</p>
+            </div>
+            <div class="warn-card" style="margin-top:10px">
+              <p>The Linux wallet is on its way. Until then, run the node on Linux by <a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">building from source</a>.</p>
             </div>
           </div>
         </div>
@@ -443,7 +447,7 @@ cargo build --release --bin usdmd-node
 
     <div class="card rv" style="margin-top:18px">
       <h3>Running a node</h3>
-      <p><strong>Requirements:</strong> Any 64-bit machine (macOS Apple Silicon, Linux x86-64/ARM64, Windows via WSL2). 2 GB RAM, 1 GB disk. Any internet connection — the node reaches the network over Tor v3 onion services and requires no open ports or public IP address.</p>
+      <p><strong>Requirements:</strong> Any 64-bit machine (macOS Apple Silicon, Windows 64-bit, Linux x86-64/ARM64). 2 GB RAM, 1 GB disk. Any internet connection — the node reaches the network over Tor v3 onion services and requires no open ports or public IP address.</p>
       <p style="margin-top:12px"><strong>What the node does:</strong> Every MoneroUSD node mines, verifies, proves and relays. There are no tiers — a validator is the same node with a SAT bond. A new node joins at the tip by checking one recursive proof of the entire chain (no block-by-block sync, no downloading history). Node state stays a constant size as the chain grows.</p>
       <p style="margin-top:12px"><strong>Measured footprint:</strong> 0.9 GB memory, 290 MB disk; the macOS release binary is 45 MB (testnet-v0.2.0). The binary is self-contained and includes its own Tor client.</p>
       <p style="margin-top:12px"><strong>Building from source:</strong> Requires a recent stable Rust toolchain.</p>
@@ -461,7 +465,7 @@ MONEROUSD_NET=testnet MONEROUSD_RPC_PORT=27780 \
 
     <div class="card rv" style="margin-top:18px">
       <h3>Using the wallet</h3>
-      <p>The wallet bundles a full node inside it. Download it, open it, and it connects to the testnet automatically — there is nothing else to set up. The wallet is built with Tauri (Rust core, web front end) and runs on macOS (Apple Silicon). Windows and Linux installers are being built on their own systems and will be added to the release page when they pass.</p>
+      <p>The wallet bundles a full node inside it. Download it, open it, and it connects to the testnet automatically — there is nothing else to set up. The wallet is built with Tauri (Rust core, web front end) and runs on macOS (Apple Silicon) and Windows (64-bit). The Linux installers are being built and will be added to the release page when they pass.</p>
       <p style="margin-top:12px"><strong>Download:</strong> <a href="https://github.com/casdevmonero/monerousd/releases/download/testnet-v0.2.0/MoneroUSD-Wallet-macOS-testnet.dmg">macOS wallet (testnet-v0.2.0)</a> — open it and drag the app into Applications; verify the SHA256 checksum from the <a href="https://github.com/casdevmonero/monerousd/releases/tag/testnet-v0.2.0" target="_blank" rel="noopener">release page</a>.</p>
       <p style="margin-top:12px"><strong>macOS quarantine:</strong> The build is not yet notarized by Apple, so macOS blocks it until you allow it once. After dragging the app into Applications, open <strong>Terminal</strong> (press <kbd>⌘</kbd>&nbsp;<kbd>Space</kbd>, type <strong>Terminal</strong>, press <kbd>Return</kbd>), paste this command with <kbd>⌘</kbd>&nbsp;<kbd>V</kbd> and press <kbd>Return</kbd>:</p>
       <div class="cmd">xattr -dr com.apple.quarantine "/Applications/MoneroUSD Wallet.app"</div>
