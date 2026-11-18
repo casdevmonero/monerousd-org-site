@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>Join the MoneroUSD Testnet — Private, Post-Quantum Digital Cash</title>
-<meta name="description" content="Join the MoneroUSD public testnet: get free test USDm, run a node, try private payments, bridge test BTC and XMR. No real funds at risk.">
+<meta name="description" content="Join the MoneroUSD public testnet: get test USDm from the faucet, run a node, try private payments, bridge test BTC and XMR. No real funds at risk.">
 <link rel="canonical" href="https://monerousd.org/testnet">
 <meta name="theme-color" content="#060607">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
@@ -20,11 +20,13 @@
 .tn-grid{position:absolute;inset:0;overflow:hidden;opacity:.35;pointer-events:none}
 .tn-grid svg{width:100%;height:100%}
 .steps{counter-reset:s;display:grid;gap:0}
-.step{counter-increment:s;display:grid;grid-template-columns:64px 1fr;gap:0;padding:28px 0;border-bottom:1px solid var(--line)}
+.step{counter-increment:s;display:grid;grid-template-columns:64px minmax(0,1fr);gap:0;padding:28px 0;border-bottom:1px solid var(--line)}
 .step:last-child{border-bottom:none}
 .step-n{width:48px;height:48px;border-radius:14px;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.35);display:flex;align-items:center;justify-content:center;font-family:JBM,monospace;font-weight:700;font-size:18px;color:var(--or)}
 .step-n::before{content:counter(s)}
+.step-body{min-width:0}
 .step-body h3{margin-bottom:8px;font-size:20px}
+@media(max-width:560px){.step{grid-template-columns:40px minmax(0,1fr)}.cmd{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:12.5px;padding:12px 14px 12px 12px}}
 .step-body p{color:var(--tx2);font-size:17px}
 .cmd{background:#0d0d11;border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-family:JBM,monospace;font-size:14px;line-height:1.7;color:var(--tx2);overflow-x:auto;margin-top:12px;white-space:pre;max-width:100%;position:relative}
 .cmd .c{color:#6c6c75}
@@ -78,7 +80,7 @@
 <nav class="nav" aria-label="Main"><div class="wrap">
   <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
   <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
-  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li></ul>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li><li><a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">GitHub</a></li></ul>
   <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
   <a class="btn btn-p btn-sm" href="#join">Join testnet</a>
 </div></nav>
@@ -133,13 +135,13 @@
     <div class="center rv" style="margin-bottom:42px">
       <div class="kick">Chain specifications</div>
       <h2>What you're running on. <span class="or">The numbers.</span></h2>
-      <p class="lead">The testnet runs byte-for-byte production code. These are the real specs, measured on real nodes.</p>
+      <p class="lead">The testnet runs byte-for-byte production code. These are its specs; every block's real time is on the explorer, read from the chain.</p>
     </div>
     <div class="spec-grid rv">
       <div class="spec-card">
-        <span class="val">500 ms</span>
-        <span class="unit">target</span>
-        <span class="label">Block time (mesh-wide, converges with producers)</span>
+        <span class="val">~5 s</span>
+        <span class="unit">measured</span>
+        <span class="label">Block time measured on two real nodes (11.4–11.6 blocks a minute, Nov 17, 2026). Today's target: 1,953 ms, derived from relay constants. Goal: 500 ms.</span>
       </div>
       <div class="spec-card">
         <span class="val">32</span>
@@ -227,7 +229,7 @@
       <div class="req">
         <h3>Network</h3>
         <p><strong>Transport:</strong> All traffic runs over Tor v3 onion services. The node bundles Tor — no setup needed.</p>
-        <p style="margin-top:8px"><strong>Bandwidth:</strong> ~356 KB per payment (proof + block). Throughput is bounded by Tor bandwidth, not by the block cap.</p>
+        <p style="margin-top:8px"><strong>Bandwidth:</strong> every payment carries its own proofs, so throughput is bounded by the relay's bandwidth, not by the block cap.</p>
         <p style="margin-top:8px"><strong>Ports:</strong> No inbound ports required. The node reaches the network over Tor.</p>
       </div>
       <div class="req">
@@ -256,18 +258,18 @@
       </div>
       <div class="feat">
         <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
-        <h3>Free test coins</h3>
-        <p>Free test USDm on demand. Three taps in the wallet or one CLI command. Built into the node and locked to the testnet — cannot mint on mainnet.</p>
+        <h3>Test faucet</h3>
+        <p>Free test USDm on demand. Three taps in the wallet or one CLI command. Built into the node and gated by the genesis — cannot mint on mainnet.</p>
       </div>
       <div class="feat">
         <div class="ico"><svg viewBox="0 0 24 24"><path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/></svg></div>
         <h3>Test bridge</h3>
-        <p>Bridge test BTC (testnet4), test XMR (Monero testnet) and test ETH (Sepolia) through the real custody code. Native assets, no wrapping.</p>
+        <p>Bridge test BTC (testnet4) and test XMR (Monero testnet) through the real custody code. Native assets, no wrapping.</p>
       </div>
       <div class="feat">
         <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div>
         <h3>No risk</h3>
-        <p>Test coins have zero value. The coin tap is locked to the testnet network: it cannot create real money, however you launch the node.</p>
+        <p>Test coins have zero value. The faucet is gated by the chain's own genesis identity: it cannot create real money, however you launch the node.</p>
       </div>
       <div class="feat">
         <div class="ico"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
@@ -289,9 +291,9 @@
     <div class="safety rv">
       <h3>Test coins only — no real funds at risk</h3>
       <ul>
-        <li>The testnet coin tap prints free USDm on demand. These coins have zero real-world value.</li>
-        <li>The bridge connects to Bitcoin testnet4 and Monero testnet — test BTC and test XMR only.</li>
-        <li>The coin tap is locked to the testnet network: it is physically impossible for it to run on a mainnet chain.</li>
+        <li>The testnet faucet prints free USDm on demand. These coins have zero real-world value.</li>
+        <li>The bridge connects to Bitcoin testnet4 and Monero testnet — test BTC and test XMR only. More assets are planned.</li>
+        <li>The faucet is gated by the chain's own genesis identity: it is physically impossible for it to run on a mainnet chain.</li>
         <li>The testnet may be reset at any time as the protocol evolves. Test balances do not survive a reset.</li>
         <li>The production code is byte-for-byte identical — only the network identity differs. Every bug found here is a bug fixed before real money.</li>
       </ul>
@@ -321,11 +323,14 @@
             <h3>Download the wallet</h3>
             <p>The MoneroUSD wallet runs the node for you. Download it, open it, and it connects to the testnet automatically.</p>
             <div class="dl-row">
-              <a class="btn btn-p" href="/monerousd-wallet-macos.dmg">macOS (Apple Silicon)</a>
-              <a class="btn btn-g" href="/monerousd-wallet-linux.AppImage">Linux (AppImage)</a>
+              <a class="btn btn-p" href="https://github.com/casdevmonero/monerousd/releases/download/testnet-v0.2.0/MoneroUSD-Wallet-macOS-testnet.dmg">macOS (Apple Silicon)</a>
+              <a class="btn btn-g" href="https://github.com/casdevmonero/monerousd/releases" target="_blank" rel="noopener">All releases</a>
             </div>
             <div class="warn-card">
-              <p>Windows builds are coming. For now, run the CLI node on Windows via WSL2.</p>
+              <p><strong>macOS quarantine:</strong> After unzipping, move to Applications and run:<br><code style="font-size:13px">xattr -dr com.apple.quarantine /Applications/MoneroUSD\ Wallet.app</code></p>
+            </div>
+            <div class="warn-card" style="margin-top:10px">
+              <p>Linux and Windows builds are coming. Run the CLI node on Linux or Windows (WSL2) by <a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">building from source</a>.</p>
             </div>
           </div>
         </div>
@@ -333,7 +338,7 @@
           <div class="step-n"></div>
           <div class="step-body">
             <h3>Get test coins</h3>
-            <p>Open the wallet and tap <strong>Add money</strong>&nbsp;&rarr;&nbsp;<strong>Free test coins</strong>. Free test USDm arrives in seconds. You can also receive test BTC or test XMR through the bridge.</p>
+            <p>Open the wallet and tap <strong>Add money</strong>&nbsp;&rarr;&nbsp;<strong>Test faucet</strong>. Free test USDm arrives in seconds. You can also receive test BTC or test XMR through the bridge.</p>
           </div>
         </div>
         <div class="step rv">
@@ -352,27 +357,26 @@
         <div class="step rv">
           <div class="step-n"></div>
           <div class="step-body">
-            <h3>Install the node</h3>
-            <p>One command. The install script verifies the binary, sets up Tor, and starts the node as a background service.</p>
-            <div class="cmd"><span class="c"># macOS or Linux — downloads, verifies, installs</span>
-<span class="hl">curl -sSf https://monerousd.org/install-node.sh | bash</span></div>
-            <p style="margin-top:12px;font-size:15px;color:var(--mu)">Or build from source:</p>
+            <h3>Build and start the node</h3>
+            <p>The node builds from source with Rust (<code>rustup</code>, stable). It reaches the network only over Tor onion addresses with the Tor client it carries; there is nothing else to install.</p>
             <div class="cmd"><span class="c"># Clone and build</span>
-git clone https://github.com/monerousd/monerousd-node-zkdag.git
-cd monerousd-node-zkdag
+git clone https://github.com/casdevmonero/monerousd.git
+cd monerousd/monerousd-node-zkdag
 cargo build --release --bin usdmd-node
 
-<span class="c"># Start the node on the testnet</span>
-<span class="hl">MONEROUSD_NET=testnet</span> ./target/release/usdmd-node --port 27780</div>
+<span class="c"># Start the node on the testnet (RPC on 127.0.0.1:27780)</span>
+<span class="hl">MONEROUSD_NET=testnet MONEROUSD_RPC_PORT=27780</span> \
+  ./target/release/usdmd-node serve</div>
+            <p style="margin-top:12px;font-size:15px;color:var(--mu)">The desktop wallet already carries this node inside it; build it yourself only to run a node without the wallet.</p>
           </div>
         </div>
         <div class="step rv">
           <div class="step-n"></div>
           <div class="step-body">
             <h3>Get test coins</h3>
-            <p>Hit the coin tap on your own node's RPC. The address is your wallet's receive address.</p>
-            <div class="cmd"><span class="c"># Request test USDm from the built-in coin tap</span>
-<span class="hl">curl -X POST http://127.0.0.1:27780/tap/drip</span> \
+            <p>Hit the faucet on your own node's RPC. The address is your wallet's receive address.</p>
+            <div class="cmd"><span class="c"># Request test USDm from the built-in faucet</span>
+<span class="hl">curl -X POST http://127.0.0.1:27780/faucet/drip</span> \
   -H 'Content-Type: application/json' \
   -d '{"amount": 100, "to": "<span class="hl">YOUR_ADDRESS</span>"}'</div>
           </div>
@@ -382,9 +386,9 @@ cargo build --release --bin usdmd-node
           <div class="step-body">
             <h3>Run a validator</h3>
             <p>Bond test SAT to validate. The node derives its validator key from its own seed — no setup, no passwords.</p>
-            <div class="cmd"><span class="c"># Start a validator (bonds SAT from a mined reward or the coin tap)</span>
-<span class="hl">MONEROUSD_NET=testnet MONEROUSD_VALIDATOR_BOND=1</span> \
-  ./target/release/usdmd-node --port 27780</div>
+            <div class="cmd"><span class="c"># Start a validator (bonds SAT from a mined reward or the faucet)</span>
+<span class="hl">MONEROUSD_NET=testnet MONEROUSD_RPC_PORT=27780 MONEROUSD_VALIDATOR_BOND=1</span> \
+  ./target/release/usdmd-node serve</div>
           </div>
         </div>
       </div>
@@ -401,12 +405,88 @@ cargo build --release --bin usdmd-node
     <div class="grid2" style="margin-top:24px">
       <div class="card rv">
         <h3>Resets happen</h3>
-        <p>As the protocol evolves, consensus changes require a fresh start. Your test balances start over. The coin tap pays again immediately.</p>
+        <p>As the protocol evolves, consensus changes require a fresh genesis. Your test balances start over. The faucet pays again immediately.</p>
       </div>
       <div class="card rv">
         <h3>Bugs found here are bugs fixed</h3>
         <p>Every defect found on the testnet is fixed before real money touches the chain. Found something? Tell us on <a href="https://t.me/MoneroUSDofficial">Telegram</a>.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTNET DOCS -->
+<section class="s" id="docs">
+  <div class="wrap prose rv" style="max-width:860px">
+    <div class="kick">Testnet documentation</div>
+    <h2>Everything you need to know</h2>
+
+    <div class="card rv" style="margin-top:28px">
+      <h3>How the testnet works</h3>
+      <p>The testnet runs byte-for-byte identical code to the future mainnet. The only difference is the network identity in the genesis block, which gates the faucet and separates test coins from real value. All consensus rules, all privacy guarantees, all hard forks are active from height 1.</p>
+      <p style="margin-top:12px">Blocks are produced by a GHOSTDAG block-DAG with K=32, meaning up to 32 blocks can be produced in parallel and ordered deterministically. Measured on two real nodes, a block lands about every 5 seconds (11.4–11.6 blocks a minute, Nov 17, 2026); today's target is 1,953 ms, derived from what the relay can carry, and the goal is 500 ms. Every transaction is a zero-knowledge proof: amounts, senders, receivers and all metadata are hidden from every observer, including the nodes themselves.</p>
+    </div>
+
+    <div class="card rv" style="margin-top:18px">
+      <h3>Running a node</h3>
+      <p><strong>Requirements:</strong> Any 64-bit machine (macOS Apple Silicon, Linux x86-64/ARM64, Windows via WSL2). 2 GB RAM, 1 GB disk. Any internet connection — the node reaches the network over Tor v3 onion services and requires no open ports or public IP address.</p>
+      <p style="margin-top:12px"><strong>What the node does:</strong> Every MoneroUSD node mines, verifies, proves and relays. There are no tiers — a validator is the same node with a SAT bond. A new node joins at the tip by checking one recursive proof of the entire chain (no block-by-block sync, no downloading history). Node state stays a constant size as the chain grows.</p>
+      <p style="margin-top:12px"><strong>Measured footprint:</strong> 0.9 GB memory, 290 MB disk; the macOS release binary is 45 MB (testnet-v0.2.0). The binary is self-contained and includes its own Tor client.</p>
+      <p style="margin-top:12px"><strong>Building from source:</strong> Requires a recent stable Rust toolchain.</p>
+      <div class="cmd"><span class="c"># Clone the repository</span>
+git clone https://github.com/casdevmonero/monerousd.git
+cd monerousd/monerousd-node-zkdag
+
+<span class="c"># Build the node (first build compiles the prover — takes a while)</span>
+cargo build --release --bin usdmd-node
+
+<span class="c"># Start the node on the testnet</span>
+MONEROUSD_NET=testnet MONEROUSD_RPC_PORT=27780 \
+  ./target/release/usdmd-node serve</div>
+    </div>
+
+    <div class="card rv" style="margin-top:18px">
+      <h3>Using the wallet</h3>
+      <p>The wallet bundles a full node inside it. Download it, open it, and it connects to the testnet automatically — there is nothing else to set up. The wallet is built with Tauri (Rust core, web front end) and runs on macOS (Apple Silicon). Windows and Linux installers are being built on their own systems and will be added to the release page when they pass.</p>
+      <p style="margin-top:12px"><strong>Download:</strong> <a href="https://github.com/casdevmonero/monerousd/releases/download/testnet-v0.2.0/MoneroUSD-Wallet-macOS-testnet.dmg">macOS wallet (testnet-v0.2.0)</a> — open it and drag the app into Applications; verify the SHA256 checksum from the <a href="https://github.com/casdevmonero/monerousd/releases/tag/testnet-v0.2.0" target="_blank" rel="noopener">release page</a>.</p>
+      <p style="margin-top:12px"><strong>macOS quarantine:</strong> The build is not yet notarized by Apple. After dragging it into Applications:</p>
+      <div class="cmd">xattr -dr com.apple.quarantine /Applications/MoneroUSD\ Wallet.app</div>
+      <p style="margin-top:12px"><strong>Getting test coins:</strong> Open the wallet and tap <strong>Add money</strong> &rarr; <strong>Test faucet</strong>. Free test USDm arrives in seconds.</p>
+    </div>
+
+    <div class="card rv" style="margin-top:18px">
+      <h3>The bridge (BTC and XMR)</h3>
+      <p>The testnet bridge connects to Bitcoin testnet4 and Monero testnet. It uses the same threshold-signed custody code (PQ-FROST) that mainnet will use. Assets are native — no wrapping, no IOUs. You deposit test BTC or test XMR and receive USDm on the MoneroUSD chain; withdraw to get them back.</p>
+      <p style="margin-top:12px">More bridged assets (ETH, SOL, ZEC) are planned for future releases.</p>
+    </div>
+
+    <div class="card rv" style="margin-top:18px">
+      <h3>Cryptography</h3>
+      <p>Every cryptographic primitive is post-quantum. There are no elliptic curves anywhere in the protocol — no ECDSA, no secp256k1, no Ed25519, no RSA.</p>
+      <ul style="margin-top:12px;padding-left:20px;color:var(--tx2)">
+        <li><strong>ML-KEM-768</strong> — key encapsulation (quantum-resistant key exchange)</li>
+        <li><strong>ML-DSA-65</strong> — digital signatures (quantum-resistant signing)</li>
+        <li><strong>BLAKE3</strong> — fast hashing</li>
+        <li><strong>SHA-3 / Keccak</strong> — domain separation</li>
+        <li><strong>Poseidon2</strong> — arithmetic-friendly hashing inside ZK circuits</li>
+        <li><strong>WHIR</strong> — recursive zero-knowledge proofs (the light decider)</li>
+      </ul>
+    </div>
+
+    <div class="card rv" style="margin-top:18px">
+      <h3>What to expect</h3>
+      <ul style="padding-left:20px;color:var(--tx2)">
+        <li><strong>Resets:</strong> Consensus changes require a fresh genesis. Test balances start over. The faucet pays again immediately.</li>
+        <li><strong>Block time:</strong> Measured about 5 s on two real nodes (11.4–11.6 blocks a minute, Nov 17, 2026). The target today is 1,953 ms and the goal is 500 ms; a machine under heavy load measures slower.</li>
+        <li><strong>Throughput:</strong> bounded by the relay's bandwidth, not by a block cap: every payment carries its own zero-knowledge proofs.</li>
+        <li><strong>Privacy:</strong> All privacy guarantees are active. Viewing the chain reveals nothing — not amounts, not parties, not transaction counts, not timing patterns.</li>
+        <li><strong>Bugs:</strong> This is pre-launch software. Bugs found here are bugs fixed before real money touches the chain. Report issues on <a href="https://t.me/MoneroUSDofficial" target="_blank" rel="noopener">Telegram</a> or <a href="https://github.com/casdevmonero/monerousd/issues" target="_blank" rel="noopener">GitHub Issues</a>.</li>
+      </ul>
+    </div>
+
+    <div class="card rv" style="margin-top:18px">
+      <h3>Source code</h3>
+      <p>The full source is open: <a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">github.com/casdevmonero/monerousd</a>. Licensed Apache 2.0 (IonSwap front end is BSL until 2029-12-01). Contributions welcome.</p>
     </div>
   </div>
 </section>
@@ -420,6 +500,7 @@ cargo build --release --bin usdmd-node
     <div class="ctas" style="justify-content:center">
       <a class="btn btn-p" href="https://t.me/MoneroUSDofficial" target="_blank" rel="noopener">Join Telegram</a>
       <a class="btn btn-g" href="https://x.com/monerousd" target="_blank" rel="noopener">Follow on X</a>
+      <a class="btn btn-g" href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">View on GitHub</a>
     </div>
   </div>
 </section>
@@ -432,7 +513,7 @@ cargo build --release --bin usdmd-node
     <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
     <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
     <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
-    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li><li><a href="/testnet">Join testnet</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li><li><a href="/testnet">Join testnet</a></li><li><a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">GitHub</a></li></ul></div>
   </div>
 </footer>
 

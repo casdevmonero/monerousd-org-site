@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. SPDX-License-Identifier: Apache-2.0. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -21,7 +21,7 @@
  {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MoneroUSD","item":"https://monerousd.org/"},{"@type":"ListItem","position":2,"name":"SAT tokenomics","item":"https://monerousd.org/sat"}]},
  {"@type":"FAQPage","mainEntity":[
   {"@type":"Question","name":"What is the maximum supply of SAT?","acceptedAnswer":{"@type":"Answer","text":"21,000,000 SAT, enforced by consensus. 19,000,000 are issued only as block rewards; a developer set-aside is capped at 2,000,000 and proven at genesis, with the exact amount kept private."}},
-  {"@type":"Question","name":"How often does the SAT block reward halve?","acceptedAnswer":{"@type":"Answer","text":"Every 252,460,800 blocks, which is about four years at the 500 ms block-time target. Half of the block-reward supply is issued in the first era."}},
+  {"@type":"Question","name":"How often does the SAT block reward halve?","acceptedAnswer":{"@type":"Answer","text":"Every 64,634,101 blocks: four years at the network's 1.953-second block-time target, which is derived from what the relay can carry. Half of the block-reward supply is issued in the first era."}},
   {"@type":"Question","name":"What is SAT used for?","acceptedAnswer":{"@type":"Answer","text":"Validators bond SAT to secure custody and finality, bonders receive SAT bought with a share of network fees, and SAT trades directly against Bitcoin and Monero."}}
  ]}
 ]}
@@ -77,7 +77,7 @@
   <div class="rv prose">
     <div class="kick">Emission</div>
     <h2 style="margin-top:12px">A Bitcoin-style halving, counted in blocks.</h2>
-    <p>The reward for a block is <code>R₀ &gt;&gt; (height ÷ 252,460,800)</code>: it starts at <b>0.0376296 SAT</b> per block and halves every 252,460,800 blocks — four years at the network's 500 ms block-time target. Half of the 19M is issued in the first era, a quarter in the second, and so on, ending after about 21 eras.</p>
+    <p>The reward for a block is <code>R₀ &gt;&gt; (height ÷ 64,634,101)</code>: it starts at <b>0.14698123 SAT</b> per block and halves every 64,634,101 blocks — four years at the network's 1.953-second block-time target. Half of the 19M is issued in the first era, a quarter in the second, and so on, ending after 24 eras.</p>
     <p>The reward amount is public, because it follows from the schedule. <b>Who received it is private:</b> each reward lands as a confidential note only the miner's wallet can find, and every later transfer hides amount, sender and receiver.</p>
   </div>
   <div class="rv">
@@ -96,14 +96,14 @@
     <div class="tscroll" style="margin-top:18px"><table class="t">
       <thead><tr><th>Era</th><th>Years*</th><th>Reward / block</th><th>Issued in era</th><th>Total rewards</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>0–4</td><td>0.0376296</td><td>9,500,000</td><td>9,500,000</td></tr>
-        <tr><td>2</td><td>4–8</td><td>0.0188148</td><td>4,750,000</td><td>14,250,000</td></tr>
-        <tr><td>3</td><td>8–12</td><td>0.0094074</td><td>2,375,000</td><td>16,625,000</td></tr>
-        <tr><td>4</td><td>12–16</td><td>0.0047037</td><td>1,187,500</td><td>17,812,500</td></tr>
-        <tr><td>5–21</td><td>16–84</td><td>halving</td><td>~1,187,500</td><td>→ 19,000,000</td></tr>
+        <tr><td>1</td><td>0–4</td><td>0.14698123</td><td>9,500,000</td><td>9,500,000</td></tr>
+        <tr><td>2</td><td>4–8</td><td>0.07349061</td><td>4,750,000</td><td>14,250,000</td></tr>
+        <tr><td>3</td><td>8–12</td><td>0.03674530</td><td>2,375,000</td><td>16,625,000</td></tr>
+        <tr><td>4</td><td>12–16</td><td>0.01837265</td><td>1,187,500</td><td>17,812,500</td></tr>
+        <tr><td>5–24</td><td>16–96</td><td>halving</td><td>~1,187,500</td><td>→ 19,000,000</td></tr>
       </tbody>
     </table></div>
-    <p class="muted" style="font-size:13px;margin-top:8px">*Years assume the 500 ms block-time target. Halvings happen at fixed block counts, so real dates follow the real block rate.</p>
+    <p class="muted" style="font-size:13px;margin-top:8px">*Years are at the 1.953-second block-time target, derived from what the relay can carry. It is a target, not a measured rate: halvings happen at fixed block counts, as in Bitcoin, so real dates follow the real block rate.</p>
   </div>
 </div></section>
 

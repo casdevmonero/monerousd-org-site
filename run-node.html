@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Copyright (c) 2026, The MoneroUSD Protocol. MoneroUSD Protocol License (BSD-3-Clause + attribution/display). -->
+<!-- Copyright (c) 2026, The MoneroUSD Protocol. SPDX-License-Identifier: Apache-2.0. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -19,7 +19,7 @@
 <nav class="nav" aria-label="Main"><div class="wrap">
   <a class="brand" href="/"><img src="/logo.svg" alt="" width="32" height="32">MoneroUSD</a>
   <a class="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
-  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li></ul>
+  <ul id="menu"><li><a href="/#how">How it works</a></li><li><a href="/#wallet">Wallet</a></li><li><a href="/business">Business</a></li><li><a href="/defi">DeFi</a></li><li><a href="/veil">Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li><li><a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">GitHub</a></li></ul>
   <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
     <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
 </div></nav>
@@ -28,16 +28,51 @@
   <div class="kick">Run a node</div>
   <h1>One kind of node. <span class="or">Built to stay small.</span></h1>
   <p class="lead">There are no tiers on MoneroUSD: every node mines, verifies, proves and relays. Validators are the same node with a SAT bond.</p>
-  <p style="margin-top:20px"><span class="status st-test">Node downloads open with the public testnet</span></p>
+  <p style="margin-top:20px"><span class="status st-test">Public testnet is live</span></p>
 </div></header>
 <section class="s"><div class="wrap grid3">
   <div class="card rv"><h3>Joins at the tip</h3><p>A new node checks one recursive proof of the whole chain and starts at the tip. A restart resumes from where it left off — no replay of history.</p></div>
-  <div class="card rv"><h3>Constant state</h3><p>Node state is designed to stay the same size as the chain grows, so phone-class hardware can run a full node. Sizes are being measured on real nodes.</p></div>
+  <div class="card rv"><h3>Constant state</h3><p>Node state stays the same size as the chain grows: 0.9 GB memory, 290 MB disk, 42 MB binary. Phone-class hardware can run a full node.</p></div>
   <div class="card rv"><h3>Earns its keep</h3><p>Nodes that produce blocks earn SAT, and a share of fees through the miner pool. Bond SAT to validate custody and finality.</p></div>
 </div></section>
-<section class="s"><div class="wrap prose rv">
-  <h2>Earlier instructions withdrawn</h2>
-  <p>This page used to describe an older node with a different design. Those instructions no longer apply and have been removed. The node for the current design ships with the public testnet, with install steps for desktop and servers. Check the <a href="/#status">testnet status</a>.</p>
+
+<section class="s"><div class="wrap prose rv" style="max-width:860px">
+  <h2>Requirements</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:20px">
+    <div class="card"><h3>Hardware</h3><p><strong>CPU:</strong> Any 64-bit (x86-64 or ARM64)<br><strong>RAM:</strong> 2 GB free (measured peak 1.4 GB)<br><strong>Disk:</strong> 1 GB free (measured 290 MB)</p></div>
+    <div class="card"><h3>Network</h3><p>Any connection that reaches Tor. No open ports, no public IP. Every link is a Tor v3 onion service.</p></div>
+    <div class="card"><h3>Software</h3><p>macOS (Apple Silicon), Linux (x86-64/ARM64), Windows via WSL2. No dependencies — the binary includes Tor.</p></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap prose rv" style="max-width:860px">
+  <h2>Option 1: Use the wallet</h2>
+  <p>The wallet runs the node for you. Download and open it — the node starts automatically and connects to the testnet.</p>
+  <p style="margin-top:12px"><a class="btn btn-p" href="https://github.com/casdevmonero/monerousd/releases/download/testnet-v0.2.0/MoneroUSD-Wallet-macOS-testnet.dmg">Download wallet (macOS)</a> <a class="btn btn-g" href="https://github.com/casdevmonero/monerousd/releases" target="_blank" rel="noopener">All releases</a></p>
+  <p style="margin-top:12px;color:var(--tx2)">macOS quarantine: <code>xattr -dr com.apple.quarantine /Applications/MoneroUSD\ Wallet.app</code></p>
+</div></section>
+
+<section class="s"><div class="wrap prose rv" style="max-width:860px">
+  <h2>Option 2: Build from source</h2>
+  <p>Requires a recent stable Rust toolchain.</p>
+  <pre style="background:#0d0d11;border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-family:JBM,monospace;font-size:14px;line-height:1.7;color:var(--tx2);overflow-x:auto;margin-top:12px;white-space:pre"><span style="color:#6c6c75"># Clone the repository</span>
+git clone https://github.com/casdevmonero/monerousd.git
+cd monerousd/monerousd-node-zkdag
+
+<span style="color:#6c6c75"># Build (first build compiles the prover — takes a while)</span>
+cargo build --release --bin usdmd-node
+
+<span style="color:#6c6c75"># Start the node</span>
+MONEROUSD_NET=testnet MONEROUSD_RPC_PORT=27780 \
+  ./target/release/usdmd-node serve</pre>
+  <p style="margin-top:16px">The node stores its data in <code>~/.usdmd-node/</code>. It creates its own Tor hidden service and finds peers automatically.</p>
+</div></section>
+
+<section class="s"><div class="wrap prose rv" style="max-width:860px">
+  <h2>Becoming a validator</h2>
+  <p>A validator is the same node with a SAT bond. The node derives its validator key from its own seed — no extra setup, no passwords. Bond test SAT from a mined reward or the faucet:</p>
+  <pre style="background:#0d0d11;border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-family:JBM,monospace;font-size:14px;line-height:1.7;color:var(--tx2);overflow-x:auto;margin-top:12px;white-space:pre">MONEROUSD_NET=testnet MONEROUSD_RPC_PORT=27780 MONEROUSD_VALIDATOR_BOND=1 \
+  ./target/release/usdmd-node serve</pre>
 </div></section>
 </main>
 <footer>
@@ -46,7 +81,7 @@
     <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
     <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
     <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
-    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/run-node">Run a node</a></li><li><a href="/testnet">Join testnet</a></li><li><a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">GitHub</a></li></ul></div>
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>

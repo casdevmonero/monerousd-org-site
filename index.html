@@ -48,7 +48,7 @@
       <li><a href="/veil">Veil</a></li>
       <li><a href="/sovereign">Sovereign</a></li>
       <li><a href="/sat">SAT</a></li>
-      <li><a href="/testnet">Testnet</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li>
+      <li><a href="/testnet">Testnet</a></li><li><a href="/whitepaper">Whitepaper</a></li><li><a href="/faq">FAQ</a></li><li><a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">GitHub</a></li>
     </ul>
     <div class="social" aria-label="MoneroUSD on social media"><a href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener" aria-label="MoneroUSD on Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg></a><a href="https://x.com/monerousd" target="_blank" rel="me noopener" aria-label="MoneroUSD on X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg></a></div>
     <a class="btn btn-p btn-sm" href="/#status">Testnet status</a>
@@ -157,7 +157,7 @@
       <h2>Parallel blocks, one order. <span class="or">The whole chain in one proof.</span></h2>
       <p>Blocks are produced in parallel and ordered the same way by every node (GHOSTDAG, as in Kaspa). Each block folds into a recursive proof, so a new node checks one proof and joins at the tip instead of replaying history.</p>
       <ul class="ticks">
-        <li>Design targets: 500 ms blocks, 32 parallel blocks, a constant proof of at most 1.8 MB</li>
+        <li>A block-time target of 1.953 s, derived from what the relay can carry — 32 parallel blocks, a constant proof of at most 1.8 MB</li>
         <li>Node state stays the same size as the chain grows — built so phones can run full nodes</li>
         <li>One kind of node: it mines, verifies, proves and relays. No trusted servers.</li>
       </ul>
@@ -343,7 +343,7 @@
       <div class="grid2" style="margin-top:24px">
         <div class="card stat"><b>21,000,000</b><span>maximum supply, enforced by consensus</span></div>
         <div class="card stat"><b>19,000,000</b><span>issued only as block rewards, halving every ~4 years</span></div>
-        <div class="card stat"><b>≤ 2,000,000</b><span>developer set-aside, proven at launch; exact amount private</span></div>
+        <div class="card stat"><b>≤ 2,000,000</b><span>developer set-aside, proven at genesis; exact amount private</span></div>
         <div class="card stat"><b>$1</b><span>opening price in the direct SAT/BTC and SAT/XMR pools</span></div>
       </div>
       <a class="more" href="/sat">Full SAT tokenomics →</a>
@@ -357,11 +357,11 @@
         <text x="575" y="32" text-anchor="end" fill="#ffab4d" font-size="15">hard cap 21M</text>
         <path d="M60 272 C100 216 150 180 190 167 C240 152 280 132 320 128 C370 122 410 116 450 113 C500 110 540 109 580 108" fill="none" stroke="#ff7a00" stroke-width="3.5" class="draw"/>
         <path d="M60 300 L60 272" stroke="#a9b4ff" stroke-width="3.5"/>
-        <text x="70" y="290" fill="#a9b4ff" font-size="15" class="seq d1">≤ 2M set-aside at launch</text>
+        <text x="70" y="290" fill="#a9b4ff" font-size="15" class="seq d1">≤ 2M set-aside at genesis</text>
         <text x="200" y="155" fill="#f4f1ee" font-size="16" class="seq d3">+9.5M by year 4</text>
         <text x="330" y="116" fill="#f4f1ee" font-size="16" class="seq d4">+14.25M by year 8</text>
         <text x="580" y="96" text-anchor="end" fill="#c4beb8" font-size="15" class="seq d5">rewards → 19M</text>
-        <text x="320" y="350" text-anchor="middle" fill="#8b8b95" font-size="15">Years assume the 500 ms block-time target; halvings are counted in blocks.</text>
+        <text x="320" y="350" text-anchor="middle" fill="#8b8b95" font-size="15">Years are at the 1.953 s block-time target; halvings are counted in blocks.</text>
       </svg>
     </div>
   </div>
@@ -438,7 +438,7 @@
     <div><h4>Learn</h4><ul><li><a href="/whitepaper">Whitepaper v3</a></li><li><a href="/#how">How it works</a></li><li><a href="/business">For business</a></li><li><a href="/defi">DeFi &amp; Dark Solidity</a></li><li><a href="/veil">MoneroUSD Veil</a></li><li><a href="/sovereign">Sovereign</a></li><li><a href="/sat">SAT tokenomics</a></li></ul></div>
     <div><h4>For holders</h4><ul><li><a href="/for-bitcoin-holders">Bitcoin holders</a></li><li><a href="/for-monero-holders">Monero holders</a></li><li><a href="/faq">FAQ</a></li></ul></div>
     <div><h4>Community</h4><ul><li><a class="soc" href="https://t.me/MoneroUSDofficial" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.4 8.7 20c.47 0 .67-.2.92-.44l2.2-2.1 4.56 3.34c.84.46 1.43.22 1.66-.77L21.07 5.2c.27-1.25-.45-1.74-1.27-1.43L2.36 10.5c-1.2.47-1.18 1.13-.2 1.43l4.47 1.4L17.01 6.8c.49-.32.93-.14.56.18z"/></svg>Telegram</a></li><li><a class="soc" href="https://x.com/monerousd" target="_blank" rel="me noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.77zm-1.08 16.18h1.7L7.4 4.73H5.58z"/></svg>X (Twitter)</a></li></ul></div>
-    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/testnet">Join testnet</a></li><li><a href="/run-node">Run a node</a></li></ul></div>
+    <div><h4>Network</h4><ul><li><a href="/#status">Testnet status</a></li><li><a href="/testnet">Join testnet</a></li><li><a href="/run-node">Run a node</a></li><li><a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">GitHub</a></li></ul></div>
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>
