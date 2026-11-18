@@ -26,13 +26,19 @@
 .step-n::before{content:counter(s)}
 .step-body{min-width:0}
 .step-body h3{margin-bottom:8px;font-size:20px}
-@media(max-width:560px){.step{grid-template-columns:40px minmax(0,1fr)}.cmd{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:12.5px;padding:12px 14px 12px 12px}}
+@media(max-width:560px){.step{grid-template-columns:40px minmax(0,1fr)}}
 .step-body p{color:var(--tx2);font-size:17px}
 .cmd{background:#0d0d11;border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-family:JBM,monospace;font-size:14px;line-height:1.7;color:var(--tx2);overflow-x:auto;margin-top:12px;white-space:pre;max-width:100%;position:relative}
 .cmd .c{color:#6c6c75}
 .cmd .hl{color:var(--or2)}
 .copy-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.06);border:1px solid var(--line2);color:var(--mu);border-radius:8px;padding:5px 10px;font:13px JBM,monospace;cursor:pointer;transition:color .15s,border-color .15s}
 .copy-btn:hover{color:#fff;border-color:rgba(255,122,0,.5)}
+.cmd:has(.copy-btn){padding-right:84px}
+.qsteps{margin:10px 0 4px 20px;color:var(--tx2)}
+.qsteps li{margin:6px 0}
+kbd{font:600 12.5px JBM,monospace;background:rgba(255,255,255,.08);border:1px solid var(--line2);border-bottom-width:2px;border-radius:6px;padding:1px 6px;color:#fff}
+/* After the base .cmd rule, so it wins: on a phone every command wraps inside its box, clear of the Copy button. */
+@media(max-width:560px){.cmd{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:12.5px;padding:12px 84px 12px 12px}}
 .tab-row{display:flex;gap:4px;margin-bottom:18px}
 .tab-btn{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:9px 18px;font:500 15px Outfit,system-ui,sans-serif;color:var(--mu);cursor:pointer;transition:color .15s,border-color .15s,background .15s}
 .tab-btn:hover{color:var(--tx)}
@@ -327,7 +333,14 @@
               <a class="btn btn-g" href="https://github.com/casdevmonero/monerousd/releases" target="_blank" rel="noopener">All releases</a>
             </div>
             <div class="warn-card">
-              <p><strong>macOS quarantine:</strong> After unzipping, move to Applications and run:<br><code style="font-size:13px">xattr -dr com.apple.quarantine /Applications/MoneroUSD\ Wallet.app</code></p>
+              <p><strong>One-time step on a Mac.</strong> The app is not notarized by Apple yet, so macOS blocks it until you allow it once:</p>
+              <ol class="qsteps">
+                <li>Open the downloaded <strong>MoneroUSD-Wallet-macOS-testnet.dmg</strong> and drag <strong>MoneroUSD Wallet</strong> onto <strong>Applications</strong>.</li>
+                <li>Open <strong>Terminal</strong>: press <kbd>⌘</kbd>&nbsp;<kbd>Space</kbd>, type <strong>Terminal</strong>, press <kbd>Return</kbd>.</li>
+                <li>Tap <strong>Copy</strong> on the command below, click into the Terminal window, paste with <kbd>⌘</kbd>&nbsp;<kbd>V</kbd> and press <kbd>Return</kbd>. Nothing is printed when it works.</li>
+              </ol>
+              <div class="cmd">xattr -dr com.apple.quarantine "/Applications/MoneroUSD Wallet.app"</div>
+              <p style="margin-top:10px">Then open <strong>MoneroUSD Wallet</strong> from Applications.</p>
             </div>
             <div class="warn-card" style="margin-top:10px">
               <p>Linux and Windows builds are coming. Run the CLI node on Linux or Windows (WSL2) by <a href="https://github.com/casdevmonero/monerousd" target="_blank" rel="noopener">building from source</a>.</p>
@@ -449,8 +462,8 @@ MONEROUSD_NET=testnet MONEROUSD_RPC_PORT=27780 \
       <h3>Using the wallet</h3>
       <p>The wallet bundles a full node inside it. Download it, open it, and it connects to the testnet automatically — there is nothing else to set up. The wallet is built with Tauri (Rust core, web front end) and runs on macOS (Apple Silicon). Windows and Linux installers are being built on their own systems and will be added to the release page when they pass.</p>
       <p style="margin-top:12px"><strong>Download:</strong> <a href="https://github.com/casdevmonero/monerousd/releases/download/testnet-v0.2.0/MoneroUSD-Wallet-macOS-testnet.dmg">macOS wallet (testnet-v0.2.0)</a> — open it and drag the app into Applications; verify the SHA256 checksum from the <a href="https://github.com/casdevmonero/monerousd/releases/tag/testnet-v0.2.0" target="_blank" rel="noopener">release page</a>.</p>
-      <p style="margin-top:12px"><strong>macOS quarantine:</strong> The build is not yet notarized by Apple. After dragging it into Applications:</p>
-      <div class="cmd">xattr -dr com.apple.quarantine /Applications/MoneroUSD\ Wallet.app</div>
+      <p style="margin-top:12px"><strong>macOS quarantine:</strong> The build is not yet notarized by Apple, so macOS blocks it until you allow it once. After dragging the app into Applications, open <strong>Terminal</strong> (press <kbd>⌘</kbd>&nbsp;<kbd>Space</kbd>, type <strong>Terminal</strong>, press <kbd>Return</kbd>), paste this command with <kbd>⌘</kbd>&nbsp;<kbd>V</kbd> and press <kbd>Return</kbd>:</p>
+      <div class="cmd">xattr -dr com.apple.quarantine "/Applications/MoneroUSD Wallet.app"</div>
       <p style="margin-top:12px"><strong>Getting test coins:</strong> Open the wallet and tap <strong>Get free test USDm</strong> on the home screen; it lands with the next block.</p>
     </div>
 
